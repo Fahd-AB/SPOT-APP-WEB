@@ -1,0 +1,96 @@
+
+	.modal {
+  opacity: 0;
+  visibility: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: fixed;
+	z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.modal__box_caution {
+  padding: 1em;
+  background: #fff;
+  position: fixed;
+	z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  text-align: center;
+  border-top: 5px solid #FFC300;
+  border-bottom: 5px solid #85929E;
+}
+.modal__box_info {
+  padding: 1em;
+  background: #fff;
+  position: fixed;
+	z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  text-align: center;
+  border-top: 5px solid #3498DB;
+  border-bottom: 5px solid #85929E;
+}
+.modal__box_error {
+  padding: 1em;
+  background: #fff;
+  position: fixed;
+	z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  text-align: center;
+  border-top: 5px solid #E74C3C;
+  border-bottom: 5px solid #85929E;
+}
+.modal__box_sucess {
+  padding: 1em;
+  background: #fff;
+  position: fixed;
+	z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  text-align: center;
+  border-top: 5px solid #1ABC9C;
+  border-bottom: 5px solid #85929E;
+}
+.modal__box_special{
+   padding: 0;
+  background: #D6E0E2;
+  position: fixed;
+	z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  text-align: left;
+  border-top: 5px solid #85929E;
+  border-bottom: 5px solid #85929E;
+}
+/* modal magic */
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.popupbtn {
+  display: block;
+  padding: 1em 2em;
+	margin: 5px;
+  background: transparent;
+  color: #85929E;
+  border: 1px solid #85929E;
+  outline: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  -webkit-appearance: none;
+}
+.popupbtn:hover {
+  background: #85929E;
+  color: #fff;
+}

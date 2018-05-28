@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <title></title>
+
+ <link rel="stylesheet" href="chat/css/reset.min.css">
+
+
+      <link rel="stylesheet" href="chat/css/style.css">
+
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div class="top">
+            <center><img src="assets/images/avtar/Messages.png"/></center>
+            </div>
+            <ul class="people" id="people">
+            <!-- people load here -->
+            </ul>
+        </div>
+        <div class="right">
+            <div class="top"><span>Vers : <span class="name" id="whoto"></span></span></div>
+            <div id="chatboxi">
+               <!-- chat loads here-->
+              </div>
+
+
+            <div class="write" id="chattextbox">
+                <a href="javascript:;" class="write-link attach"></a>
+                <input type="text" id="msginput" onkeypress="handle(event)" onfocus="backtonormal()"/>
+                <a href="javascript:;" class="write-link smiley"></a>
+                <a href="#" class="write-link send" onclick="send()"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+#chatboxi{
+padding: 10px;
+overflow-x: hidden;
+height: 75%;
+}
+
+#chatboxi::-webkit-scrollbar {
+    width: 10px;
+}
+
+#chatboxi::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+.cont{
+  text-align: center;
+  height: 60px;
+  width: 150px;
+}
+.logos{
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+  cursor: pointer;
+}
+
+
+.boxi{
+   display: none;
+}
+
+.chatboxiactive{
+  display: block;
+}
+.chatboxiinactive{
+  display: block;
+}
+.infodot{
+  height: 10px;
+  width: 10px;
+  position: relative;
+  background: url('/profile/chat/online.png') no-repeat;
+  background-size: cover;
+}
+.inforeddot{
+  height: 10px;
+  width: 10px;
+  position: relative;
+  /*
+  background: url('/profile/chat/offline.png') no-repeat;
+  background-size: cover;
+  */
+}
+.infodotcontainer{
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  margin-left: 5px;
+  margin-bottom: 1px;
+}
+
+</style>
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="../models/client.ts"></script>
+    <script src="../models/message.ts"></script>
+
+
+    <script>
+    $(window).load(function(){
+      loadprofileinfos();
+      SPI="";
+      SPN="";
+      SPP="";
+      check_new_msg();
+      loadmsgs();
+        document.getElementById("msginput").focus();
+    });
+
+    function loadprofileinfos(){
+      var Profileid = localStorage.getItem('spot_webcl_Profileid');
+      var Profilename = localStorage.getItem('spot_webcl_Profilename');
+      var Profilefirstname = localStorage.getItem('spot_webcl_Profilefirstname');
+      var Profilelastname = localStorage.getItem('spot_webcl_Profilelastname');
+      var Profilefreinds = localStorage.getItem('spot_webcl_Profilefreinds');
+      var Profileevents = localStorage.getItem('spot_webcl_Profileevents');
+      var Profileregion = localStorage.getItem('spot_webcl_Profileregion');
+      var Profilegender = localStorage.getItem('spot_webcl_Profilegender');
+      var Profilebirthdate = localStorage.getItem('spot_webcl_Profilebirthdate');
+      var Profiletel = localStorage.getItem('spot_webcl_Profiletel');
+      var Profileadr = localStorage.getItem('spot_webcl_Profileadr');
+      var Profileemail = localStorage.getItem('spot_webcl_Profileemail');
+      var Profilecurrentpass = localStorage.getItem('spot_webcl_Profilecurrentpass');
+      var Profilephoto = localStorage.getItem('spot_webcl_Profilephoto');
+      var Profilecover = localStorage.getItem('spot_webcl_Profilecover');
+
+       C = new Client(Profilefirstname,Profilelastname,Profileemail,Profiletel,Profilebirthdate,Profileadr,Profilecurrentpass,Profilefreinds,Profileevents);
+
+
+      C.setId(Profileid);
+      C.setSexe(Profilegender);
+      C.setRegion(Profileregion);
+      C.setProfilephoto(Profilephoto);
+      C.setProfilecover(Profilecover);
+
+    }
+
+// section search if we need to add a new disscution
+
+    function check_new_msg(){
+      try{
+      var SearchQuery = localStorage.getItem('spot_webcl_search_querry');
+      if(SearchQuery=="TRUE"){
+        SPI = localStorage.getItem('spot_webcl_SPI'); // serached profile id
+        SPN = localStorage.getItem('spot_webcl_SPN'); // serached profile name
+        SPP = localStorage.getItem('spot_webcl_SPP'); // searched profile photo
+        localStorage.removeItem('spot_webcl_search_querry');
+        localStorage.removeItem('spot_webcl_SPI');
+        localStorage.removeItem('spot_webcl_SPN');
+        localStorage.removeItem('spot_webcl_SPP');
+      }
+    }
+      catch(e){
+       // no new disscution to add
+      }
+    }
+// section search if we need to add a new disscution
+
+
+
+
+    function loadmsgs(){
+    var id=C.getId();
+     var data = '{"operation":"select","table":"msgs_all","id":"'+id+'"}';
+     $.getJSON("/webapi.php",{client_req:data},showmsg);
+    }
+    function showmsg(json) {
+      document.getElementById("people").innerHTML="";
+      document.getElementById("chatboxi").innerHTML="";
+      Chat=[];
+      if(json==null){
+         console.log('Boite de messagerie vide !');
+      }
+      else{
+        // all goood
+        //console.log(json);
+        var id=C.getId();
+        //Chat.push("Lemon")
+        for (var i = 0; i < json.length; i++) {
+          var Ami={"ami_id":json[i].c_id,
+                    "ami_prenom":json[i].prenom,
+                    "ami_nom_famille":json[i].nom_famille,
+                    "ami_photo":json[i].profilephoto,
+                    "ami_statut":json[i].statut
+                  }
+                  var exist=false;
+                  for (var j = 0; j < Chat.length; j++) {
+                    var a=JSON.stringify(Chat[j]);
+                    var b=JSON.stringify(Ami);
+
+                    if(a==b)
+                    {
+                       exist=true;
+                    }
+                  }
+                  if(exist==false){
+                    Chat.push(Ami);
+                  }
+
+          }
+
+
+            //console.log(Chat);
+            //console.log(json);
+
+
+            for (var k = 0; k < Chat.length; k++) {
+              //var time=msToTime((new Date()).valueOf() - (new Date(Chat[k].date)).valueOf());
+
+              var photo='../img/'+Chat[k].ami_photo+'.png'
+              var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+              var onlinestat="";
+              if(Chat[k].ami_statut==1){
+                onlinestat='<div class="infodot" id="stat'+Chat[k].ami_id+'"></div>';
+              }
+              else{
+                onlinestat='<div class="inforeddot" id="stat'+Chat[k].ami_id+'"></div>';
+              }
+              document.getElementById("people").innerHTML+='<li class="person" id="'+Chat[k].ami_id+'" onClick="activeonclick(this.id)"><img src="'+photo+'" alt="" /><span class="name">'+completename+'<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime'+Chat[k].ami_id+'"></span><span class="preview" id="lastmsg'+Chat[k].ami_id+'"></span></li>';
+             //console.log("Discussion "+k);
+
+             var bubblecontent="";
+             bubblecontent='<div class="boxi" id="box'+Chat[k].ami_id+'"><div class="conversation-start"><span id="time'+Chat[k].ami_id+'"></span></div>';
+
+              for (var l = 0; l < json.length; l++) {
+                if(Chat[k].ami_id==json[l].emetteur || Chat[k].ami_id==json[l].recepteur){
+                  if(json[l].emetteur==C.getId()){
+                    // buuble me
+                      bubblecontent+='<div class="bubble me">'+json[l].texte+'</div>';
+                  }
+                  else{
+                    // buublle you
+                       bubblecontent+='<div class="bubble you">'+json[l].texte+'</div>';
+                  }
+
+                }
+              }
+
+            bubblecontent+="</div>";
+            document.getElementById("chatboxi").innerHTML+=bubblecontent;
+
+
+
+            for (var m = 0; m < json.length; m++) {
+              if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                var x = (new Date()).getTimezoneOffset() * 60000;
+                var today= (new Date(Date.now() - x)).toISOString();
+                $('#time'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+              }
+            }
+
+// do stuff here
+            }
+// do stuff here
+    }
+    //load admin messages
+    addadminmsgs();
+
+
+
+    if(SPI!="" && SPI!=null){
+        check_add_diss(); // afficher la nouvelle disscution
+    }
+    else{
+
+if(json!=null){
+
+
+// get into this section only if i have at least 1 last conversation
+// *****************************************************************
+
+    // sélectionner la dernière disscution
+    var selectedfreindid="";
+    try{
+    selectedfreindid = localStorage.getItem('spot_cl_selected_freind_id');
+    }
+    catch(e){
+      selectedfreindid=Chat[0].ami_id;
+    }
+
+
+    if(selectedfreindid=="" || selectedfreindid==null){
+        selectedfreindid=Chat[0].ami_id;
+          activeonclick(selectedfreindid);
+    }
+    else{
+      if(selectedfreindid=="0"){
+        setTimeout(() => {
+         adminactiveonclick();
+       }, 500);
+      }
+      else{
+      activeonclick(selectedfreindid);
+      }
+    }
+   // fin sélectionner la dernière disscution
+
+
+   // get into this section only if i have at least 1 last conversation
+   // *****************************************************************
+}
+else{
+  console.log("no messages at all to select");
+}
+
+
+  }
+
+
+
+
+  }
+
+
+    function msToTime(s){
+     var ms = s % 1000;
+     s = (s - ms) / 1000;
+     var secs = s % 60;
+     s = (s - secs) / 60;
+     var mins = s % 60;
+     var hrs = (s - mins) / 60;
+     if(hrs==0 && mins==0)
+         return "à l'instant";
+     else if(hrs==0)
+         return 'il y a '+mins+' mins';
+     else if(hrs<24)
+         return 'il y a '+hrs+' hrs';
+     else
+         return 'il y a '+Math.floor(hrs/24)+' jrs';
+   }
+
+
+
+  function addadminmsgs(){
+    var id=C.getId();
+     var data = '{"operation":"select","table":"msgsad","id":"'+id+'"}';
+     $.getJSON("/webapi.php",{client_req:data},showadminmsg);
+  }
+  function showadminmsg(json) {
+    var onlinestat="";
+
+    if(json==null){
+       console.log('Boite de messagerie admin vide !');
+       /*
+       document.getElementById("people").innerHTML+='<li class="person" id="a0" onClick="adminactiveonclick()"><img src="../img/admin_dafault.png" alt="" /><span class="name">Administrateur<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime0"></span><span class="preview" id="lastmsg0"></span></li>';
+       var bubblecontent="";
+       bubblecontent='<div class="boxi" id="box0"><div class="conversation-start"><span id="time0></span></div></div>';
+       document.getElementById("chatboxi").innerHTML+=bubblecontent;
+       if(Chat.length==0){
+         adminactiveonclick();
+       }
+       */
+    }
+    else{
+      // all goood
+      if(json[0].statut==1){
+        onlinestat='<div class="infodot" id="stat0"></div>';
+      }
+      else{
+        onlinestat='<div class="inforeddot" id="stat0"></div>';
+      }
+         document.getElementById("people").innerHTML+='<li class="person" id="a0" onClick="adminactiveonclick()"><img src="../img/admin_dafault.png" alt="" /><span class="name">Administrateur<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime0"></span><span class="preview" id="lastmsg0"></span></li>';
+         var bubblecontent="";
+         bubblecontent='<div class="boxi" id="box0"><div class="conversation-start"><span id="time0"></span></div>';
+
+          for (var i = 0; i < json.length; i++) {
+              if(json[i].emetteur==C.getId()){
+                // buuble me
+                  bubblecontent+='<div class="bubble me">'+json[i].texte+'</div>';
+              }
+              else{
+                // buublle you
+                   bubblecontent+='<div class="bubble you">'+json[i].texte+'</div>';
+              }
+          }
+        bubblecontent+="</div>";
+        document.getElementById("chatboxi").innerHTML+=bubblecontent;
+        var lng=json.length-1;
+        var x = (new Date()).getTimezoneOffset() * 60000;
+        var today= (new Date(Date.now() - x)).toISOString();
+        $('#time0').html(msToTime((new Date(today)).valueOf() - (new Date(json[lng].date)).valueOf()));
+        $('#Gtime0').html(msToTime((new Date(today)).valueOf() - (new Date(json[lng].date)).valueOf()));
+        $('#lastmsg0').html(json[lng].texte);
+
+      //console.log(json);
+    }
+
+        var SearchQuery = localStorage.getItem('spot_webcl_search_querry');
+        if((Chat.length!=0 || SearchQuery!=null)&&(json==null)){
+          onlinestat='<div class="inforeddot" id="stat0"></div>';
+          document.getElementById("people").innerHTML+='<li class="person" id="a0" onClick="adminactiveonclick()"><img src="../img/admin_dafault.png" alt="" /><span class="name">Administrateur<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime0"></span><span class="preview" id="lastmsg0"></span></li>';
+        }
+        else{
+          if(json==null){
+            onlinestat='<div class="infodot" id="stat0"></div>';
+            document.getElementById("people").innerHTML+='<li class="person" id="a0" onClick="adminactiveonclick()"><img src="../img/admin_dafault.png" alt="" /><span class="name">Administrateur<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime0"></span><span class="preview" id="lastmsg0"></span></li>';
+            var bubblecontent="";
+            bubblecontent='<div class="boxi" id="box0"><div class="conversation-start"><span id="time0></span></div></div>';
+            document.getElementById("chatboxi").innerHTML=bubblecontent;
+            adminactiveonclick();
+          }
+          else{
+            //alert(SPI);
+            if((SPI==null || SPI=="")&& Chat.length==0){
+                //alert("here");
+                adminactiveonclick();
+            }
+
+          }
+
+        }
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+function activeonclick(id){
+
+  $('.person').removeClass('active');
+  $('#'+id).addClass('active');
+  $('.boxi').removeClass('chatboxiactive');
+  $('#box'+id).addClass('chatboxiactive');
+  var fullname="Freind";
+    for (var i = 0; i < Chat.length; i++) {
+      if(Chat[i].ami_id==id){
+        fullname=' '+Chat[i].ami_prenom+' '+Chat[i].ami_nom_famille;
+      }
+    }
+  $('#whoto').html(fullname);
+
+  if(fullname=="Freind" && SPN!=null){
+    $('#whoto').html(SPN);
+  }
+   $("#chatboxi").animate({ scrollTop: $('#chatboxi').prop("scrollHeight")}, 1500);
+
+ active_client = id;
+localStorage.setItem('spot_cl_selected_freind_id',id);
+}
+
+
+//admin active on click
+
+function adminactiveonclick(){
+  $('.person').removeClass('active');
+  $('#a0').addClass('active');
+  $('.boxi').removeClass('chatboxiactive');
+  $('#box0').addClass('chatboxiactive');
+  $('#whoto').html("Administrateur");
+$("#chatboxi").animate({ scrollTop: $('#chatboxi').prop("scrollHeight")}, 1500);
+ active_client = "0";
+localStorage.setItem('spot_cl_selected_freind_id',"0");
+}
+
+
+
+function check_add_diss(){
+
+  var diss_exits="NO";
+  for (var i = 0; i < Chat.length; i++) {
+  if(Chat[i].ami_id==SPI){
+   diss_exits="YES";
+  }
+ }
+ if(diss_exits=="NO"){
+   // c'est une nouvelle disscution
+   //add_new_diss();
+   getclstat(SPI);
+ }
+ else if(diss_exits=="YES"){
+   // j'ai déja parlé avant a ce client
+   activeonclick(SPI); // afficher la disscution
+ }
+ else{
+   // do nothing
+   //activeonclick(SPI);
+ }
+
+
+}
+
+function getclstat(id){
+  var data = '{"operation":"select","table":"cl_stat","id":"'+id+'"}';
+  $.getJSON("/webapi.php",{client_req:data},showcl_stat);
+}
+function showcl_stat(json) {
+  if(json==null){
+    // offline if error
+      add_new_diss(0);
+  }
+  else{
+    //all good
+      add_new_diss(json[0].statut);
+  }
+}
+
+
+function add_new_diss(stat){
+  var onlinestat="";
+  if(stat==1){
+    onlinestat='<div class="infodot"></div>';
+  }
+  else{
+    onlinestat='<div class="inforeddot"></div>';
+  }
+document.getElementById("people").innerHTML+='<li class="person" id="'+SPI+'" onClick="activeonclick(this.id)"><img src="/img/'+SPP+'.png" alt="" /><span class="name">'+SPN+'<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time"></span><span class="preview"></span></li>';
+bubblecontent="<div class='boxi'id='box'"+SPI+"><div class='conversation-start'><span>à l'instant</span></div></div>";
+$('.person').removeClass('active');
+$('#'+SPI).addClass('active');
+$('.boxi').removeClass('chatboxiactive');
+$('#box'+SPI).addClass('chatboxiactive');
+$('#whoto').html(SPN);
+active_client = SPI;
+}
+//var data = '{"operation":"select","table":"msgsad","id":"'+id+'"}';
+//$.getJSON("/webapi.php",{client_req:data},showadminmsg);
+
+
+function handle(e){
+   backtonormal();
+       if(e.keyCode === 13){
+           e.preventDefault(); // Ensure it is only this code that rusn
+           send();
+       }
+}
+
+function backtonormal(){
+document.getElementById("chattextbox").style.borderColor = "#e6e6e6";
+}
+
+function send(){
+  var message=$('#msginput').val();
+  if(message==""){
+    //alert("Vous devez insèrer un message !");
+    document.getElementById("chattextbox").style.borderColor = "#E74C3C";
+  }
+  else{
+    var id=C.getId();
+    var x = (new Date()).getTimezoneOffset() * 60000;
+    var today= (new Date(Date.now() - x)).toISOString();
+    M = new Message(id,active_client,message,today,'0');
+    var data={
+       "operation":"insert",
+       "table":"message",
+       "emetteur": M.getEmetteur(),
+       "recepteur": M.getRecepteur(),
+       "texte":  M.getTexte(),
+       "date": M.getDate(),
+       "vu": M.getVu()
+    }
+   var stdata=JSON.stringify(data);
+   $.getJSON("/webapi.php",{client_req:stdata},showr);
+   $('#msginput').val("");
+  }
+
+}
+function showr(json) {
+ if(json==null){
+    alert("Un problème est survenu, envoi du message annulé !");
+ }
+ else{
+   //document.getElementById("people").innerHTML="";
+   //document.getElementById("chatboxi").innerHTML="";
+   setTimeout(() => {loadmsgs();}, 1000);
+ }
+ }
+
+
+
+
+
+ setInterval(function(){
+
+   if(active_client!="0"){
+      get_conv_ref(active_client);
+   }
+   else{
+     get_conv_ref_admin();
+   }
+
+   //loadmsgs();
+   }, 10000)
+
+
+
+
+
+
+
+
+   function get_conv_ref(idselected){
+     var id=C.getId();
+      var data = '{"operation":"select","table":"msgs_all_ref","idme":"'+id+'","idhim":"'+idselected+'"}';
+      $.getJSON("/webapi.php",{client_req:data},showconv_ref);
+     }
+     function showconv_ref(json) {
+       if(json==null){
+          //alert('Boite de messagerie vide !');
+       }
+       else{
+         // all goood
+         //console.log(json);
+         var x = (new Date()).getTimezoneOffset() * 60000;
+         var today= (new Date(Date.now() - x)).toISOString();
+         var refconv="";
+         refconv='<div class="conversation-start"><span id="time'+active_client+'"></span></div>';
+
+         for (var i = 0; i < json.length; i++) {
+           if(active_client==json[i].emetteur || active_client==json[i].recepteur){
+             if(json[i].emetteur==C.getId()){
+               // buuble me
+                 refconv+='<div class="bubble me" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+             }
+             else{
+               // buublle you
+                  refconv+='<div class="bubble you" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+             }
+
+
+           }
+         }
+
+         refconv+="</div>";
+         document.getElementById("box"+active_client).innerHTML=refconv;
+         if(json[json.length-1].statut=="1"){
+             $('#stat'+active_client).removeClass('inforeddot');
+             $('#stat'+active_client).addClass('infodot');
+         }
+         else{
+           $('#stat'+active_client).removeClass('infodot');
+           $('#stat'+active_client).addClass('inforeddot');
+         }
+         $('#time'+active_client).html(msToTime((new Date(today)).valueOf() - (new Date(json[json.length-1].date)).valueOf()));
+
+       }
+     }
+
+
+
+
+
+
+
+
+
+
+
+     function get_conv_ref_admin(){
+       var id=C.getId();
+        var data = '{"operation":"select","table":"msgsad","id":"'+id+'"}';
+        $.getJSON("/webapi.php",{client_req:data},showadminconv_ref);
+       }
+       function showadminconv_ref(json) {
+         if(json==null){
+            //alert('Boite de messagerie vide !');
+         }
+         else{
+           // all goood
+           //console.log(json);
+           var x = (new Date()).getTimezoneOffset() * 60000;
+           var today= (new Date(Date.now() - x)).toISOString();
+           var refconv="";
+           refconv='<div class="conversation-start"><span id="time0"></span></div>';
+
+           for (var i = 0; i < json.length; i++) {
+             if(json[i].emetteur==0 || json[i].recepteur==0){
+               if(json[i].emetteur==C.getId()){
+                 // buuble me
+                   refconv+='<div class="bubble me" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+               }
+               else{
+                 // buublle you
+                    refconv+='<div class="bubble you" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+               }
+
+
+             }
+           }
+
+           refconv+="</div>";
+           document.getElementById("box0").innerHTML=refconv;
+           if(json[json.length-1].statut=="1"){
+               $('#stat0').removeClass('inforeddot');
+               $('#stat0').addClass('infodot');
+           }
+           else{
+             $('#stat0').removeClass('infodot');
+             $('#stat0').addClass('inforeddot');
+           }
+           $('#time0').html(msToTime((new Date(today)).valueOf() - (new Date(json[json.length-1].date)).valueOf()));
+
+         }
+       }
+
+
+
+    </script>
+
+</body>
+</html>

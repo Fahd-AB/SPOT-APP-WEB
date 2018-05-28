@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+	<title>SPOT | Acceuil</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="Fahd Abdellaoui">
+
+  	<!-- Bootstrap core CSS -->
+  	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" href="ionicons/css/ionicons.min.css" />
+    <link rel="stylesheet" href="card/css/style.css">
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <!-- Fonts  -->
+    <link href='../../../fonts.googleapis.com/css01fc.css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/css/app/app.v1.css" />
+    <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+    <!--  Classes -->
+    <script src="../models/client.ts"></script>
+    <script src="../models/message.ts"></script>
+    <script src="../models/notification.ts"></script>
+    <script src="../models/evenement.ts"></script>
+    <script src="../models/abonnement.ts"></script>
+
+
+</head>
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_info" onclick="closePopup(this.id)">
+  <div class="modal__box_special" id="modal_info_text">
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_caution" onclick="closePopup(this.id)">
+    <div class="modal__box_caution">
+    <center>
+    <p id="modal_caution_text"></p><br>
+    <button class="popupbtn" onclick="topayementpage()">Page de payement</button>
+    </center>
+    </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_info2" onclick="closePopup(this.id)">
+  <div class="modal__box_info">
+  <center>
+  <p id="modal_info2_text"></p><br>
+  <button class="popupbtn" style="float:left">Non</button>
+  <button class="popupbtn" style="float:left" onclick="confirmdel_evenement()">Oui, Supprimer</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_info3" onclick="closePopup(this.id)">
+  <div class="modal__box_info">
+  <center>
+  <p id="modal_info3_text"></p><br>
+  <button class="popupbtn" style="float:left">Non</button>
+  <button class="popupbtn" style="float:left" onclick="confirmdel_place()">Oui, Supprimer</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+	<!-- Preloader -->
+    <div class="loading-container">
+      <div class="loading">
+        <div class="l1">
+          <div></div>
+        </div>
+        <div class="l2">
+          <div></div>
+        </div>
+        <div class="l3">
+          <div></div>
+        </div>
+        <div class="l4">
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Preloader -->
+
+	<aside class="left-panel">
+
+            <div class="user text-center">
+                  <div id="avatar"></div>
+                  <h4 class="user-name" id="profilename"></h4>
+
+                  <div class="dropdown user-login">
+                  <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
+                    <i class="fa fa-circle status-icon available"></i>&nbsp; En ligne &nbsp;&nbsp;&nbsp; &nbsp;<i class="fa fa-angle-down"></i>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" href="#" onClick="logout()"><i class="fa fa-circle status-icon signout"></i>&nbsp; Déconnexion</a></li>
+                  </ul>
+                  </div>
+            </div>
+
+
+
+            <nav class="navigation">
+            	<ul class="list-unstyled">
+                	<li><a href="index.html"><i class="fa fa-bookmark-o"></i><span class="nav-label">Tableau de bord</span></a></li>
+					</li>
+					<li><a href="/profile/event.html"><i class="fa fa-flag-o"></i><span class="nav-label">Créer Evenement</span></a></li>
+					</li>
+					<li><a href="/profile/location.html"><i class="fa fa-star-o"></i><span class="nav-label">Ajout Lieu</span></a></li>
+					</li>
+					<li><a href="/profile/subs.html"><i class="fa fa-plus-circle"></i><span class="nav-label">Abonnements</span></a></li>
+					</li>
+          <li><a href="/profile/transactions.html"><i class="fa fa-credit-card"></i><span class="nav-label">Payements</span></a></li>
+					</li>
+          <li><a href="/profile/notifs.html"><i class="fa fa-bell-o"></i><span class="nav-label">Notifications</span></a></li>
+					</li>
+					<li><a href="/profile/messages.html"><i class="fa fa-comment-o"></i><span class="nav-label">Messagerie</span></a></li>
+					</li>
+					<li><a href="/profile/history.html"><i class="fa fa-unlock"></i><span class="nav-label">Historique Login</span></a></li>
+					</li>
+					<li><a href="#" onClick="logout()" ><i class="fa fa-power-off"></i><span class="nav-label" >Déconnexion</span></a></li>
+					</li>
+                </ul>
+
+            </nav>
+
+    </aside>
+
+    <section class="content">
+
+        <header class="top-head container-fluid">
+
+
+            <form role="search" class="navbar-left app-search pull-left hidden-xs">
+              <input type="text" id="Skeyword" placeholder="Entrez les mots-clés..." class="form-control form-control-circle" onkeypress="handle(event)">
+         	</form>
+
+            <nav class=" navbar-default hidden-xs" role="navigation">
+                <ul class="nav navbar-nav">
+                <li><a href="/profile/settings.html">Paramètres</a></li>
+              </ul>
+            </nav>
+
+            <ul class="nav-toolbar">
+            	<li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-comments-o"></i> <span class="badge bg-warning" id="nbmsg"></span></a>
+                	<div class="dropdown-menu md arrow pull-right panel panel-default arrow-top-right messages-dropdown">
+                        <div class="panel-heading">
+                      	Messages
+                        </div>
+
+                        <div class="list-group">
+                          <div id="adminmsgcontainer">
+                          <!--Admin messages here-->
+                          </div>
+                          <div id="msgcontainer">
+                          <!--messages here-->
+                          </div>
+
+                            <a href="/profile/messages.html" class="btn btn-info btn-flat btn-block">Voir tous les messages</a>
+
+                        </div>
+
+                    </div>
+                </li>
+                <li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-bell-o"></i><span class="badge" id="nbnotif"></span></a>
+                	<div class="dropdown-menu arrow pull-right md panel panel-default arrow-top-right notifications">
+                        <div class="panel-heading">
+                      	Notification
+                        </div>
+
+                        <div class="list-group">
+                          <div id="notifcontainer">
+                          <!--notifications here-->
+                         </div>
+                         <a href="/profile/notifs.html" class="btn btn-info btn-flat btn-block">Voir tous les notifications</a>
+
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+        </header>
+        <!-- Header Ends -->
+
+
+<div class="warper container-fluid">
+<!-- Work Here -->
+
+
+			<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+			<meta charset="utf-8">
+			<style>
+			  #map {
+				height: 550px;
+				width : 70%;
+        float: left;
+			  }
+        .markercontent{
+				height :200px;
+				width :200px;
+				background :grey;
+				}
+				  #right-panel {
+					font-family: 'Roboto','sans-serif';
+					line-height: 30px;
+					padding-left: 10px;
+				  }
+				  #right-panel select, #right-panel input {
+					font-size: 15px;
+				  }
+				  #right-panel select {
+					width: 100%;
+				  }
+				  #right-panel i {
+					font-size: 12px;
+				  }
+				  #right-panel {
+					margin: 20px;
+					border-width: 2px;
+					width: 20%;
+					height: 400px;
+					float: left;
+					text-align: left;
+					padding-top: 0;
+				  }
+				  #directions-panel {
+					margin-top: 10px;
+					background-color: #FFEE77;
+					padding: 10px;
+				  }
+          .places{
+            float: left;
+            height: 550px;;
+    				width : 28%;
+            margin-left: 20px;
+          }
+          #cardscontainer{
+            height:100%;
+          }
+          #cardscontainerbody{
+              overflow-y: scroll;
+              height: 500px;
+          }
+          .card{
+            border-radius: 2px;
+            height: auto;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+          .cardphoto{
+            height: 250px;
+            width: 100%;
+            border-radius: 2px 2px 0px 0px;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          .cardcontent{
+            height: auto;
+            width: 100%;
+            border-radius:0px 0px 5px 5px ;
+            padding: 10px;
+            text-align: left;
+          }
+          .smallfont{
+              font-size: 12px;
+              color: grey;
+          }
+          .titlefont{
+              font-size: 14px;
+              color : #000;
+              font-weight: bold;
+          }
+          .image{
+            height: 100%;
+            width: 100%;
+            border-radius: 2px 2px 0px 0px;
+          }
+          .cardfooter{
+            height: 30px;
+            width: 100%;
+            border-radius: 0px 0px 5px 5px;
+          }
+          .footerbtnleft{
+            padding: 3px;
+            float: left;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            color:  #1dabc5;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+          }
+          .footerbtnleft:hover{
+              color:  #fff;
+              background-color: #1dabc5;
+          }
+          .footerbtnright{
+            padding: 3px;
+            float: right;
+            right: 0;
+            height: 100%;
+            width: 50%;
+            color:  #1dabc5;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+          }
+          .footerbtnright:hover{
+              color:  #fff;
+              background-color: #1dabc5;
+          }
+          .infobox{
+            height: auto;
+            width: auto;
+            padding-left: 2px;
+            padding-right: 2px;
+            background-size: cover;
+
+          }
+          .infobtn{
+          height: 18px;
+          width: auto;
+          min-width: 35px;
+          margin: 2px;
+          background: #95A5A6;
+          border-radius: 3px;
+          position: relative;
+          float: left;
+          font-size: 10px;
+          text-align: center;
+          padding-top: 2px;
+          padding-bottom: 2px;
+          padding-left: 5px;
+          padding-right: 5px;
+          cursor: pointer;
+          color: #fff;
+          border: 1px solid #95A5A6;
+          }
+          .infobtn:hover{
+            background: #fff;
+            color: #95A5A6;
+          }
+          .dirbtn{
+            height: 18px;
+            width: auto;
+            min-width: 35px;
+            margin: 2px;
+            background: #3498DB;
+            border-radius: 3px;
+            position: relative;
+            float: left;
+            font-size: 10px;
+            text-align: center;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            color: #fff;
+            border: 1px solid #3498DB;
+          }
+          .dirbtn:hover{
+            background: #fff;
+            color: #3498DB;
+          }
+          .modbtn{
+            height: 18px;
+            width: auto;
+            min-width: 35px;
+            margin: 2px;
+            background: #FFC300;
+            border-radius: 3px;
+            position: relative;
+            float: left;
+            font-size: 10px;
+            text-align: center;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            color: #fff;
+            border: 1px solid #FFC300;
+          }
+          .modbtn:hover{
+            background: #fff;
+            color: #FFC300;
+          }
+          .supbtn{
+            height: 18px;
+            width: auto;
+            min-width: 35px;
+            margin: 2px;
+            background: #E74C3C;
+            border-radius: 3px;
+            position: relative;
+            float: left;
+            font-size: 10px;
+            text-align: center;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+            cursor: pointer;
+            color: #fff;
+            border: 1px solid #E74C3C;
+          }
+          .supbtn:hover{
+            background: #fff;
+            color: #E74C3C;
+          }
+          .payement{
+            color: #2ECC71;
+          }
+          .ppayement{
+            color: #FF5733;
+          }
+
+          .infodot{
+            height: 7px;
+            width: 7px;
+            position: relative;
+            background: #2ECC71;
+            margin-left: 5px;
+            margin-bottom: 1px;
+            background-size: cover;
+            border-radius: 5px;
+            display: inline-block;
+          }
+          .inforeddot{
+            height: 7px;
+            width: 7px;
+            position: relative;
+            background: #E74C3C;
+            margin-left: 5px;
+            margin-bottom: 1px;
+            background-size: cover;
+            border-radius: 5px;
+            display: inline-block;
+          }
+
+
+
+
+
+
+
+          .carte{
+            border-radius: 2px;
+            height: auto;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+              background-color: rgba(214, 224, 226, 0.2);
+          }
+          .cartephoto{
+            height: 250px;
+            width: 100%;
+            border-radius: 2px 2px 0px 0px;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          .cartecontent{
+            height: 120px;
+            width: 100%;
+            border-radius:0px 0px 5px 5px ;
+            padding: 10px;
+            text-align: left;
+          }
+          .smallfont{
+              font-size: 12px;
+              color: grey;
+          }
+          .titlefont{
+              font-size: 14px;
+              color : #000;
+              font-weight: bold;
+          }
+
+          .cartefooter{
+            height: 30px;
+            width: 100%;
+            border-radius: 0px 0px 5px 5px;
+            padding-left: 10px;
+          }
+
+          .footerbtnright1{
+            padding: 3px;
+            float: right;
+            right: 0;
+            height: 100%;
+            width: 30%;
+            color:  #1dabc5;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            padding-right: 10px;
+          }
+          .footerbtnleft1{
+            padding: 3px;
+            float: left;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            color:  #fff;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+            background-color: #E74C3C;
+          }
+          .footerbtnleft2{
+            padding: 3px;
+            float: left;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            color:  #fff;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+            background-color: #2ECC71;
+          }
+          .footerbtnleft3{
+            padding: 3px;
+            float: left;
+            margin-left: 10px;
+            height: 100%;
+            width: 30%;
+            color:  #fff;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+            background-color: #3498DB;
+          }
+          .footerbtnleft4{
+            padding: 3px;
+            float: left;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            color:  #fff;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+            background-color: #FF5733;
+          }
+
+          #containerstyle{
+            width:100%;
+            height:auto;
+            min-height: 550px;
+          }
+          .cartecontent1{
+            height: auto;
+            width: 400px;
+            border-radius:0px 0px 5px 5px ;
+            padding: 10px;
+            text-align: left;
+          }
+          .smallfont1{
+            font-weight: bold;
+              font-size: 12px;
+              color: grey;
+          }
+          .titlefont1{
+              font-size: 14px;
+              color : #000;
+              font-weight: bold;
+          }
+          .contols{
+            height: auto;
+            width: 100%;
+            font-size: 12px;
+            float: left;
+            text-align: right;
+          }
+          .controlbtn{
+            text-align: center;
+            margin-left: 5px;
+            margin-right: 5px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+          }
+
+			</style>
+			<div id="map"></div>
+      <div class="places">
+        <div id="cardscontainer" class="panel panel-default">
+            <div class="panel-heading">Lieux Populaires &nbsp;&nbsp;<a href="/profile/location.html"><i class="fa fa-plus-square-o"></i></a></div>
+            <div id="cardscontainerbody" class="panel-body">
+              <!--load other cards here-->
+            </div>
+        </div>
+      </div>
+			    <script async defer
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLY8ppqakqGjpv4yZp-A7ZsDQKbc2NQwA&callback=initMap">
+				</script>
+
+
+				<script>
+        /*
+        window.onpaint=funinit();
+        function funinit(){
+            window.history.replaceState( {} , '', '/profile/' );
+        }
+        */
+          window.onpaint=loadprofileinfos();
+
+          function handle(e){
+
+                 if(e.keyCode === 13){
+                     e.preventDefault(); // Ensure it is only this code that rusn
+                     tosearch();
+                 }
+          }
+        function tosearch(){
+            var keyword=$('#Skeyword').val();
+            localStorage.setItem('spot_webcl_serach_keyword',keyword);
+            document.location.href="/profile/search.html";
+        }
+
+        $(window).load(function(){
+
+        try{
+          var session = localStorage.getItem('SPOT_WEB_SESSION');
+          if(session!="TRUE"){
+            alert("Session expiré");
+            document.location.href="/login.html";
+          }
+          else{
+            // initialize profile infos
+
+            //loadprofileinfos();
+            loadplaces();
+            loadmsgs();
+            loadnotifs();
+          }
+        }
+        catch(e){
+          document.location.href="/login.html";
+        }
+        });
+
+
+        setInterval(function(){
+          document.getElementById("msgcontainer").innerHTML="";
+          document.getElementById("adminmsgcontainer").innerHTML="";
+          document.getElementById("notifcontainer").innerHTML="";
+            loadmsgs();
+            loadnotifs();
+          }, 10000)
+
+
+
+        function loadprofileinfos(){
+          var Profileid = localStorage.getItem('spot_webcl_Profileid');
+          var Profilename = localStorage.getItem('spot_webcl_Profilename');
+          var Profilefirstname = localStorage.getItem('spot_webcl_Profilefirstname');
+          var Profilelastname = localStorage.getItem('spot_webcl_Profilelastname');
+          var Profilefreinds = localStorage.getItem('spot_webcl_Profilefreinds');
+          var Profileevents = localStorage.getItem('spot_webcl_Profileevents');
+          var Profileregion = localStorage.getItem('spot_webcl_Profileregion');
+          var Profilegender = localStorage.getItem('spot_webcl_Profilegender');
+          var Profilebirthdate = localStorage.getItem('spot_webcl_Profilebirthdate');
+          var Profiletel = localStorage.getItem('spot_webcl_Profiletel');
+          var Profileadr = localStorage.getItem('spot_webcl_Profileadr');
+          var Profileemail = localStorage.getItem('spot_webcl_Profileemail');
+          var Profilecurrentpass = localStorage.getItem('spot_webcl_Profilecurrentpass');
+          var Profilephoto = localStorage.getItem('spot_webcl_Profilephoto');
+          var Profilecover = localStorage.getItem('spot_webcl_Profilecover');
+           C = new Client(Profilefirstname,Profilelastname,Profileemail,Profiletel,Profilebirthdate,Profileadr,Profilecurrentpass,Profilefreinds,Profileevents);
+          C.setId(Profileid);
+          C.setSexe(Profilegender);
+          C.setRegion(Profileregion);
+          C.setProfilephoto(Profilephoto);
+          C.setProfilecover(Profilecover);
+
+          var prophoto=C.getProfilephoto();
+          var prosexe=C.getSexe();
+          if(prophoto==""){
+            if(prosexe=="m"){
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+            }
+            else if(prosexe=="f"){
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_f_default.png" class="img-circle" alt="...">';
+            }
+            else{
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+            }
+          }
+          else{
+            document.getElementById("avatar").innerHTML='<img src="../img/'+C.getProfilephoto()+'.png" class="img-circle" alt="...">';
+          }
+          document.getElementById("profilename").innerHTML= C.getPrenom()+" "+C.getNom_famille();
+
+        }
+
+        function loadplaces(){
+   			 var data = '{"operation":"select","table":"places"}';
+   			 $.getJSON("/webapi.php",{client_req:data},show);
+        }
+        function show(json) {
+          if(json==null){
+            openPopup("modal_error","Aucun lieu populaire trouvé !");
+          }
+          else{
+            // all goood
+            document.getElementById("cardscontainerbody").innerHTML="";
+            for (var i = 0; i < json.length; i++) {
+              var logo="";
+              switch (json[i].type) {
+                 case "Café / Salon de thé":
+                 logo="ion-coffee";
+                 break;
+                 case "Sportif":
+                 logo="ion-ios-football";
+                 break;
+                 case "Bar":
+                 logo="ion-android-bar";
+                 break;
+                 case "Galerie":
+                 logo="ion-ios-camera-outline";
+                 break;
+                 case "Musical":
+                 logo="ion-music-note";
+                 break;
+                 case "Fast Food":
+                 logo="ion-pizza";
+                 break;
+                 case "Emploi":
+                 logo="ion-ios-briefcase";
+                 break;
+                 case "Vente":
+                 logo="ion-ios-cart-outline";
+                 break;
+                 case "Salle de conférence":
+                 logo="ion-chatbubbles";
+                 break;
+                 case "Salle de cinéma":
+                 logo="ion-ios-film-outline";
+                 break;
+                 case "Laboratoire":
+                 logo="ion-ios-flask-outline";
+                 break;
+                 case "Salle de jeu":
+                 logo="ion-ios-game-controller-b-outline";
+                 break;
+                 case "Lieu romantique":
+                 logo="ion-ios-heart";
+                 break;
+                 case "Maison":
+                 logo="ion-home";
+                 break;
+                 case "Airoport":
+                 logo="ion-plane";
+                 break;
+                 case "Restaurent":
+                 logo="ion-android-restaurant";
+                 break;
+                 case "Faculté":
+                 logo="ion-university";
+                 break;
+                 case "Autre":
+                 logo="ion-star";
+                 break;
+               }
+               var cont="";
+               if(json[i].id_client==C.getId()){
+                 // je suis créateur du lieu
+                 cont="<div class='card'><div class='cardphoto'><img src='../img/"+json[i].photo+".png' class='image'/></div><div class='cardcontent'><div class='contols'><div class='controlbtn' id='modi"+json[i].id+"' onclick='modifier(this.id)'><i class='fa fa-edit'></i></div><div class='controlbtn' id='supp"+json[i].id+"' onclick='supprimer(this.id)'><i class='glyphicon glyphicon-remove-circle'></i></div></div><div class='titlefont'><i class='"+logo+"'></i> "+json[i].nom+"</div><br><div class='smallfont'>Type : "+json[i].type+"<br>Région : "+json[i].region+"<br>Description :<br>"+json[i].description+"</div></div><div class='cardfooter'><div id='avi"+json[i].id+"' class='footerbtnleft' onclick='avis(this.id)'>Avis </div><div id='dir"+json[i].id+"' class='footerbtnright' onclick='dirs(this.id)'>Directions &nbsp;<i class='fa fa-location-arrow'></i></div></div></div>";
+               }
+               else{
+                 cont="<div class='card'><div class='cardphoto'><img src='../img/"+json[i].photo+".png' class='image'/></div><div class='cardcontent'><div class='titlefont'><i class='"+logo+"'></i> "+json[i].nom+"</div><br><div class='smallfont'>Type : "+json[i].type+"<br>Région : "+json[i].region+"<br>Description :<br>"+json[i].description+"</div></div><div class='cardfooter'><div id='avi"+json[i].id+"' class='footerbtnleft' onclick='avis(this.id)'>Avis </div><div id='dir"+json[i].id+"' class='footerbtnright' onclick='dirs(this.id)'>Directions &nbsp;<i class='fa fa-location-arrow'></i></div></div></div>";
+               }
+               document.getElementById("cardscontainerbody").innerHTML+=cont;
+            }
+          }
+        }
+
+
+var Gmap;
+
+        function loadevents(){
+          var data = '{"operation":"select","table":"events"}';
+    			 $.getJSON("/webapi.php",{client_req:data},showev);
+        }
+
+        function showev(json) {
+          if(json==null){
+              openPopup("modal_error","Aucun evenement trouvé !");
+          }
+          else{
+            //all si goood
+            for (var j = 0; j < json.length; j++) {
+              var passedData={
+                id: json[j].id,
+                lat : json[j].lat,
+                lng: json[j].lng,
+                id_client :json[j].id_client,
+                titre : json[j].titre,
+                type: json[j].type,
+                description : json[j].description,
+                autre : json[j].autre,
+                prepaye: json[j].prepaye,
+                date : json[j].date,
+                nb_abonnees: json[j].nb_abonnees,
+                statut : json[j].statut
+              }
+            var icon="";
+            var etitle=json[j].titre;
+            switch (json[j].type) {
+               case "Café":
+               icon="coffee-n-tea";
+               break;
+               case "Conférence":
+               icon="community";
+               break;
+               case "Soutenance":
+               icon="schools";
+               break;
+               case "Théatre":
+               icon="nightlife";
+               break;
+               case "Cinéma":
+               icon="movies";
+               break;
+               case "Domicile":
+               icon="residential-places";
+               break;
+               case "Education":
+               icon="books-media";
+               break;
+               case "Jeu":
+               icon="pool-halls";
+               break;
+               case "Bar":
+               icon="bars";
+               break;
+               case "Hotel":
+               icon="hotels";
+               break;
+               case "Sport":
+               icon="sports";
+               break;
+               case "Musical":
+               icon="musical";
+               break;
+               case "Voyage":
+               icon="automotive";
+               break;
+               case "Restaurent":
+               icon="food";
+               break;
+               case "Marriage":
+               icon="jewelry";
+               break;
+               case "Fiancaille":
+               icon="matrimonial";
+               break;
+               case "Emploi":
+               icon="jobs";
+               break;
+               case "Mode":
+               icon="fashion";
+               break;
+               case "Dance":
+               icon="dance-clubs";
+               break;
+               case "Tournage":
+               icon="photography";
+               break;
+               case "Religion":
+               icon="religious-organizations";
+               break;
+               case "Magazinage":
+               icon="shopping";
+               break;
+               case "Autre":
+               icon="default";
+               break;
+               }
+
+
+            let marker = new google.maps.Marker({
+              map: Gmap,
+              position: new google.maps.LatLng(json[j].lat,json[j].lng),
+              icon : 'markers/'+icon+'.png'
+            });
+
+            if(json[j].prepaye=="1"){
+              // evenement avec payement
+              if(json[j].statut=="1"){
+                // evenement encore disponible
+                 if(json[j].id_client==C.getId()){
+                   // evenement créé par moi
+                      var content = "<html> <div class='infobox'>"+etitle+"<div class='infodot'></div><br><div class='ppayement'>Prepayé</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div>  <div class='modbtn' id='modif_e"+json[j].id+"'>Modifer <i class='fa fa-edit'></i></div><div class='supbtn' id='suppr_e"+json[j].id+"'>Supprimer <i class='glyphicon glyphicon-remove-circle'></i></div>  </div></html>";
+                 }
+                 else{
+                     var content = "<html><div class='infobox'>"+etitle+"<div class='infodot'></div><br><div class='ppayement'>Prepayé</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div></div></html>";
+                 }
+
+                addSInfoWindow(marker, content, passedData);
+
+              }
+              else{
+                // evenement expiré
+                if(json[j].id_client==C.getId()){
+                  // evenement créé par moi
+                  var content = "<html><div class='infobox'>"+etitle+"<div class='inforeddot'></div><br><div class='ppayement'>Prepayé</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div>  <div class='modbtn' id='modif_e"+json[j].id+"'>Modifer <i class='fa fa-edit'></i></div><div class='supbtn' id='suppr_e"+json[j].id+"'>Supprimer <i class='glyphicon glyphicon-remove-circle'></i></div>  </div></html>";
+                }
+                else{
+                    var content = "<html><div class='infobox'>"+etitle+"<div class='inforeddot'></div><br><div class='ppayement'>Prepayé</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div></div></html>";
+                }
+
+                addSInfoWindow(marker, content, passedData);
+              }
+            }
+            else{
+              // evenement gratuit
+               if(json[j].statut=="1"){
+                  // evenement encore disponible
+                  if(json[j].id_client==C.getId()){
+                    // evenement créé par moi
+                    var content = "<html><div class='infobox'>"+etitle+"<div class='infodot'></div><br><div class='payement'>Gratuit</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div>  <div class='modbtn' id='modif_e"+json[j].id+"'>Modifer <i class='fa fa-edit'></i></div><div class='supbtn' id='suppr_e"+json[j].id+"'>Supprimer <i class='glyphicon glyphicon-remove-circle'></i></div>  </div></html>";
+                  }
+                  else{
+                     var content = "<html><div class='infobox'>"+etitle+"<div class='infodot'></div><br><div class='payement'>Gratuit</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div></div></html>";
+                  }
+
+              addSInfoWindow(marker, content, passedData);
+            }
+            else{
+              // evenement expiré
+              if(json[j].id_client==C.getId()){
+                // evenement créé par moi
+                  var content = "<html><div class='infobox'>"+etitle+"<div class='inforeddot'></div><br><div class='payement'>Gratuit</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div>  <div class='modbtn' id='modif_e"+json[j].id+"'>Modifer <i class='fa fa-edit'></i></div><div class='supbtn' id='suppr_e"+json[j].id+"'>Supprimer <i class='glyphicon glyphicon-remove-circle'></i></div>  </div></html>";
+              }
+              else{
+                    var content = "<html><div class='infobox'>"+etitle+"<div class='inforeddot'></div><br><div class='payement'>Gratuit</div>Abonnements : ("+json[j].nb_abonnees+")<br><br><div id='"+json[j].id+"' class='infobtn'>Info <i class='fa fa-info-circle'></i></div><div id='"+json[j].id+"directions' class='dirbtn'>Directions <i class='fa fa-arrows'></i></div></div></html>";
+              }
+
+              addSInfoWindow(marker, content, passedData);
+            }
+            }
+
+          } //fin for
+
+          }
+
+        }
+
+
+
+ function initMap() {
+   if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function(position) {
+               var pos = {
+                 lat: position.coords.latitude,
+                 lng: position.coords.longitude
+               };
+             Gmap = new google.maps.Map(document.getElementById('map'), {
+               zoom: 16,
+               center: pos
+             });
+             var marker = new google.maps.Marker({
+               map: Gmap,
+               position: pos,
+               icon : 'markers/locationmarker.png'
+             });
+             var content = "Vous êtes ici";
+             addInfoWindow(marker, content);
+             setTimeout(() => {
+            loadevents();
+             }, 1000);
+
+
+
+   }, function() {
+   // error geolocation
+   openPopup("modal_error","Erreur de géolocalisation !");
+   });
+  }
+ else {
+  // Browser doesn't support Geolocation
+  openPopup("modal_error","Votre navigateur ne supporte pas la fonction de localisation !");
+  }
+
+ }
+
+ function addInfoWindow(marker, content){
+   var infoWindow = new google.maps.InfoWindow({
+   content: content
+ });
+
+ google.maps.event.addListener(marker, 'click', () => {
+   infoWindow.open(this.map, marker);
+ });
+
+ }
+
+
+function addSInfoWindow(marker, content, passedData){
+  var infoWindow = new google.maps.InfoWindow({
+  content: content
+});
+
+google.maps.event.addListener(marker, 'click', () => {
+  infoWindow.open(Gmap, marker);
+});
+google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+  document.getElementById(passedData.id).addEventListener('click', () => {
+          info(passedData);
+      });
+});
+google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+  document.getElementById(passedData.id+"directions").addEventListener('click', () => {
+          directions(passedData);
+      });
+});
+// new buttons actions
+google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+  document.getElementById("modif_e"+passedData.id).addEventListener('click', () => {
+          edit_event(passedData);
+      });
+});
+google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+  document.getElementById("suppr_e"+passedData.id).addEventListener('click', () => {
+          supp_event(passedData);
+      });
+});
+}
+
+
+function info(passedData){
+  //console.log(passedData);
+   TE = new Evenement;
+  Object.assign(TE, passedData);
+  verifabonnement(TE);
+
+}
+function displayevent(Even,stat){
+  //console.log(Even);
+  var x = (new Date()).getTimezoneOffset() * 60000;
+  var today= (new Date(Date.now() - x)).toISOString();
+  var time=msToTime((new Date(today)).valueOf() - (new Date(Even.getDate())).valueOf());
+  var prep=Even.getPrepaye();
+  var content="";
+  if(stat=="0"){
+    if(prep=="1"){
+      content="<div class='carte'><div class='cartecontent1'><div class='titlefont1'>EVENEMENT : "+Even.getTitre()+" </div><br><div class='smallfont1'>Type : "+Even.getType()+"<br>Abonnements : "+Even.getNb_abonnees()+"<br>Description :<br>"+Even.getDescription()+"</div></div><div class='cartefooter'><div class='footerbtnleft4'  onclick='abonner()'>Abonnement Prépayé</div><div  class='footerbtnright1' >Crée "+time+"</div></div></div>";
+    }
+    else{
+      content="<div class='carte'><div class='cartecontent1'><div class='titlefont1'>EVENEMENT : "+Even.getTitre()+" </div><br><div class='smallfont1'>Type : "+Even.getType()+"<br>Abonnements : "+Even.getNb_abonnees()+"<br>Description :<br>"+Even.getDescription()+"</div></div><div class='cartefooter'><div class='footerbtnleft2'  onclick='abonner()'>Abonnement Gratuit</div><div  class='footerbtnright1' >Crée "+time+"</div></div></div>";
+    }
+  }
+  else{
+    content="<div class='carte'><div class='cartecontent1'><div class='titlefont1'>EVENEMENT : "+Even.getTitre()+" </div><br><div class='smallfont1'>Type : "+Even.getType()+"<br>Abonnements : "+Even.getNb_abonnees()+"<br>Description :<br>"+Even.getDescription()+"</div></div><div class='cartefooter'><div class='footerbtnleft1'  onclick='desabonner()'>Désabonner</div><div class='footerbtnleft3' id='in"+Even.getId()+"' onclick='inviter(this.id)'>Inviter des amis</div><div  class='footerbtnright1' >Crée "+time+"</div></div></div>";
+  }
+
+
+
+
+
+  openPopup("modal_info",content);
+
+}
+
+function inviter(id){
+  var pureId=id.substring(2,(id.toString().length));
+  //alert("inviter à "+pureId);
+    localStorage.setItem('spot_webcl_event_to_invite',pureId);
+    localStorage.setItem('spot_webcl_event_to_invite_titre',TE.getTitre());
+    localStorage.setItem('spot_webcl_event_to_invite_type',TE.getType());
+    document.location.href="/profile/invite.html";
+}
+
+
+
+
+
+
+
+function verifabonnement(E){
+  var data={
+     "operation":"select",
+     "table":"abonnement_s",
+     "client_id": C.getId(),
+     "event_id": TE.getId()
+  }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},shownbab);
+}
+function shownbab(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu lors de verification de l'abonnement à cet evenement !");
+ }
+ else{
+   // all goood
+  displayevent(TE,json[0].n);
+ }
+ }
+
+
+
+
+function directions(passedData){
+    //console.log(passedData);
+      localStorage.setItem('spot_event_titre',passedData.titre);
+      localStorage.setItem('spot_event_type',passedData.type);
+      localStorage.setItem('spot_event_lat',passedData.lat);
+      localStorage.setItem('spot_event_lng',passedData.lng);
+      localStorage.setItem('spot_event_stat',passedData.statut);
+      localStorage.setItem('spot_event_prep',passedData.prepaye);
+      document.location.href="/profile/event-directions.html";
+}
+
+
+function add_notification(id_ami,texte,target){
+    var id= C.getId();
+    var x = (new Date()).getTimezoneOffset() * 60000;
+    var today= (new Date(Date.now() - x)).toISOString();
+    var data = {
+      "operation": "insert",
+      "table": "notif_inv",
+      "type" : "EVE",
+      "texte": texte,
+      "target_client": id_ami,
+      "target": target,
+      "source_client": id,
+      "date" :  today,
+      "vu" : "0"
+     }
+     var stdata=JSON.stringify(data);
+     $.getJSON("/webapi.php",{client_req:stdata},showconfnotif);
+}
+function showconfnotif(json) {}
+
+
+
+
+
+function abonner(){
+  var x = (new Date()).getTimezoneOffset() * 60000;
+  var today= (new Date(Date.now() - x)).toISOString();
+   AB=new Abonnement(TE.getId_client(),TE.getId(),TE.getTitre(),TE.getType(),today,'1');
+   add_notification(TE.getId_client(),"a abonné a votre événement",TE.getId());
+   var crid=TE.getId_client();
+   var mid=C.getId();
+   if( TE.getPrepaye()=="1" && crid != mid ){
+     AB.setStatut("0");
+   }
+  var data={
+     "operation":"insert",
+     "table":"abonnement",
+     "client_id": C.getId(),
+     "event_id": TE.getId(),
+     "createur_id": TE.getId_client(),
+     "date":  AB.getDate(),
+     "statut": AB.getStatut()
+  }
+ var stdata=JSON.stringify(data);
+ $.getJSON("/webapi.php",{client_req:stdata},showr);
+}
+function showr(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Abonnement annulé !");
+ }
+ else{
+   // all goood
+   var st=AB.getStatut();
+   if(st=="1"){
+   // evenement gratuit
+      openPopup("modal_sucess","Abonnement effectué avec succès !");
+   }
+   else{
+   //evenement prépayé
+    var createurid=TE.getId_client()
+   if(createurid==C.getId()){
+    openPopup("modal_sucess","Abonnement effectué avec succès du l'événement prépayé (vous êtes le créateur de cet événement) !");
+   }
+   else{
+    openPopup("modal_caution","Abonnement en attente de payement, Notez que l'abonnement n'est pas valide que lorsque<br> vous signaler le payement dans la page des abonnements !");
+   }
+     
+   }
+   inc_sub();
+ }
+ }
+
+
+
+ function inc_sub(){
+   var data={
+      "operation":"update",
+      "table":"evenement_nb_ab",
+      "event_id": TE.getId()
+   }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},showevup);
+ }
+ function showevup(json) {
+  if(json==null){
+     console.log("erreur incrémentation nb abonnées");
+  }
+  else{
+    // all goood
+    console.log("incrémentation réuissite");
+    initMap();
+  }
+  }
+
+
+
+
+ function topayementpage(){
+ var id_evv=TE.getId();
+ var data={
+    "operation":"select",
+    "table":"payement_s",
+    "event_id": id_evv
+ }
+var stdata=JSON.stringify(data);
+$.getJSON("/webapi.php",{client_req:stdata},showpayurl);
+ }
+ function showpayurl(json) {
+  if(json==null){
+     openPopup("modal_error","Un problème est survenu, Aucun payement trouvé !");
+  }
+  else{
+    // all goood
+    var payurl=json[0].page_url;
+    window.open(payurl);
+    //alert(payurl);
+  }
+}
+
+function desabonner(){
+  add_notification(TE.getId_client(),"a désabonné de votre événement",TE.getId());
+  var data={
+     "operation":"delete",
+     "table":"abonnement",
+     "client_id": C.getId(),
+     "event_id": TE.getId()
+  }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},showdesab);
+}
+function showdesab(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Opération annulé !");
+ }
+ else{
+   // all goood
+     openPopup("modal_sucess","Désabonnement effectué avec succès !");
+     dec_sub();
+ }
+ }
+
+ function dec_sub(){
+   var data={
+      "operation":"update",
+      "table":"evenement_nb_ab_dec",
+      "event_id": TE.getId()
+   }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},showevupdec);
+ }
+ function showevupdec(json) {
+  if(json==null){
+     console.log("erreur decrémentation nb abonnées");
+  }
+  else{
+    // all goood
+    console.log("decrémentation réuissite");
+    initMap();
+  }
+  }
+
+
+
+
+
+function avis(id){
+  var pureId=id.substring(3,(id.toString().length));
+  //alert("avis "+pureId);
+  localStorage.setItem('spot_webcl_lieu_avis',pureId);
+  document.location.href="/profile/reviews.html";
+}
+function dirs(id){
+  var pureId=id.substring(3,(id.toString().length));
+  var data={
+     "operation":"select",
+     "table":"lieu_s",
+     "id": pureId
+  }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},showlieu);
+}
+function showlieu(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Lieu introuvable ou supprimé !");
+ }
+ else{
+   // all goood
+   localStorage.setItem('spot_lieu_lat',json[0].lat);
+   localStorage.setItem('spot_lieu_lng',json[0].lng);
+   localStorage.setItem('spot_lieu_nom',json[0].nom);
+   localStorage.setItem('spot_lieu_region',json[0].region);
+   document.location.href="/profile/place-directions.html";
+
+ }
+ }
+
+
+
+
+
+
+// current interrest
+
+
+
+
+ function edit_event(passedData){
+    TES = new Evenement;
+  Object.assign(TES, passedData);
+  localStorage.setItem('spot_webcl_ev_id',TES.getId());
+  document.location.href="/profile/edit-event.html";
+ }
+ function supp_event(passedData){
+    TES = new Evenement;
+   Object.assign(TES, passedData);
+     //alert("supp event"+TES.getId());
+     openPopup("modal_info2","Voulez vous vraiement supprimer cet evenement ?");
+ }
+
+
+
+
+function modifier(id){
+  var pureId=id.substring(4,(id.toString().length));
+  PLID=pureId;
+  //alert("modifier "+pureId);
+  localStorage.setItem('spot_webcl_placeid',PLID);
+  document.location.href="/profile/edit-location.html";
+}
+function supprimer(id){
+  var pureId=id.substring(4,(id.toString().length));
+  PLID=pureId;
+   openPopup("modal_info3","Voulez vous vraiement supprimer ce lieu ?");
+}
+
+
+
+
+
+function confirmdel_evenement(){
+// supprimer un evenement
+var data={
+   "operation":"delete",
+   "table":"event",
+   "id": TES.getId()
+}
+var stdata=JSON.stringify(data);
+$.getJSON("/webapi.php",{client_req:stdata},showdeleventconf);
+}
+function showdeleventconf(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Evenement non supprimé !");
+ }
+ else{
+   // all goood
+     openPopup("modal_sucess","Evenement supprimé avec succès !");
+     setTimeout(() => {
+    initMap();
+     }, 1000);
+ }
+ }
+
+
+function confirmdel_place(){
+  // supprimer un lieu
+  var data={
+     "operation":"delete",
+     "table":"lieu",
+     "id": PLID
+  }
+  var stdata=JSON.stringify(data);
+  $.getJSON("/webapi.php",{client_req:stdata},showdelplconf);
+}
+function showdelplconf(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Lieu non supprimé !");
+ }
+ else{
+   // all goood
+     openPopup("modal_sucess","Lieu supprimé avec succès !");
+     setTimeout(() => {
+        loadplaces();
+     }, 1000);
+ }
+ }
+
+
+// current interrest
+
+                            function loadmsgs(){
+                            var id=C.getId();
+                       			 var data = '{"operation":"select","table":"msgs","id":"'+id+'"}';
+                       			 $.getJSON("/webapi.php",{client_req:data},showmsg);
+                            }
+                            function showmsg(json) {
+                              if(json==null){
+                                 document.getElementById("msgcontainer").innerHTML="<center>Boite message vide</center>";
+                              }
+                              else{
+                                // all goood
+
+                                Chat=[];
+                               //Chat.push("Lemon")
+                               for (var i = 0; i < json.length; i++) {
+                                 var Ami={"ami_id":json[i].c_id,
+                                           "ami_prenom":json[i].prenom,
+                                           "ami_nom_famille":json[i].nom_famille,
+                                           "ami_photo":json[i].profilephoto,
+                                           "ami_statut":json[i].statut
+                                         }
+                                         var exist=false;
+                                         for (var j = 0; j < Chat.length; j++) {
+                                           var a=JSON.stringify(Chat[j]);
+                                           var b=JSON.stringify(Ami);
+
+                                           if(a==b)
+                                           {
+                                              exist=true;
+                                           }
+                                         }
+                                         if(exist==false){
+                                           Chat.push(Ami);
+                                         }
+
+                                 }
+                                 var ln=0;
+                                 if(Chat.length>3){
+                                   ln=3;
+                                 }
+                                 else{
+                                   ln=Chat.length;
+                                 }
+                                 for (var k = 0; k < ln; k++) {
+                                   //var time=msToTime((new Date()).valueOf() - (new Date(Chat[k].date)).valueOf());
+
+                                   var photo='../img/'+Chat[k].ami_photo+'.png'
+                                   var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+                                   var statut=Chat[k].ami_statut;
+                                   if(k<=3){
+                                     if(statut=="1"){
+                                       //freind online
+                                       document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                     }
+                                     else{
+                                       //freind offline
+                                       document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                     }
+                                   }
+
+
+                                for (var m = 0; m < json.length; m++) {
+                                  if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                                    var x = (new Date()).getTimezoneOffset() * 60000;
+                                    var today= (new Date(Date.now() - x)).toISOString();
+                                    $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                                    $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+                                  }
+                                }
+                                }
+
+
+                              }
+                            // get admin messages
+                            TOT_NB_MSG=Chat.length;
+                            loadadminmsgs();
+                            }
+                            function loadadminmsgs(){
+                              NB_ADMIN_MSG=0;
+                              var id=C.getId();
+                               var data = '{"operation":"select","table":"ADMINmsgs","id":"'+id+'"}';
+                               $.getJSON("/webapi.php",{client_req:data},showADMINmsg);
+                            }
+                            function showADMINmsg(json) {
+                              if(json==null){
+                                 document.getElementById("adminmsgcontainer").innerHTML="";
+                              }
+                              else{
+                                NB_ADMIN_MSG=json.length;
+                                var finalelement=json[json.length-1];
+                                var x = (new Date()).getTimezoneOffset() * 60000;
+                                var today= (new Date(Date.now() - x)).toISOString();
+                                var lasttime=msToTime((new Date(today)).valueOf() - (new Date(finalelement.date)).valueOf());
+                                var lastmsg=finalelement.texte;
+                                var photo='../img/admin_dafault.png'
+                                var completename="Administrateur";
+                                var statut=finalelement.statut;
+                                if(statut=="1"){
+                                    document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+                                }
+                                else{
+                                    document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+                                }
+
+                            }
+                            if(TOT_NB_MSG>0 && NB_ADMIN_MSG>0){
+                              document.getElementById("nbmsg").innerHTML=""+(TOT_NB_MSG+1);
+                            }
+                            else{
+                                document.getElementById("nbmsg").innerHTML=TOT_NB_MSG;
+                            }
+                          }
+
+                            function msToTime(s){
+                             var ms = s % 1000;
+                             s = (s - ms) / 1000;
+                             var secs = s % 60;
+                             s = (s - secs) / 60;
+                             var mins = s % 60;
+                             var hrs = (s - mins) / 60;
+                             if(hrs==0 && mins==0)
+                                 return "à l'instant";
+                             else if(hrs==0)
+                                 return 'il y a '+mins+' minutes';
+                             else if(hrs<24)
+                                 return 'il y a '+hrs+' heures';
+                             else
+                                 return 'il y a '+Math.floor(hrs/24)+' jours';
+                           }
+
+
+function loadnotifs(){
+var id=C.getId();
+var data = '{"operation":"select","table":"notifs","id":"'+id+'"}';
+$.getJSON("/webapi.php",{client_req:data},shownotif);
+}
+function shownotif(json) {
+ if(json==null){
+    document.getElementById("notifcontainer").innerHTML="<center>Aucune notification</center>";
+ }
+ else{
+   // all goood
+   document.getElementById("notifcontainer").innerHTML="";
+   var nb_nonvu=json.length;
+   var lnn=0;
+   if(json.length>4){
+     lnn=4;
+   }
+   else{
+     lnn=json.length;
+   }
+ for (var i = 0; i < lnn; i++) {
+
+   var msg="<b>"+json[i].prenom+" "+json[i].nom_famille+"</b> "+json[i].texte;
+   var x = (new Date()).getTimezoneOffset() * 60000;
+   var time=msToTime((new Date()-x).valueOf() - (new Date(json[i].date)).valueOf());
+    var photo='../img/'+json[i].profilephoto+'.png';
+    if(i<=3){
+     document.getElementById("notifcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"><div class="media-body"><h5 class="media-heading">'+msg+'</h5><small class="text-muted">'+time+'</small></div></div></a>';
+     }
+    }
+
+    if(nb_nonvu>0){
+      document.getElementById("nbnotif").innerHTML=""+nb_nonvu;
+    }
+ }
+}
+
+
+function openPopup(id,texte){
+$('#'+id).addClass('visible');
+$('#'+id+"_text").html(texte);
+}
+function closePopup(id){
+$('#'+id).removeClass('visible');
+}
+      // fonction déconnexion du système
+   function logout(){
+     localStorage.removeItem('SPOT_WEB_SESSION');
+     localStorage.removeItem('spot_webcl_Profileid');
+     localStorage.removeItem('spot_webcl_Profilename');
+     localStorage.removeItem('spot_webcl_Profilefirstname');
+     localStorage.removeItem('spot_webcl_Profilelastname');
+     localStorage.removeItem('spot_webcl_Profilefreinds');
+     localStorage.removeItem('spot_webcl_Profileevents');
+     localStorage.removeItem('spot_webcl_Profileregion');
+     localStorage.removeItem('spot_webcl_Profilegender');
+     localStorage.removeItem('spot_webcl_Profilebirthdate');
+     localStorage.removeItem('spot_webcl_Profiletel');
+     localStorage.removeItem('spot_webcl_Profileadr');
+     localStorage.removeItem('spot_webcl_Profileemail');
+     localStorage.removeItem('spot_webcl_Profilecurrentpass');
+     localStorage.removeItem('spot_webcl_Profilephoto');
+     localStorage.removeItem('spot_webcl_Profilecover');
+     localStorage.removeItem('spot_cl_selected_freind_id');
+     localStorage.removeItem('spot_webcl_event_to_invite');
+     localStorage.removeItem('spot_webcl_event_to_invite_titre');
+     localStorage.removeItem('spot_webcl_event_to_invite_type');
+        getoffline("client_offline",C.getId());
+   }
+   function getoffline(table,id){
+   var offdata = {
+     "operation": "update",
+     "table": table,
+     "id" :id
+    }
+    var stdata=JSON.stringify(offdata);
+      $.getJSON("/webapi.php",{client_req:stdata},showofflineconfirm);
+   }
+   function showofflineconfirm(json) {
+   if(json==null){
+    openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+   }
+   else{
+      document.location.href="/";
+    }
+   }
+
+
+				</script>
+
+
+
+        </div>
+        <!-- Warper Ends Here (working area) -->
+
+
+  <footer class="container-fluid footer">
+    <p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+    <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+  </footer>
+    </section>
+    <!-- Content Block Ends Here (right box)-->
+    <!-- JQuery v1.9.1 -->
+	  <script src="assets/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="assets/js/plugins/underscore/underscore-min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <!-- Globalize -->
+    <script src="assets/js/globalize/globalize.min.js"></script>
+    <!-- NanoScroll -->
+    <script src="assets/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- Custom JQuery -->
+	  <script src="assets/js/app/custom.js" type="text/javascript"></script>
+
+</body>
+</html>

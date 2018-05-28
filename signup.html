@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="icon" type="image/png" href="/favicon.png">
+<title>Spot | Signup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Flaty User login Form template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="css/style-login.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/popup.css" rel="stylesheet" type="text/css" />
+
+<!-- //Custom Theme files -->
+<!-- js -->
+<script src="js/jquery-2.2.3.min.js"></script>
+<!-- //js -->
+<!-- web font -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'><!--web font-->
+<link href='https://fonts.googleapis.com/css?family=Raleway:500,600,700,800,900,400,300' rel='stylesheet' type='text/css'>
+<!-- //web font -->
+</head>
+<body>
+
+	<!-- popup-->
+	<div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+		<center>
+    <p id="modal_error_text"></p><br>
+		<button class="popupbtn">Bien j'ai compris</button>
+	</center>
+  </div>
+</div>
+<!-- popup-->
+<!-- popup-->
+<div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+<div class="modal__box_sucess">
+	<center>
+	<p id="modal_sucess_text"></p><br>
+	<button class="popupbtn">Bien j'ai compris</button>
+</center>
+</div>
+</div>
+<!-- popup-->
+
+	<!-- main -->
+	<div class="main-agileits">
+		<h1>Spot Signup Form</h1>
+		<div class="mainw3-agileinfo form">
+			<div id="login">
+
+				    <div class="field-wrap">
+						<label> Enter Your First Name<span class="req">*</span> </label>
+						<input id="firstname" type="text" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Last Name<span class="req">*</span> </label>
+						<input id="lastname"  type="text" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Email<span class="req">*</span> </label>
+						<input id="email" type="email" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Phone<span class="req">*</span> </label>
+						<input id="tel" type="text" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Birth Date (yyyy-mm-dd)<span class="req">*</span> </label>
+						<input id="birthdate" type="text" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Adress<span class="req">*</span> </label>
+						<input id="adress" type="text" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Enter Your Password<span class="req">*</span> </label>
+						<input   type="password" id="pass" required autocomplete="off"/>
+					</div>
+					<div class="field-wrap">
+						<label> Confirm Your Password<span class="req">*</span> </label>
+						<input  type="password" id="cpass" required autocomplete="off"/>
+					</div>
+
+
+					<button class="button button-block" onclick="insert_client()" />SIGNUP</button>
+	                <br>
+					<p class="signup"><a href="/">Back To Home Page</a></p>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- //main -->
+	<!-- copyright -->
+	<div class="w3copyright-agile">
+		<p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+	</div>
+	<!-- //copyright -->
+	<script>
+	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
+	  var $this = $(this),
+		  label = $this.prev('label');
+
+		  if (e.type === 'keyup') {
+				if ($this.val() === '') {
+			  label.removeClass('active highlight');
+			} else {
+			  label.addClass('active highlight');
+			}
+		} else if (e.type === 'blur') {
+			if( $this.val() === '' ) {
+				label.removeClass('active highlight');
+				} else {
+				label.removeClass('highlight');
+				}
+		} else if (e.type === 'focus') {
+
+		  if( $this.val() === '' ) {
+				label.removeClass('highlight');
+				}
+		  else if( $this.val() !== '' ) {
+				label.addClass('highlight');
+				}
+		}
+
+	});
+	function openPopup(id,texte){
+		$('#'+id).addClass('visible');
+		$('#'+id+"_text").html(texte);
+	}
+	function closePopup(id){
+		$('#'+id).removeClass('visible');
+	}
+
+	</script>
+
+
+
+
+	<script>
+
+	function insert_client(){
+		var firstname = $("#firstname").val();
+		var lastname = $("#lastname").val();
+		var email = $("#email").val();
+		var tel = $("#tel").val();
+		var birthdate = $("#birthdate").val();
+		var adress = $("#adress").val();
+		var pass = $("#pass").val();
+		var cpass = $("#cpass").val();
+
+		if(firstname==""||lastname==""||email==""||tel==""||birthdate==""||adress==""||pass==""||cpass==""){
+   //alert("Tous les champs sont obligatoires !");
+     openPopup("modal_error","Tous les champs sont obligatoires !");
+		}
+		else{
+			if(pass!=cpass){
+				//alert("Mot de passes ne sont pas identiques");
+				 openPopup("modal_error","Les mots de passes ne sont pas identiques");
+			}
+			else{
+				run(firstname,lastname,email,tel,birthdate,adress,pass);
+			}
+		}
+
+
+
+
+
+
+	}
+
+			 function run(firstname,lastname,email,tel,birthdate,adress,pass) {
+			 var data = '{"operation":"insert","table":"client","nom": "'+firstname+'","prenom":"'+lastname+'","email":"'+email+'","phone":"'+tel+'","birthdate":"'+birthdate+'","adress":"'+adress+'","password":"'+pass+'"}';
+			 $.getJSON("/webapi.php",{client_req:data},show);
+			 }
+
+			 function show(json) {
+				 if(json==null){
+					 //alert("Un problème est survenu, Insciption annulée !");
+					  openPopup("modal_error","Un problème est survenu, Insciption annulée !");
+				 }
+				 else{
+					 //alert("Inscription terminé avec succées !");
+					  openPopup("modal_sucess","Inscription terminé avec succées !");
+						setTimeout(() => {
+					  document.location.href="/login.html";
+					}, 2000);
+
+				 }
+			 }
+
+
+	</script>
+
+
+
+
+
+
+</body>
+
+</html>

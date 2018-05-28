@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <title></title>
+
+  <link rel="stylesheet" href="chat/css/reset.min.css">
+
+
+      <link rel="stylesheet" href="chat/css/style.css">
+
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div class="top">
+                <center><img src="assets/images/avtar/Messages.png" /></center>
+            </div>
+            <ul class="people" id="people">
+            <!-- people load here -->
+            </ul>
+        </div>
+        <div class="right">
+            <div class="top"><span>Vers : <span class="name" id="whoto"></span></span></div>
+            <div id="chatboxi">
+               <!-- chat loads here-->
+              </div>
+
+
+            <div class="write" id="chattextbox">
+                <a href="javascript:;" class="write-link attach"></a>
+                <input type="text" id="msginput" onkeypress="handle(event)" onfocus="backtonormal()"/>
+                <a href="javascript:;" class="write-link smiley"></a>
+                <a href="#" class="write-link send" onclick="send()"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+#chatboxi{
+padding: 10px;
+overflow-x: hidden;
+height: 75%;
+}
+
+#chatboxi::-webkit-scrollbar {
+    width: 10px;
+}
+
+#chatboxi::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+
+
+.boxi{
+   display: none;
+}
+
+.chatboxiactive{
+  display: block;
+}
+.chatboxiinactive{
+  display: block;
+}
+.infodot{
+  height: 10px;
+  width: 10px;
+  position: relative;
+  background: url('/profile/chat/online.png') no-repeat;
+  background-size: cover;
+}
+.inforeddot{
+  height: 10px;
+  width: 10px;
+  position: relative;
+  /*
+  background: url('/profile/chat/offline.png') no-repeat;
+  background-size: cover;
+  */
+}
+.infodotcontainer{
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  margin-left: 5px;
+  margin-bottom: 1px;
+}
+
+
+</style>
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="../models/client.ts"></script>
+    <script src="../models/message.ts"></script>
+    <script src="../models/admin.ts"></script>
+
+
+    <script>
+    $(window).load(function(){
+      loadprofileinfos();
+      loadmsgs();
+        document.getElementById("msginput").focus();
+    });
+
+    function loadprofileinfos(){
+
+      var id = localStorage.getItem('spot_admin_id');
+
+       A = new Admin;
+       A.setId(id);
+    //console.log(id);
+
+    }
+
+
+    function loadmsgs(){
+    var id=A.getId();
+     var data = '{"operation":"select","table":"msgs_all","id":"'+id+'"}';
+     $.getJSON("/webapi.php",{client_req:data},showmsg);
+    }
+    function showmsg(json) {
+      if(json==null){
+         //alert('Boite de messagerie vide !');
+      }
+      else{
+        // all goood
+        //console.log(json);
+        var id=A.getId();
+        document.getElementById("people").innerHTML="";
+        document.getElementById("chatboxi").innerHTML="";
+         Chat=[];
+        //Chat.push("Lemon")
+        for (var i = 0; i < json.length; i++) {
+          var Ami={"ami_id":json[i].c_id,
+                    "ami_prenom":json[i].prenom,
+                    "ami_nom_famille":json[i].nom_famille,
+                    "ami_photo":json[i].profilephoto,
+                    "ami_statut":json[i].statut
+                  }
+                  var exist=false;
+                  for (var j = 0; j < Chat.length; j++) {
+                    var a=JSON.stringify(Chat[j]);
+                    var b=JSON.stringify(Ami);
+
+                    if(a==b)
+                    {
+                       exist=true;
+                    }
+                  }
+                  if(exist==false){
+                    Chat.push(Ami);
+                  }
+
+          }
+
+
+            //console.log(Chat);
+            //console.log(json);
+
+
+            for (var k = 0; k < Chat.length; k++) {
+              //var time=msToTime((new Date()).valueOf() - (new Date(Chat[k].date)).valueOf());
+
+              var photo='../img/'+Chat[k].ami_photo+'.png'
+              var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+              var onlinestat="";
+              if(Chat[k].ami_statut==1){
+                onlinestat='<div class="infodot" id="stat'+Chat[k].ami_id+'"></div>';
+                console.log('here');
+              }
+              else{
+                onlinestat='<div class="inforeddot" id="stat'+Chat[k].ami_id+'"></div>';
+              }
+              document.getElementById("people").innerHTML+='<li class="person" id="'+Chat[k].ami_id+'" onClick="activeonclick(this.id)"><img src="'+photo+'" alt="" /><span class="name">'+completename+'<div class="infodotcontainer">'+onlinestat+'</div></span><span class="time" id="Gtime'+Chat[k].ami_id+'"></span><span class="preview" id="lastmsg'+Chat[k].ami_id+'"></span></li>';
+             //console.log("Discussion "+k);
+
+             var bubblecontent="";
+             bubblecontent='<div class="boxi" id="box'+Chat[k].ami_id+'"><div class="conversation-start"><span id="time'+Chat[k].ami_id+'"></span></div>';
+
+              for (var l = 0; l < json.length; l++) {
+                if(Chat[k].ami_id==json[l].emetteur || Chat[k].ami_id==json[l].recepteur){
+                  if(json[l].emetteur==A.getId()){
+                    // buuble me
+                      bubblecontent+='<div class="bubble me">'+json[l].texte+'</div>';
+                  }
+                  else{
+                    // buublle you
+                       bubblecontent+='<div class="bubble you">'+json[l].texte+'</div>';
+                  }
+
+                }
+              }
+
+            bubblecontent+="</div>";
+            document.getElementById("chatboxi").innerHTML+=bubblecontent;
+
+
+
+            for (var m = 0; m < json.length; m++) {
+              if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                var x = (new Date()).getTimezoneOffset() * 60000;
+                var today= (new Date(Date.now() - x)).toISOString();
+                $('#time'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+              }
+            }
+
+// do stuff here
+            }
+// do stuff here
+    }
+    // activate first chat by default
+    var selectedfreindid="";
+    try{
+    selectedfreindid = localStorage.getItem('spot_selected_freind_id');
+    }
+    catch(e){
+      selectedfreindid=Chat[0].ami_id;
+    }
+    if(selectedfreindid=="" || selectedfreindid==null){
+      selectedfreindid=Chat[0].ami_id;
+    }
+    activeonclick(selectedfreindid);
+  }
+
+
+    function msToTime(s){
+     var ms = s % 1000;
+     s = (s - ms) / 1000;
+     var secs = s % 60;
+     s = (s - secs) / 60;
+     var mins = s % 60;
+     var hrs = (s - mins) / 60;
+     if(hrs==0 && mins==0)
+         return "à l'instant";
+     else if(hrs==0)
+         return 'il y a '+mins+' mins';
+     else if(hrs<24)
+         return 'il y a '+hrs+' hrs';
+     else
+         return 'il y a '+Math.floor(hrs/24)+' jrs';
+   }
+
+
+
+function activeonclick(id){
+
+  $('.person').removeClass('active');
+  $('#'+id).addClass('active');
+  $('.boxi').removeClass('chatboxiactive');
+  $('#box'+id).addClass('chatboxiactive');
+  var fullname="Freind";
+    for (var i = 0; i < Chat.length; i++) {
+      if(Chat[i].ami_id==id){
+        fullname=' '+Chat[i].ami_prenom+' '+Chat[i].ami_nom_famille;
+      }
+    }
+  $('#whoto').html(fullname);
+$("#chatboxi").animate({ scrollTop: $('#chatboxi').prop("scrollHeight")}, 1500);
+ active_client = id;
+localStorage.setItem('spot_selected_freind_id',id);
+}
+
+function handle(e){
+   backtonormal();
+       if(e.keyCode === 13){
+           e.preventDefault(); // Ensure it is only this code that rusn
+           send();
+       }
+}
+function backtonormal(){
+document.getElementById("chattextbox").style.borderColor = "#e6e6e6";
+}
+function send(){
+  var message=$('#msginput').val();
+  if(message==""){
+    //alert("Vous devez insèrer un message !");
+      document.getElementById("chattextbox").style.borderColor = "#E74C3C";
+  }
+  else{
+    var id=A.getId();
+    var x = (new Date()).getTimezoneOffset() * 60000;
+    var today= (new Date(Date.now() - x)).toISOString();
+    M = new Message(id,active_client,message,today,'0');
+    var data={
+       "operation":"insert",
+       "table":"message",
+       "emetteur": M.getEmetteur(),
+       "recepteur": M.getRecepteur(),
+       "texte":  M.getTexte(),
+       "date": M.getDate(),
+       "vu": M.getVu()
+    }
+   var stdata=JSON.stringify(data);
+   $.getJSON("/webapi.php",{client_req:stdata},showr);
+   $('#msginput').val("");
+  }
+
+}
+function showr(json) {
+ if(json==null){
+    //alert("Un problème est survenu, envoi du message annulé !");
+
+ }
+ else{
+   setTimeout(() => {loadmsgs();}, 1000);
+ }
+ }
+
+
+
+
+
+ setInterval(function(){
+
+   if(active_client!="0"){
+      get_conv_ref(active_client);
+   }
+
+   }, 10000)
+
+
+
+
+
+
+      function get_conv_ref(idselected){
+        var id="0";
+         var data = '{"operation":"select","table":"msgs_all_ref","idme":"'+id+'","idhim":"'+idselected+'"}';
+         $.getJSON("/webapi.php",{client_req:data},showconv_ref);
+        }
+        function showconv_ref(json) {
+          if(json==null){
+             //alert('Boite de messagerie vide !');
+          }
+          else{
+            // all goood
+            //console.log(json);
+            var x = (new Date()).getTimezoneOffset() * 60000;
+            var today= (new Date(Date.now() - x)).toISOString();
+            var refconv="";
+            refconv='<div class="conversation-start"><span id="time'+active_client+'"></span></div>';
+
+            for (var i = 0; i < json.length; i++) {
+              if(active_client==json[i].emetteur || active_client==json[i].recepteur){
+                if(json[i].emetteur=="0"){
+                  // buuble me
+                    refconv+='<div class="bubble me" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+                }
+                else{
+                  // buublle you
+                     refconv+='<div class="bubble you" style="-webkit-animation: none !important;">'+json[i].texte+'</div>';
+                }
+
+
+              }
+            }
+
+            refconv+="</div>";
+            document.getElementById("box"+active_client).innerHTML=refconv;
+            if(json[json.length-1].statut=="1"){
+                $('#stat'+active_client).removeClass('inforeddot');
+                $('#stat'+active_client).addClass('infodot');
+            }
+            else{
+              $('#stat'+active_client).removeClass('infodot');
+              $('#stat'+active_client).addClass('inforeddot');
+            }
+            $('#time'+active_client).html(msToTime((new Date(today)).valueOf() - (new Date(json[json.length-1].date)).valueOf()));
+
+          }
+        }
+
+
+    </script>
+
+</body>
+</html>

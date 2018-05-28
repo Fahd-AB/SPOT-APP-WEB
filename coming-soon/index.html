@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free coming soon template with jQuery countdown">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <title>SPOT | OFFLINE</title>
+
+  <!-- Bootstrap -->
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <link href="assets/css/bootstrap-theme.css" rel="stylesheet">
+  <link href="assets/css/font-awesome.css" rel="stylesheet">
+
+  <!-- siimple style -->
+<link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+
+  <!-- jquery -->
+  <script src="js/jquery-2.2.3.min.js"></script>
+
+</head>
+
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+  <div id="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <img width="125" height="55" src="/images/logo.png" alt="">
+          <h2 class="subtitle" id="texthere"></h2>
+          <div id="countdown"></div>
+          <form class="form-inline signup" role="form">
+            <div class="form-group">
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter your email address">
+            </div>
+            <button type="button" class="btn btn-theme" onclick="sendemail()">Get notified!</button>
+          </form>
+
+          <div class="social">
+            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <br>
+        <br>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+          <p class="copyright">&copy; SPOT - All Rights Reserved 2018</p>
+          <div class="credits">
+
+            <a href="#">SPOT Website</a> by Fahd Abdellaoui
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/jquery.countdown.min.js"></script>
+  <script type="text/javascript">
+    $(window).load(function(){
+    loadinfos();
+    });
+
+    function loadinfos(){
+      var data = '{"operation":"select","table":"site"}';
+      $.getJSON("/webapi.php",{client_req:data},showres);
+    }
+    function showres(json) {
+      if(json==null){
+        console.log("there is an error");
+        document.getElementById("texthere").innerHTML="We're working hard to improve our website and we'll ready to launch after";
+      }
+      else{
+        // all goood
+        console.log(json);
+        document.getElementById("texthere").innerHTML=json[0].titre+"<br>"+json[0].raison+"<br><br>"+json[0].description+"<br>";
+        $('#countdown').countdown(new Date(json[0].date_retour), function(event) {
+          $(this).html(event.strftime('%w weeks %d days <br /> %H:%M:%S'));
+        });
+      }
+    }
+
+
+    function sendemail(){
+      var email=document.getElementById("exampleInputEmail1").value;
+      if(email!=""){
+        var valid=ValidateEmail(email);
+        if(valid==true){
+          openPopup("modal_sucess","Vous ete inscri aux actualité, vérifier votre email !");
+        }
+        else{
+          openPopup("modal_error","Email incorrecte, vérifier et réssayer !");
+        }
+      }
+      else{
+          openPopup("modal_error","l'adresse email ne doit pas etre vide !");
+      }
+
+    }
+    function ValidateEmail(mail)
+      {
+       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+        {
+          return true;
+        }
+          //alert("You have entered an invalid email address!")
+          return false;
+      }
+
+
+      function openPopup(id,texte){
+      $('#'+id).addClass('visible');
+      $('#'+id+"_text").html(texte);
+      }
+      function closePopup(id){
+      $('#'+id).removeClass('visible');
+      }
+  </script>
+
+
+
+</body>
+
+</html>

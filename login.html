@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="icon" type="image/png" href="/favicon.png">
+<title>Spot | Login Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Flaty User login Form template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="css/style-login.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/popup.css" rel="stylesheet" type="text/css" />
+<!-- //Custom Theme files -->
+<!-- js -->
+<script src="js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCzU69pyTy4NkjBKqK0QlJGG_e5YtXo6RQ"></script>
+
+<!-- //js -->
+<!-- web font -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'><!--web font-->
+<link href='https://fonts.googleapis.com/css?family=Raleway:500,600,700,800,900,400,300' rel='stylesheet' type='text/css'>
+<!-- //web font -->
+</head>
+<body>
+
+	<!-- popup-->
+	<div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+		<center>
+    <p id="modal_error_text"></p><br>
+		<button class="popupbtn">Bien j'ai compris</button>
+	</center>
+  </div>
+</div>
+<!-- popup-->
+
+
+	<!-- main -->
+	<div class="main-agileits">
+		<h1>Spot App login Form</h1>
+		<div class="mainw3-agileinfo form">
+			<div id="login">
+
+					<div class="field-wrap">
+						<label> Enter Your Email<span class="req">*</span> </label>
+						<input id="email" type="email" required autocomplete="off" onkeypress="handle(event)"/>
+					</div>
+					<div class="field-wrap">
+						<label> Your Password<span class="req">*</span> </label>
+						<input id="mdp" type="password" required autocomplete="off" onkeypress="handle(event)"/>
+					</div>
+					<br>
+					<p class="forgot"><a href="lost.html">Forgot Password?</a></p>
+					<button  id="btnlog" class="button button-block" onClick="login()"/>Login</button>
+	                <br>
+					<p class="signup"><a href="signup.html">Signup</a></p>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- //main -->
+	<!-- copyright -->
+	<div class="w3copyright-agile">
+		<p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+	</div>
+	<!-- //copyright -->
+	<style>
+	.loader,
+	.loader:before,
+	.loader:after {
+	  border-radius: 50%;
+	  width:  5px;
+	  height: 5px;
+	  -webkit-animation-fill-mode: both;
+	  animation-fill-mode: both;
+	  -webkit-animation: load7 1.8s infinite ease-in-out;
+	  animation: load7 1.8s infinite ease-in-out;
+	}
+	.loader {
+	  color: #ffffff;
+	  font-size: 5px;
+		margin-left: 50%;
+		margin-top: -10px;
+		margin-bottom: 17px;
+	  position: relative;
+	  text-indent: -9999em;
+	  -webkit-transform: translateZ(0);
+	  -ms-transform: translateZ(0);
+	  transform: translateZ(0);
+	  -webkit-animation-delay: -0.16s;
+	  animation-delay: -0.16s;
+	}
+	.loader:before,
+	.loader:after {
+	  content: '';
+	  position: absolute;
+	  top: 0;
+	}
+	.loader:before {
+	  left: -3.5em;
+	  -webkit-animation-delay: -0.32s;
+	  animation-delay: -0.32s;
+	}
+	.loader:after {
+	  left: 3.5em;
+	}
+	@-webkit-keyframes load7 {
+	  0%,
+	  80%,
+	  100% {
+	    box-shadow: 0 2.5em 0 -1.3em;
+	  }
+	  40% {
+	    box-shadow: 0 2.5em 0 0;
+	  }
+	}
+	@keyframes load7 {
+	  0%,
+	  80%,
+	  100% {
+	    box-shadow: 0 2.5em 0 -1.3em;
+	  }
+	  40% {
+	    box-shadow: 0 2.5em 0 0;
+	  }
+	}
+
+
+	</style>
+	<script>
+	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
+	  var $this = $(this),
+		  label = $this.prev('label');
+
+		  if (e.type === 'keyup') {
+				if ($this.val() === '') {
+			  label.removeClass('active highlight');
+			} else {
+			  label.addClass('active highlight');
+			}
+		} else if (e.type === 'blur') {
+			if( $this.val() === '' ) {
+				label.removeClass('active highlight');
+				} else {
+				label.removeClass('highlight');
+				}
+		} else if (e.type === 'focus') {
+
+		  if( $this.val() === '' ) {
+				label.removeClass('highlight');
+				}
+		  else if( $this.val() !== '' ) {
+				label.addClass('highlight');
+				}
+		}
+
+	});
+
+	</script>
+
+
+
+	<script>
+	$(window).load(function(){
+	try{
+		var session = localStorage.getItem('SPOT_WEB_SESSION');
+		if(session=="TRUE"){
+			 document.location.href="/profile/index.html";
+		}
+		else{
+			  document.getElementById("email").focus();
+		}
+	}
+	catch(e){
+	}
+	});
+	function login(){
+
+					 email=document.getElementById("email").value;
+					 pass=document.getElementById("mdp").value;
+
+					 run(email,pass);
+
+			}
+
+
+
+			function handle(e){
+			       if(e.keyCode === 13){
+			           e.preventDefault(); // Ensure it is only this code that rusn
+			           login();
+			       }
+			}
+
+			 function run(email,pass) {
+			 var data = '{"operation":"select","table":"clientv","email": "'+email+'", "password":"'+pass+'"}';
+			 $.getJSON("/webapi.php",{client_req:data},show);
+			 }
+
+			 function show(json) {
+				 if(json==null){
+					 //alert("Login ou mot de passe incorrecte !");
+					 // cet utilisateur n'est pas un client
+					 var data = '{"operation":"select","table":"adminv","email": "'+email+'", "password":"'+pass+'"}';
+					$.getJSON("/webapi.php",{client_req:data},showadmin);
+				 }
+				 else{
+					 document.getElementById("btnlog").innerHTML="<div class='loader'>Loading...</div>";
+					 // Store it in the local storage
+					 CL_ID=json[0].id;
+						localStorage.setItem('spot_webcl_Profileid', json[0].id);
+						localStorage.setItem('spot_webcl_Profilename', json[0].prenom+" "+json[0].nom_famille);
+						localStorage.setItem('spot_webcl_Profilefirstname', json[0].prenom);
+						localStorage.setItem('spot_webcl_Profilelastname', json[0].nom_famille);
+						localStorage.setItem('spot_webcl_Profilefreinds', json[0].nb_amis);
+						localStorage.setItem('spot_webcl_Profileevents', json[0].nb_evenement);
+						localStorage.setItem('spot_webcl_Profileregion', json[0].region);
+						localStorage.setItem('spot_webcl_Profilegender', json[0].sexe);
+						localStorage.setItem('spot_webcl_Profilebirthdate', json[0].date_naissance);
+						localStorage.setItem('spot_webcl_Profiletel', json[0].tel);
+						localStorage.setItem('spot_webcl_Profileadr', json[0].adresse);
+						localStorage.setItem('spot_webcl_Profileemail', json[0].email);
+						localStorage.setItem('spot_webcl_Profilecurrentpass', json[0].mot_de_passe);
+						localStorage.setItem('spot_webcl_Profilephoto', json[0].profilephoto);
+						localStorage.setItem('spot_webcl_Profilecover', json[0].profilecover);
+						// Get it from the local storage
+						//var selected = localStorage.getItem('selected');
+						storehist( json[0].id,1);
+				 }
+			 }
+
+
+				function showadmin(json) {
+ 				 if(json==null){
+ 					 //alert("Login ou mot de passe incorrecte !");
+ 					  openPopup("modal_error","Login ou mot de passe incorrecte !");
+ 				 }
+ 				 else{
+
+					 document.getElementById("btnlog").innerHTML="<div class='loader'>Loading...</div>";
+					 localStorage.setItem('SPOT_ADMIN_SESSION', 'TRUE');
+					 localStorage.setItem('spot_admin_id', json[0].id);
+					 localStorage.setItem('spot_admin_name', json[0].prenom+" "+json[0].nom_famille);
+					 localStorage.setItem('spot_admin_firstname', json[0].prenom);
+					 localStorage.setItem('spot_admin_lastname', json[0].nom_famille);
+					 localStorage.setItem('spot_admin_email', json[0].email);
+					 localStorage.setItem('spot_admin_currentpass', json[0].mot_de_passe);
+					 localStorage.setItem('spot_admin_photo', json[0].photo);
+					 localStorage.setItem('spot_admin_statut', json[0].statut);
+					 //alert( json[0].statut);
+					 getonline("admin_online",json[0].id,'');
+				 }
+			 }
+
+
+
+
+			 function storehist(client_id,status){
+				 var x = (new Date()).getTimezoneOffset() * 60000;
+				 var today= (new Date(Date.now() - x)).toISOString();
+				 var ip="Non reconnu";
+				 var device=getOS();
+
+				 $.getJSON("http://jsonip.com/?callback=?", function (data) {
+						 ip=data.ip;
+						 var data = {
+			 				 "operation": "insert",
+			 				 "table": "historique_login",
+							 "client" : client_id,
+			 				 "device": device,
+			 				 "ip": ip,
+			 				 "date" :  today,
+			 				 "status" : status
+			 				}
+							var stdata=JSON.stringify(data);
+						  $.getJSON("/webapi.php",{client_req:stdata},showhistorique);
+				 });
+
+
+
+
+
+
+			 }
+
+			 function showhistorique(json) {
+				if(json==null){
+					 openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+				}
+				else{
+					 // callcheck website
+					 checkwebsite();
+				}
+			}
+
+
+
+			function getOS() {
+			  var userAgent = window.navigator.userAgent,
+			      platform = window.navigator.platform,
+			      macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+			      windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+			      iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+			      os = null;
+
+			  if (macosPlatforms.indexOf(platform) !== -1) {
+			    os = 'Mac OS';
+			  } else if (iosPlatforms.indexOf(platform) !== -1) {
+			    os = 'iOS';
+			  } else if (windowsPlatforms.indexOf(platform) !== -1) {
+			    os = 'Windows';
+			  } else if (/Android/.test(userAgent)) {
+			    os = 'Android';
+			  } else if (!os && /Linux/.test(platform)) {
+			    os = 'Linux';
+			  }
+
+			  return os;
+			}
+
+
+			function getonline(table,id,region){
+				var data = {
+					"operation": "update",
+					"table": table,
+					"id" :id,
+					"region" :region
+				 }
+				 var stdata=JSON.stringify(data);
+
+					if(table=="admin_online"){
+ 					 $.getJSON("/webapi.php",{client_req:stdata},showonlineconfirmA);
+ 				 }
+ 				 else{
+ 					  $.getJSON("/webapi.php",{client_req:stdata},showonlineconfirmC);
+ 				 }
+			}
+			function showonlineconfirmA(json) {
+			 if(json==null){
+				 openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+			 }
+			 else{
+					  document.location.href="/profile/admin-home.html";
+				 }
+		 }
+		 function showonlineconfirmC(json) {
+			if(json==null){
+				 openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+			}
+			else{
+				   localStorage.setItem('SPOT_WEB_SESSION', 'TRUE');
+					 document.location.href="/profile/index.html";
+				}
+		}
+
+
+
+
+		// verif le site en ligne
+		function checkwebsite(){
+			var data = '{"operation":"select","table":"site"}';
+			$.getJSON("/webapi.php",{client_req:data},showsitestate);
+		}
+		function showsitestate(json) {
+			if(json==null){
+		       //site online
+					  //
+					  initialize();
+					 //document.location.href="/profile/index.html";
+			}
+			else{
+				  // site offline
+					document.location.href="/coming-soon/index.html";
+			}
+		}
+		 // verif le site en ligne
+
+
+
+		function openPopup(id,texte){
+			$('#'+id).addClass('visible');
+			$('#'+id+"_text").html(texte);
+		}
+		function closePopup(id){
+			$('#'+id).removeClass('visible');
+		}var data = {
+			"operation": "update",
+			"table": table,
+			"id" :id
+		 }
+		 var stdata=JSON.stringify(data);
+
+// géo code the client location ***************************************************************
+var geocoder;
+
+
+//Get the latitude and the longitude;
+function successFunction(position) {
+	 var lat = position.coords.latitude;
+	 var lng = position.coords.longitude;
+	 codeLatLng(lat, lng)
+}
+
+function errorFunction(){
+	 //alert("Geocoder failed");
+	 openPopup("modal_error","Problème de géocode !");
+}
+
+ function initialize() {
+	 geocoder = new google.maps.Geocoder();
+	 if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+	}
+ }
+
+ function codeLatLng(lat, lng) {
+
+	 var latlng = new google.maps.LatLng(lat, lng);
+	 geocoder.geocode({'latLng': latlng}, function(results, status) {
+		 if (status == google.maps.GeocoderStatus.OK) {
+		// console.log(results)
+			 if (results[1]) {
+				//formatted address
+				//alert(results[0].formatted_address)
+			 //find country name
+						for (var i=0; i<results[0].address_components.length; i++) {
+					 for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+					 //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+							 if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+									 //this is the object you are looking for
+									 city= results[0].address_components[i];
+									 break;
+							 }
+					 }
+			 }
+			 //city data
+			 //console.log(city.short_name);
+			 if(city.short_name=="Tunis"){
+				  getonline( "client_online",CL_ID,city.short_name+" ");
+			 }
+			 else{
+				  getonline( "client_online",CL_ID,city.short_name);
+			 }
+
+
+			 } else {
+				// alert("No results found");
+				  openPopup("modal_error","Problème de géolocalisation !");
+			 }
+		 } else {
+			 //alert("Geocoder failed due to: " + status);
+			 openPopup("modal_error","Problème de géolocalisation !");
+		 }
+	 });
+ }
+
+	</script>
+</body>
+
+</html>

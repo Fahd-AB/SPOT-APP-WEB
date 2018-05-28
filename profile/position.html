@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Spot | Position</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="Fahd Abdellaoui">
+
+  	<!-- Bootstrap core CSS -->
+  	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" href="ionicons/css/ionicons.min.css" />
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="card/css/style.css">
+
+    <!-- Fonts  -->
+    <link href='../../../fonts.googleapis.com/css01fc.css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/css/app/app.v1.css" />
+    <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+    <!--  Classes -->
+    <script src="../models/client.ts"></script>
+    <script src="../models/message.ts"></script>
+    <script src="../models/notification.ts"></script>
+    <script src="../models/evenement.ts"></script>
+    <script src="../models/payement.ts"></script>
+    <script src="../models/position.ts"></script>
+    <script src="../models/abonnement.ts"></script>
+
+
+</head>
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_info1" onclick="closePopup(this.id)">
+  <div class="modal__box_info">
+  <center>
+  <p id="modal_info1_text"></p><br>
+  <button class="popupbtn" style="float:left">Non, Réssayer</button>
+  <button class="popupbtn" style="float:left" onclick="confirmcurr_loc('0')">Oui, Continuer</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+  <!-- popup-->
+  <div class="modal" id="modal_info2" onclick="closePopup(this.id)">
+  <div class="modal__box_info">
+  <center>
+  <p id="modal_info2_text"></p><br>
+  <button class="popupbtn" style="float:left">Non, Réssayer</button>
+  <button class="popupbtn" style="float:left" onclick="confirmchoice()">Oui, Continuer</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+	<!-- Preloader -->
+    <div class="loading-container">
+      <div class="loading">
+        <div class="l1">
+          <div></div>
+        </div>
+        <div class="l2">
+          <div></div>
+        </div>
+        <div class="l3">
+          <div></div>
+        </div>
+        <div class="l4">
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Preloader -->
+
+	<aside class="left-panel">
+
+            <div class="user text-center">
+                  <div id="avatar"></div>
+                  <h4 class="user-name" id="profilename"></h4>
+
+                  <div class="dropdown user-login">
+                  <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
+                    <i class="fa fa-circle status-icon available"></i>&nbsp; En ligne &nbsp;&nbsp;&nbsp; &nbsp;<i class="fa fa-angle-down"></i>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" href="#" onClick="logout()"><i class="fa fa-circle status-icon signout"></i>&nbsp; Déconnexion</a></li>
+                  </ul>
+                  </div>
+            </div>
+
+            <nav class="navigation">
+              <ul class="list-unstyled">
+                  <li><a href="index.html"><i class="fa fa-bookmark-o"></i><span class="nav-label">Tableau de bord</span></a></li>
+          </li>
+          <li><a href="/profile/event.html"><i class="fa fa-flag-o"></i><span class="nav-label">Créer Evenement</span></a></li>
+          </li>
+          <li><a href="/profile/location.html"><i class="fa fa-star-o"></i><span class="nav-label">Ajout Lieu</span></a></li>
+          </li>
+          <li><a href="/profile/subs.html"><i class="fa fa-plus-circle"></i><span class="nav-label">Abonnements</span></a></li>
+          </li>
+          <li><a href="/profile/transactions.html"><i class="fa fa-credit-card"></i><span class="nav-label">Payements</span></a></li>
+					</li>
+          <li><a href="/profile/notifs.html"><i class="fa fa-bell-o"></i><span class="nav-label">Notifications</span></a></li>
+          </li>
+          <li><a href="/profile/messages.html"><i class="fa fa-comment-o"></i><span class="nav-label">Messagerie</span></a></li>
+          </li>
+          <li><a href="/profile/history.html"><i class="fa fa-unlock"></i><span class="nav-label">Historique Login</span></a></li>
+          </li>
+          <li><a href="#" onClick="logout()" ><i class="fa fa-power-off"></i><span class="nav-label" >Déconnexion</span></a></li>
+          </li>
+                </ul>
+
+            </nav>
+
+        </aside>
+
+        <section class="content">
+
+        <header class="top-head container-fluid">
+
+
+            <form role="search" class="navbar-left app-search pull-left hidden-xs">
+              <input type="text"  id="Skeyword" placeholder="Entrez les mots-clés..." class="form-control form-control-circle" onkeypress="handle(event)">
+          </form>
+
+            <nav class=" navbar-default hidden-xs" role="navigation">
+                <ul class="nav navbar-nav">
+                <li><a href="/profile/settings.html">Paramètres</a></li>
+              </ul>
+            </nav>
+
+            <ul class="nav-toolbar">
+              <li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-comments-o"></i> <span class="badge bg-warning" id="nbmsg"></span></a>
+                  <div class="dropdown-menu md arrow pull-right panel panel-default arrow-top-right messages-dropdown">
+                        <div class="panel-heading">
+                        Messages
+                        </div>
+
+                        <div class="list-group">
+                          <div id="adminmsgcontainer">
+                          <!--Admin messages here-->
+                          </div>
+                          <div id="msgcontainer">
+                          <!--messages here-->
+                          </div>
+
+                            <a href="/profile/messages.html" class="btn btn-info btn-flat btn-block">Voir tous les messages</a>
+
+                        </div>
+
+                    </div>
+                </li>
+                <li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-bell-o"></i><span class="badge" id="nbnotif"></span></a>
+                  <div class="dropdown-menu arrow pull-right md panel panel-default arrow-top-right notifications">
+                        <div class="panel-heading">
+                        Notification
+                        </div>
+
+                        <div class="list-group">
+                          <div id="notifcontainer">
+                          <!--notifications here-->
+                         </div>
+                         <a href="/profile/notifs.html" class="btn btn-info btn-flat btn-block">Voir tous les notifications</a>
+
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+        </header>
+        <!-- Header Ends -->
+
+
+<div class="warper container-fluid">
+<!-- Work Here -->
+
+
+			<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+			<meta charset="utf-8">
+			<style>
+			  #map {
+				height: 550px;
+				width : 70%;
+        float: left;
+			  }
+        .markercontent{
+				height :200px;
+				width :200px;
+				background :grey;
+				}
+				  #right-panel {
+					font-family: 'Roboto','sans-serif';
+					line-height: 30px;
+					padding-left: 10px;
+				  }
+				  #right-panel select, #right-panel input {
+					font-size: 15px;
+				  }
+				  #right-panel select {
+					width: 100%;
+				  }
+				  #right-panel i {
+					font-size: 12px;
+				  }
+				  #right-panel {
+					margin: 20px;
+					border-width: 2px;
+					width: 20%;
+					height: 400px;
+					float: left;
+					text-align: left;
+					padding-top: 0;
+				  }
+				  #directions-panel {
+					margin-top: 10px;
+					background-color: #FFEE77;
+					padding: 10px;
+				  }
+          .places{
+            float: left;
+            height: 550px;;
+    				width : 28%;
+            margin-left: 20px;
+          }
+
+          .places{
+          width:auto;
+          margin-bottom: 50px;
+          }
+          .conatinerstyle{
+            height: auto;
+            min-height: 550px;
+            width: 100%;
+          }
+
+			</style>
+      <div class="conatinerstyle">
+			<div id="map"></div>
+      <div class="places">
+      <div class="card transition">
+        <h2 id="h2" class="transition"></h2>
+        <p id="p">
+          Soutenence <br>
+          10$ via Paypal<br><br>
+          Description :<br>
+          Ma soutenance dans 10 jrs.<br><br>
+        </p>
+
+        <div class="card_circle transition"></div>
+      </div>
+      <hr>
+      <center>
+      <button class="btn btn-info btn-block" style="width:auto;" onclick="create()">Choisir la position &nbsp; <i class="fa fa-dot-circle-o"></i></button>
+      <br>
+      <div id="places" ></div>
+
+      </center>
+
+      </div>
+    </div>
+			    <script async defer
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLY8ppqakqGjpv4yZp-A7ZsDQKbc2NQwA&callback=initMap">
+				</script>
+
+
+				<script>
+        /*
+        window.onpaint=funinit();
+        function funinit(){
+            window.history.replaceState( {} , '', '/profile/' );
+        }
+        */
+        function handle(e){
+
+               if(e.keyCode === 13){
+                   e.preventDefault(); // Ensure it is only this code that rusn
+                   tosearch();
+               }
+        }
+      function tosearch(){
+          var keyword=$('#Skeyword').val();
+          localStorage.setItem('spot_webcl_serach_keyword',keyword);
+          document.location.href="/profile/search.html";
+      }
+        $(window).load(function(){
+        try{
+          var session = localStorage.getItem('SPOT_WEB_SESSION');
+          if(session!="TRUE"){
+            alert("Session expiré");
+            document.location.href="/login.html";
+          }
+          else{
+            var cl=localStorage.getItem('ev_titre');
+            if(cl!=null){
+            // initialize profile infos
+            loadprofileinfos();
+            loadeventdetails();
+            loadmsgs();
+            loadnotifs();
+            loadplaces();
+          }
+          else{
+              document.location.href="event.html";
+          }
+
+
+          }
+        }
+        catch(e){
+          document.location.href="/login.html";
+        }
+        });
+        setInterval(function(){
+          document.getElementById("msgcontainer").innerHTML="";
+          document.getElementById("adminmsgcontainer").innerHTML="";
+          document.getElementById("notifcontainer").innerHTML="";
+            loadmsgs();
+            loadnotifs();
+          }, 10000)
+
+
+
+
+        function loadprofileinfos(){
+          var Profileid = localStorage.getItem('spot_webcl_Profileid');
+          var Profilename = localStorage.getItem('spot_webcl_Profilename');
+          var Profilefirstname = localStorage.getItem('spot_webcl_Profilefirstname');
+          var Profilelastname = localStorage.getItem('spot_webcl_Profilelastname');
+          var Profilefreinds = localStorage.getItem('spot_webcl_Profilefreinds');
+          var Profileevents = localStorage.getItem('spot_webcl_Profileevents');
+          var Profileregion = localStorage.getItem('spot_webcl_Profileregion');
+          var Profilegender = localStorage.getItem('spot_webcl_Profilegender');
+          var Profilebirthdate = localStorage.getItem('spot_webcl_Profilebirthdate');
+          var Profiletel = localStorage.getItem('spot_webcl_Profiletel');
+          var Profileadr = localStorage.getItem('spot_webcl_Profileadr');
+          var Profileemail = localStorage.getItem('spot_webcl_Profileemail');
+          var Profilecurrentpass = localStorage.getItem('spot_webcl_Profilecurrentpass');
+          var Profilephoto = localStorage.getItem('spot_webcl_Profilephoto');
+          var Profilecover = localStorage.getItem('spot_webcl_Profilecover');
+           C = new Client(Profilefirstname,Profilelastname,Profileemail,Profiletel,Profilebirthdate,Profileadr,Profilecurrentpass,Profilefreinds,Profileevents);
+          C.setId(Profileid);
+          C.setSexe(Profilegender);
+          C.setRegion(Profileregion);
+          C.setProfilephoto(Profilephoto);
+          C.setProfilecover(Profilecover);
+
+          var prophoto=C.getProfilephoto();
+          var prosexe=C.getSexe();
+          if(prophoto==""){
+            if(prosexe=="m"){
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+            }
+            else if(prosexe=="f"){
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_f_default.png" class="img-circle" alt="...">';
+            }
+            else{
+              document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+            }
+          }
+          else{
+            document.getElementById("avatar").innerHTML='<img src="../img/'+C.getProfilephoto()+'.png" class="img-circle" alt="...">';
+          }
+
+
+          document.getElementById("profilename").innerHTML= C.getPrenom()+" "+C.getNom_famille();
+
+          //alert(C.getProfilephoto());
+        }
+
+
+        function loadplaces(){
+   			 var data = '{"operation":"select","table":"places"}';
+   			 $.getJSON("/webapi.php",{client_req:data},show);
+        }
+        function show(json) {
+          if(json==null){
+
+          }
+          else{
+            // all goood
+            document.getElementById("places").innerHTML="";
+            var cont="<select id='PL' class='form-control btn-info btn-block' name='PL' onchange='popplace()''><option value=''>--- Un lieu populaire ---</option>";
+            for (var i = 0; i < json.length; i++) {
+              var logo="";
+              switch (json[i].type) {
+                 case "Café / Salon de thé":
+                 logo="ion-coffee";
+                 break;
+                 case "Sportif":
+                 logo="ion-ios-football";
+                 break;
+                 case "Bar":
+                 logo="ion-android-bar";
+                 break;
+                 case "Galerie":
+                 logo="ion-ios-camera-outline";
+                 break;
+                 case "Musical":
+                 logo="ion-music-note";
+                 break;
+                 case "Fast Food":
+                 logo="ion-pizza";
+                 break;
+                 case "Emploi":
+                 logo="ion-ios-briefcase";
+                 break;
+                 case "Vente":
+                 logo="ion-ios-cart-outline";
+                 break;
+                 case "Salle de conférence":
+                 logo="ion-chatbubbles";
+                 break;
+                 case "Salle de cinéma":
+                 logo="ion-ios-film-outline";
+                 break;
+                 case "Laboratoire":
+                 logo="ion-ios-flask-outline";
+                 break;
+                 case "Salle de jeu":
+                 logo="ion-ios-game-controller-b-outline";
+                 break;
+                 case "Lieu romantique":
+                 logo="ion-ios-heart";
+                 break;
+                 case "Maison":
+                 logo="ion-home";
+                 break;
+                 case "Airoport":
+                 logo="ion-plane";
+                 break;
+                 case "Restaurent":
+                 logo="ion-android-restaurant";
+                 break;
+                 case "Faculté":
+                 logo="ion-university";
+                 break;
+                 case "Autre":
+                 logo="ion-star";
+                 break;
+               }
+
+                 cont+="<option value='place"+json[i].id+"'><i class='"+logo+"'></i> "+json[i].nom+"("+json[i].type+")</option>";
+
+            }
+            cont+="</select>";
+            document.getElementById('places').innerHTML=cont;
+          }
+        }
+
+         function popplace(){
+           var x = document.getElementById("PL").value;
+           if(x!=""){
+             var pureId=x.substring(5,(x.length));
+             SELECTEDPLACE=pureId;
+             openPopup("modal_info2","Voulez vous considèrer ce lieu comme position de votre événement ?");
+           }
+
+         }
+         function confirmchoice(){
+          // get lieu position
+          var data = '{"operation":"select","table":"places_ssp","id":"'+SELECTEDPLACE+'"}';
+          $.getJSON("/webapi.php",{client_req:data},showplaceloc);
+         }
+         function showplaceloc(json) {
+           if(json==null){
+              openPopup("modal_error","Lieu supprimé ou inexistant !");
+           }
+           else{
+             // all goood
+            // console.log(json[0]);
+             localStorage.setItem('lat',json[0].lat);
+             localStorage.setItem('lng',json[0].lng);
+             confirmcurr_loc("1");
+           }
+         }
+
+
+
+
+
+
+      function loadeventdetails(){
+        var title = localStorage.getItem('ev_titre');
+        var type = localStorage.getItem('ev_type');
+        var autre = localStorage.getItem('ev_autre');
+        var desc = localStorage.getItem('ev_desc');
+        var prepaye = localStorage.getItem('ev_prepaye');
+        var id=C.getId();
+        var x = (new Date()).getTimezoneOffset() * 60000;
+        var today= (new Date(Date.now() - x)).toISOString();
+
+        Eve=new Evenement(id,title,type,autre,desc,prepaye,today,'','','1','1');
+
+
+         $("#h2").html(Eve.getTitre());
+         if(prepaye=="1"){
+           var montant = localStorage.getItem('ev_montant');
+           var methode = localStorage.getItem('ev_methode');
+           var email = localStorage.getItem('ev_email');
+           var url = localStorage.getItem('ev_url');
+           Pay= new Payement(montant,methode,email,url);
+            var content= Eve.getType()+"<br>"+Pay.getMontant()+"$ via "+Pay.getMethode()+"<br><br>Description :<br>"+Eve.getDescription()+"<br><br>"
+         }
+         else{
+            var content= Eve.getType()+"<br>Gratuit<br><br>Description :<br>"+Eve.getDescription()+"<br><br>"
+         }
+
+         $("#p").html(content);
+
+
+
+      }
+
+
+var Gmap;
+
+
+
+ function initMap() {
+   window.localStorage.setItem('MarkerCreated', 'NON');
+   if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function(position) {
+               var pos = {
+                 lat: position.coords.latitude,
+                 lng: position.coords.longitude
+               };
+             Gmap = new google.maps.Map(document.getElementById('map'), {
+               zoom: 16,
+               center: pos
+             });
+             var marker = new google.maps.Marker({
+               map: Gmap,
+               position: pos,
+               icon : 'markers/locationmarker.png'
+             });
+             var content = "Vous êtes ici";
+             google.maps.event.addListener(Gmap, 'click', function(event) {
+                  placeMarker(event.latLng);
+               });
+             addInfoWindow(marker, content);
+            // do stuff here
+            window.localStorage.setItem('currlat', pos.lat);
+            window.localStorage.setItem('currlng', pos.lng);
+
+
+   }, function() {
+   // error geolocation
+    openPopup("modal_error","Erreur de géolocalisation !");
+   });
+  }
+ else {
+  // Browser doesn't support Geolocation
+   openPopup("modal_error","Votre navigateur ne supporte pas la fonction de localisation !");
+  }
+
+ }
+
+ function addInfoWindow(marker, content){
+   var infoWindow = new google.maps.InfoWindow({
+   content: content
+ });
+
+ google.maps.event.addListener(marker, 'click', () => {
+   infoWindow.open(this.map, marker);
+ });
+
+
+ }
+
+var marker;
+
+function  placeMarker(location) {
+  window.localStorage.setItem('lat', location.lat());
+  window.localStorage.setItem('lng', location.lng());
+  window.localStorage.setItem('MarkerCreated', 'OUI');
+    if (marker == undefined){
+     marker = new google.maps.Marker({
+         position: location,
+         draggable: true,
+         icon : 'markers/medical.png',
+         map: Gmap
+     });
+     var content = "Position Choisie";
+     var infoWindow = new google.maps.InfoWindow({
+     content: content
+     });
+     google.maps.event.addListener(marker, 'click', () => {
+       infoWindow.open(Gmap, marker);
+     });
+   }
+   else{
+      marker.setPosition(location);
+    }
+     Gmap.panTo( location);
+ }
+
+
+ function create(){
+
+   var markercreation=window.localStorage.getItem('MarkerCreated');
+   if(markercreation=="OUI"){
+     confirmcurr_loc("1");
+   }
+   else{
+     openPopup("modal_info1","Voulez vous considérer votre position actuelle ?");
+ }
+
+ }
+
+  function confirmcurr_loc(op){
+    var lat;
+    var lng;
+    var title = localStorage.getItem('ev_titre');
+    var type = localStorage.getItem('ev_type');
+    var autre = localStorage.getItem('ev_autre');
+    var desc = localStorage.getItem('ev_desc');
+    var prepaye = localStorage.getItem('ev_prepaye');
+    var montant = localStorage.getItem('ev_montant');
+    var methode = localStorage.getItem('ev_methode');
+    var email = localStorage.getItem('ev_email');
+    var url = localStorage.getItem('ev_url');
+    if(op=="1"){
+      lat = localStorage.getItem('lat');
+      lng = localStorage.getItem('lng');
+    }
+    else{
+      lat = localStorage.getItem('currlat');
+      lng = localStorage.getItem('currlng');
+    }
+
+     var Pos=new Position(lat,lng);
+     var id_e = (Math.floor(100000 + Math.random() * 900000)).toString();
+         Eve.setId(id_e);
+         Eve.setLat(Pos.getLat());
+         Eve.setLng(Pos.getLng());
+
+         if(Eve.getPrepaye()=="1"){
+           //evenement prepayé
+           var data={
+              "operation":"insert",
+              "table":"evenement",
+              "id": Eve.getId(),
+              "id_cl": Eve.getId_client(),
+              "titre": Eve.getTitre(),
+              "type":  Eve.getType(),
+              "autre": Eve.getAutre(),
+              "description": Eve.getDescription(),
+              "prepaye": Eve.getPrepaye(),
+              "date": Eve.getDate(),
+              "lat": Eve.getLat(),
+              "lng": Eve.getLng(),
+              "nb_abonnees": Eve.getNb_abonnees(),
+              "statut": Eve.getStatut(),
+              "montant" : Pay.getMontant(),
+              "methode" : Pay.getMethode(),
+              "email" : Pay.getEmail(),
+              "page_url" : Pay.getPage_url()
+           }
+          var stdata=JSON.stringify(data);
+          $.getJSON("/webapi.php",{client_req:stdata},showr);
+         }
+         else{
+           //evenement gratuit
+           var data={
+              "operation":"insert",
+              "table":"evenement",
+              "id": Eve.getId(),
+              "id_cl": Eve.getId_client(),
+              "titre": Eve.getTitre(),
+              "type":  Eve.getType(),
+              "autre": Eve.getAutre(),
+              "description": Eve.getDescription(),
+              "prepaye": Eve.getPrepaye(),
+              "date": Eve.getDate(),
+              "lat": Eve.getLat(),
+              "lng": Eve.getLng(),
+              "nb_abonnees": Eve.getNb_abonnees(),
+              "statut": Eve.getStatut(),
+              "montant" : "",
+              "methode" : "",
+              "email" : "",
+              "page_url" : ""
+           }
+          var stdata=JSON.stringify(data);
+          $.getJSON("/webapi.php",{client_req:stdata},showr);
+         }
+
+  }
+
+
+
+ function showr(json) {
+  if(json==null){
+       openPopup("modal_error","Un problème est survenu, Création annulé !");
+  }
+  else{
+    // all goood
+    // faire un abonnement
+    abonner();
+  }
+
+}
+
+
+
+
+function abonner(){
+  var x = (new Date()).getTimezoneOffset() * 60000;
+  var today= (new Date(Date.now() - x)).toISOString();
+   AB=new Abonnement(Eve.getId_client(),Eve.getId(),Eve.getTitre(),Eve.getType(),today,'1');
+
+  var data={
+     "operation":"insert",
+     "table":"abonnement",
+     "client_id": C.getId(),
+     "event_id": Eve.getId(),
+     "createur_id": Eve.getId_client(),
+     "date":  AB.getDate(),
+     "statut": AB.getStatut()
+  }
+ var stdata=JSON.stringify(data);
+ $.getJSON("/webapi.php",{client_req:stdata},showabr);
+}
+function showabr(json) {
+ if(json==null){
+    openPopup("modal_error","Un problème est survenu, Opération annulé !");
+ }
+ else{
+   // all goood
+   localStorage.removeItem('ev_titre');
+   localStorage.removeItem('ev_type');
+   localStorage.removeItem('ev_autre');
+   localStorage.removeItem('ev_desc');
+   localStorage.removeItem('ev_prepaye');
+   localStorage.removeItem('ev_montant');
+   localStorage.removeItem('ev_methode');
+   localStorage.removeItem('ev_email');
+   localStorage.removeItem('ev_url');
+   localStorage.removeItem('lat');
+   localStorage.removeItem('lng');
+   localStorage.removeItem('currlat');
+   localStorage.removeItem('currlng');
+   localStorage.removeItem('MarkerCreated');
+   openPopup("modal_sucess","Evenement crée avec succèes !");
+   setTimeout(() => {
+       document.location.href="index.html";
+   }, 2000);
+ }
+ }
+
+
+
+function loadmsgs(){
+var id=C.getId();
+ var data = '{"operation":"select","table":"msgs","id":"'+id+'"}';
+ $.getJSON("/webapi.php",{client_req:data},showmsg);
+}
+function showmsg(json) {
+  if(json==null){
+     document.getElementById("msgcontainer").innerHTML="<center>Boite message vide</center>";
+  }
+  else{
+    // all goood
+
+    Chat=[];
+   //Chat.push("Lemon")
+   for (var i = 0; i < json.length; i++) {
+     var Ami={"ami_id":json[i].c_id,
+               "ami_prenom":json[i].prenom,
+               "ami_nom_famille":json[i].nom_famille,
+               "ami_photo":json[i].profilephoto,
+               "ami_statut":json[i].statut
+             }
+             var exist=false;
+             for (var j = 0; j < Chat.length; j++) {
+               var a=JSON.stringify(Chat[j]);
+               var b=JSON.stringify(Ami);
+
+               if(a==b)
+               {
+                  exist=true;
+               }
+             }
+             if(exist==false){
+               Chat.push(Ami);
+             }
+
+     }
+     var ln=0;
+     if(Chat.length>3){
+       ln=3;
+     }
+     else{
+       ln=Chat.length;
+     }
+     for (var k = 0; k <ln; k++) {
+       //var time=msToTime((new Date()).valueOf() - (new Date(Chat[k].date)).valueOf());
+
+       var photo='../img/'+Chat[k].ami_photo+'.png'
+       var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+       var statut=Chat[k].ami_statut;
+       if(k<=3){
+         if(statut=="1"){
+           //freind online
+           document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+         }
+         else{
+           //freind offline
+           document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+         }
+       }
+
+
+    for (var m = 0; m < json.length; m++) {
+      if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+        var x = (new Date()).getTimezoneOffset() * 60000;
+        var today= (new Date(Date.now() - x)).toISOString();
+        $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+        $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+      }
+    }
+    }
+
+
+  }
+// get admin messages
+TOT_NB_MSG=Chat.length;
+loadadminmsgs();
+}
+function loadadminmsgs(){
+  NB_ADMIN_MSG=0;
+  var id=C.getId();
+   var data = '{"operation":"select","table":"ADMINmsgs","id":"'+id+'"}';
+   $.getJSON("/webapi.php",{client_req:data},showADMINmsg);
+}
+function showADMINmsg(json) {
+  if(json==null){
+     document.getElementById("adminmsgcontainer").innerHTML="";
+  }
+  else{
+    NB_ADMIN_MSG=json.length;
+    var finalelement=json[json.length-1];
+    var x = (new Date()).getTimezoneOffset() * 60000;
+    var today= (new Date(Date.now() - x)).toISOString();
+    var lasttime=msToTime((new Date(today)).valueOf() - (new Date(finalelement.date)).valueOf());
+    var lastmsg=finalelement.texte;
+    var photo='../img/admin_dafault.png'
+    var completename="Administrateur";
+    var statut=finalelement.statut;
+    if(statut=="1"){
+        document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+    }
+    else{
+        document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+    }
+
+}
+if(TOT_NB_MSG>0 && NB_ADMIN_MSG>0){
+  document.getElementById("nbmsg").innerHTML=""+(TOT_NB_MSG+1);
+}
+else{
+    document.getElementById("nbmsg").innerHTML=TOT_NB_MSG;
+}
+}
+
+function msToTime(s){
+ var ms = s % 1000;
+ s = (s - ms) / 1000;
+ var secs = s % 60;
+ s = (s - secs) / 60;
+ var mins = s % 60;
+ var hrs = (s - mins) / 60;
+ if(hrs==0 && mins==0)
+     return "à l'instant";
+ else if(hrs==0)
+     return 'il y a '+mins+' minutes';
+ else if(hrs<24)
+     return 'il y a '+hrs+' heures';
+ else
+     return 'il y a '+Math.floor(hrs/24)+' jours';
+}
+
+
+function loadnotifs(){
+var id=C.getId();
+var data = '{"operation":"select","table":"notifs","id":"'+id+'"}';
+$.getJSON("/webapi.php",{client_req:data},shownotif);
+}
+function shownotif(json) {
+ if(json==null){
+    document.getElementById("notifcontainer").innerHTML="<center>Aucune notification</center>";
+ }
+ else{
+   // all goood
+   document.getElementById("notifcontainer").innerHTML="";
+   var nb_nonvu=json.length;
+   var lnn=0;
+   if(json.length>4){
+     lnn=4;
+   }
+   else{
+     lnn=json.length;
+   }
+ for (var i = 0; i < lnn; i++) {
+
+   var msg="<b>"+json[i].prenom+" "+json[i].nom_famille+"</b> "+json[i].texte;
+   var x = (new Date()).getTimezoneOffset() * 60000;
+   var time=msToTime((new Date()-x).valueOf() - (new Date(json[i].date)).valueOf());
+    var photo='../img/'+json[i].profilephoto+'.png';
+    if(i<=3){
+     document.getElementById("notifcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"><div class="media-body"><h5 class="media-heading">'+msg+'</h5><small class="text-muted">'+time+'</small></div></div></a>';
+     }
+    }
+
+    if(nb_nonvu>0){
+      document.getElementById("nbnotif").innerHTML=""+nb_nonvu;
+    }
+ }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function openPopup(id,texte){
+$('#'+id).addClass('visible');
+$('#'+id+"_text").html(texte);
+}
+function closePopup(id){
+$('#'+id).removeClass('visible');
+}
+
+
+// fonction déconnexion du système
+function logout(){
+localStorage.removeItem('SPOT_WEB_SESSION');
+localStorage.removeItem('spot_webcl_Profileid');
+localStorage.removeItem('spot_webcl_Profilename');
+localStorage.removeItem('spot_webcl_Profilefirstname');
+localStorage.removeItem('spot_webcl_Profilelastname');
+localStorage.removeItem('spot_webcl_Profilefreinds');
+localStorage.removeItem('spot_webcl_Profileevents');
+localStorage.removeItem('spot_webcl_Profileregion');
+localStorage.removeItem('spot_webcl_Profilegender');
+localStorage.removeItem('spot_webcl_Profilebirthdate');
+localStorage.removeItem('spot_webcl_Profiletel');
+localStorage.removeItem('spot_webcl_Profileadr');
+localStorage.removeItem('spot_webcl_Profileemail');
+localStorage.removeItem('spot_webcl_Profilecurrentpass');
+localStorage.removeItem('spot_webcl_Profilephoto');
+localStorage.removeItem('spot_webcl_Profilecover');
+localStorage.removeItem('spot_cl_selected_freind_id');
+localStorage.removeItem('spot_webcl_event_to_invite');
+localStorage.removeItem('spot_webcl_event_to_invite_titre');
+localStorage.removeItem('spot_webcl_event_to_invite_type');
+  getoffline("client_offline",C.getId());
+}
+function getoffline(table,id){
+var offdata = {
+"operation": "update",
+"table": table,
+"id" :id
+}
+var stdata=JSON.stringify(offdata);
+$.getJSON("/webapi.php",{client_req:stdata},showofflineconfirm);
+}
+function showofflineconfirm(json) {
+if(json==null){
+openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+}
+else{
+document.location.href="/";
+}
+}
+
+
+
+
+				</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <!-- Warper Ends Here (working area) -->
+
+
+  <footer class="container-fluid footer">
+    <p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+    <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+  </footer>
+    </section>
+    <!-- Content Block Ends Here (right box)-->
+    <!-- JQuery v1.9.1 -->
+	  <script src="assets/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="assets/js/plugins/underscore/underscore-min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <!-- Globalize -->
+    <script src="assets/js/globalize/globalize.min.js"></script>
+    <!-- NanoScroll -->
+    <script src="assets/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- Custom JQuery -->
+	  <script src="assets/js/app/custom.js" type="text/javascript"></script>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-56821827-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

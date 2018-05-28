@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/favicon.png">
+	<title>Spot | Mot de passe</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="Akshay Kumar">
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" href="ionicons/css/ionicons.min.css" />
+  <link rel="stylesheet" href="card/css/style.css">
+  <script src="js/jquery-2.2.3.min.js"></script>
+	<!-- Typeahead Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/typeahead/typeahead.css" />
+
+    <!-- TagsInput Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+
+    <!-- Chosen Select  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-chosen/chosen.css" />
+
+    <!-- DateTime Picker  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css" />
+
+    <!-- Switch Buttons  -->
+    <link rel="stylesheet" href="assets/css/switch-buttons/switch-buttons.css" />
+
+    <!-- Fonts  -->
+    <link href='../../../fonts.googleapis.com/css01fc.css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/css/app/app.v1.css" />
+      <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+
+    <!--  Classes -->
+    <script src="../models/client.ts"></script>
+    <script src="../models/message.ts"></script>
+    <script src="../models/notification.ts"></script>
+    <script src="../models/connexion.ts"></script>
+
+</head>
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+	<!-- Preloader -->
+    <div class="loading-container">
+      <div class="loading">
+        <div class="l1">
+          <div></div>
+        </div>
+        <div class="l2">
+          <div></div>
+        </div>
+        <div class="l3">
+          <div></div>
+        </div>
+        <div class="l4">
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Preloader -->
+
+	<aside class="left-panel">
+
+            <div class="user text-center">
+              <div id="avatar"></div>
+              <h4 class="user-name" id="profilename"></h4>
+
+                  <div class="dropdown user-login">
+                  <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
+                    <i class="fa fa-circle status-icon available"></i>&nbsp; En ligne &nbsp;&nbsp;&nbsp; &nbsp;<i class="fa fa-angle-down"></i>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" href="#" onClick="logout()"><i class="fa fa-circle status-icon signout"></i>&nbsp; Déconnexion</a></li>
+                  </ul>
+                  </div>
+            </div>
+
+
+
+            <nav class="navigation">
+              <ul class="list-unstyled">
+                  <li><a href="index.html"><i class="fa fa-bookmark-o"></i><span class="nav-label">Tableau de bord</span></a></li>
+          </li>
+          <li><a href="/profile/event.html"><i class="fa fa-flag-o"></i><span class="nav-label">Créer Evenement</span></a></li>
+          </li>
+          <li><a href="/profile/location.html"><i class="fa fa-star-o"></i><span class="nav-label">Ajout Lieu</span></a></li>
+          </li>
+          <li><a href="/profile/subs.html"><i class="fa fa-plus-circle"></i><span class="nav-label">Abonnements</span></a></li>
+          </li>
+          <li><a href="/profile/transactions.html"><i class="fa fa-credit-card"></i><span class="nav-label">Payements</span></a></li>
+					</li>
+          <li><a href="/profile/notifs.html"><i class="fa fa-bell-o"></i><span class="nav-label">Notifications</span></a></li>
+          </li>
+          <li><a href="/profile/messages.html"><i class="fa fa-comment-o"></i><span class="nav-label">Messagerie</span></a></li>
+          </li>
+          <li><a href="/profile/history.html"><i class="fa fa-unlock"></i><span class="nav-label">Historique Login</span></a></li>
+          </li>
+          <li><a href="#" onClick="logout()" ><i class="fa fa-power-off"></i><span class="nav-label" >Déconnexion</span></a></li>
+          </li>
+                </ul>
+
+            </nav>
+
+        </aside>
+
+        <section class="content">
+
+        <header class="top-head container-fluid">
+
+
+            <form role="search" class="navbar-left app-search pull-left hidden-xs">
+              <input type="text" id="Skeyword" placeholder="Entrez les mots-clés..." class="form-control form-control-circle" onkeypress="handle(event)">
+          </form>
+
+            <nav class=" navbar-default hidden-xs" role="navigation">
+                <ul class="nav navbar-nav">
+                <li><a href="/profile/settings.html">Paramètres</a></li>
+              </ul>
+            </nav>
+
+            <ul class="nav-toolbar">
+              <li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-comments-o"></i> <span class="badge bg-warning" id="nbmsg"></span></a>
+                  <div class="dropdown-menu md arrow pull-right panel panel-default arrow-top-right messages-dropdown">
+                        <div class="panel-heading">
+                        Messages
+                        </div>
+
+                        <div class="list-group">
+                          <div id="adminmsgcontainer">
+                          <!--Admin messages here-->
+                          </div>
+                          <div id="msgcontainer">
+                          <!--messages here-->
+                          </div>
+
+                            <a href="/profile/messages.html" class="btn btn-info btn-flat btn-block">Voir tous les messages</a>
+
+                        </div>
+
+                    </div>
+                </li>
+                <li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-bell-o"></i><span class="badge" id="nbnotif"></span></a>
+                  <div class="dropdown-menu arrow pull-right md panel panel-default arrow-top-right notifications">
+                        <div class="panel-heading">
+                        Notification
+                        </div>
+
+                        <div class="list-group">
+                          <div id="notifcontainer">
+                          <!--notifications here-->
+                         </div>
+                         <a href="/profile/notifs.html" class="btn btn-info btn-flat btn-block">Voir tous les notifications</a>
+
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+        </header>
+        <!-- Header Ends -->
+
+
+
+
+
+        <div class="warper container-fluid">
+
+        <style>
+
+            .images{
+              float: left;
+              height: 500px;;
+              width : 300px;
+             background-color: green;
+            }
+            #cardscontainer{
+              height:100%;
+            }
+            #cardscontainerbody{
+                overflow-y: scroll;
+                height: 500px;
+            }
+            .card{
+              border-radius: 5px;
+              border: 1px solid #eee;
+              height: 400px;
+              width: 100%;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            }
+            .cardphoto{
+              height: 250px;
+              width: 100%;
+              border-radius: 5px 5px 0px 0px;
+              background-repeat: no-repeat;
+              background-size: cover;
+            }
+            .cardcontent{
+              height: 120px;
+              width: 100%;
+              border-radius:0px 0px 5px 5px ;
+              padding: 10px;
+              text-align: left;
+            }
+            .smallfont{
+                font-size: 12px;
+                color: grey;
+            }
+            .titlefont{
+                font-size: 14px;
+                color : #000;
+                font-weight: bold;
+            }
+            .image{
+              height: 100%;
+              width: 100%;
+              border-radius: 5px 5px 0px 0px;
+            }
+
+        </style>
+
+
+
+    <div class="container" style="width:100%;height:550px;">
+		<div style="height:70px;"></div>
+    	<div class="row">
+          <!-- begin col  -->
+    	<div class="col-lg-4 col-lg-offset-4">
+        	<div class="user text-center">
+            <div id="avatar1"></div>
+            <h4 class="user-name" id="profilename1"></h4>
+         </div>
+            <hr class="clean">
+
+
+                <form class="form-horizontal" role="form">
+							  <div class="form-group input-group">
+								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+								<input type="password" id="old-mdp" class="form-control"  placeholder="Ancien mot de passe">
+							  </div>
+							   <div class="form-group input-group">
+								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+								<input type="password" id="new-mdp" class="form-control"  placeholder="Nouveau mot de passe">
+							  </div>
+                <div class="form-group input-group">
+               <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+               <input type="password" id="conf-mdp" class="form-control"  placeholder="Confirmer mot de passe">
+               </div>
+
+
+								   <button type="button" class="btn btn-info btn-block" onClick="update()">Changer</button>
+
+                        	</form>
+                          <hr>
+
+                            <p class="text-center text-gray"><a href="settings.html">Retourner aux paramètres &nbsp; <i class="fa fa-cogs"></i></a></p>
+
+                        </div>
+                          <!-- end col  -->
+
+                    </div>
+                    <!-- end row  -->
+                </div>
+
+
+
+                <script>
+                /*
+                window.onpaint=funinit();
+                function funinit(){
+                    window.history.replaceState( {} , '', '/profile/' );
+                }
+                */
+                function handle(e){
+
+                       if(e.keyCode === 13){
+                           e.preventDefault(); // Ensure it is only this code that rusn
+                           tosearch();
+                       }
+                }
+              function tosearch(){
+                  var keyword=$('#Skeyword').val();
+                  localStorage.setItem('spot_webcl_serach_keyword',keyword);
+                  document.location.href="/profile/search.html";
+              }
+                $(window).load(function(){
+                try{
+                  var session = localStorage.getItem('SPOT_WEB_SESSION');
+                  if(session!="TRUE"){
+                    alert("Session expiré");
+                    document.location.href="/login.html";
+                  }
+                  else{
+                    // initialize profile infos
+
+                    loadprofileinfos();
+                    loadmsgs();
+                    loadnotifs();
+                  }
+
+                }
+                catch(e){
+
+                  document.location.href="/login.html";
+                }
+
+                });
+
+
+                setInterval(function(){
+                  document.getElementById("msgcontainer").innerHTML="";
+                  document.getElementById("adminmsgcontainer").innerHTML="";
+                  document.getElementById("notifcontainer").innerHTML="";
+                    loadmsgs();
+                    loadnotifs();
+                  }, 10000)
+
+                function loadprofileinfos(){
+                  var Profileid = localStorage.getItem('spot_webcl_Profileid');
+                  var Profilename = localStorage.getItem('spot_webcl_Profilename');
+                  var Profilefirstname = localStorage.getItem('spot_webcl_Profilefirstname');
+                  var Profilelastname = localStorage.getItem('spot_webcl_Profilelastname');
+                  var Profilefreinds = localStorage.getItem('spot_webcl_Profilefreinds');
+                  var Profileevents = localStorage.getItem('spot_webcl_Profileevents');
+                  var Profileregion = localStorage.getItem('spot_webcl_Profileregion');
+                  var Profilegender = localStorage.getItem('spot_webcl_Profilegender');
+                  var Profilebirthdate = localStorage.getItem('spot_webcl_Profilebirthdate');
+                  var Profiletel = localStorage.getItem('spot_webcl_Profiletel');
+                  var Profileadr = localStorage.getItem('spot_webcl_Profileadr');
+                  var Profileemail = localStorage.getItem('spot_webcl_Profileemail');
+                  var Profilecurrentpass = localStorage.getItem('spot_webcl_Profilecurrentpass');
+                  var Profilephoto = localStorage.getItem('spot_webcl_Profilephoto');
+                  var Profilecover = localStorage.getItem('spot_webcl_Profilecover');
+                   C = new Client(Profilefirstname,Profilelastname,Profileemail,Profiletel,Profilebirthdate,Profileadr,Profilecurrentpass,Profilefreinds,Profileevents);
+                  C.setId(Profileid);
+                  C.setSexe(Profilegender);
+                  C.setRegion(Profileregion);
+                  C.setProfilephoto(Profilephoto);
+                  C.setProfilecover(Profilecover);
+
+                  document.getElementById("profilename").innerHTML= C.getPrenom()+" "+C.getNom_famille();
+                  document.getElementById("profilename1").innerHTML= C.getPrenom()+" "+C.getNom_famille();
+                  var prophoto=C.getProfilephoto();
+                  var prosexe=C.getSexe();
+                  if(prophoto==""){
+                    if(prosexe=="m"){
+                      document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+                      document.getElementById("avatar1").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+                    }
+                    else if(prosexe=="f"){
+                      document.getElementById("avatar").innerHTML='<img src="assets/profile_f_default.png" class="img-circle" alt="...">';
+                      document.getElementById("avatar1").innerHTML='<img src="assets/profile_f_default.png" class="img-circle" alt="...">';
+                    }
+                    else{
+                      document.getElementById("avatar").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+                      document.getElementById("avatar1").innerHTML='<img src="assets/profile_m_default.png" class="img-circle" alt="...">';
+                    }
+                  }
+                  else{
+                    document.getElementById("avatar").innerHTML='<img src="../img/'+C.getProfilephoto()+'.png" class="img-circle" alt="...">';
+                    document.getElementById("avatar1").innerHTML='<img src="../img/'+C.getProfilephoto()+'.png" class="img-circle" alt="...">';
+                  }
+
+
+
+                }
+
+
+
+                function loadmsgs(){
+                var id=C.getId();
+                 var data = '{"operation":"select","table":"msgs","id":"'+id+'"}';
+                 $.getJSON("/webapi.php",{client_req:data},showmsg);
+                }
+                function showmsg(json) {
+                  if(json==null){
+                     document.getElementById("msgcontainer").innerHTML="<center>Boite message vide</center>";
+                  }
+                  else{
+                    // all goood
+
+                    Chat=[];
+                   //Chat.push("Lemon")
+                   for (var i = 0; i < json.length; i++) {
+                     var Ami={"ami_id":json[i].c_id,
+                               "ami_prenom":json[i].prenom,
+                               "ami_nom_famille":json[i].nom_famille,
+                               "ami_photo":json[i].profilephoto,
+                               "ami_statut":json[i].statut
+                             }
+                             var exist=false;
+                             for (var j = 0; j < Chat.length; j++) {
+                               var a=JSON.stringify(Chat[j]);
+                               var b=JSON.stringify(Ami);
+
+                               if(a==b)
+                               {
+                                  exist=true;
+                               }
+                             }
+                             if(exist==false){
+                               Chat.push(Ami);
+                             }
+
+                     }
+                     var ln=0;
+                     if(Chat.length>3){
+                       ln=3;
+                     }
+                     else{
+                       ln=Chat.length;
+                     }
+                     for (var k = 0; k < ln; k++) {
+                       //var time=msToTime((new Date()).valueOf() - (new Date(Chat[k].date)).valueOf());
+
+                       var photo='../img/'+Chat[k].ami_photo+'.png'
+                       var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+                       var statut=Chat[k].ami_statut;
+                       if(k<=3){
+                         if(statut=="1"){
+                           //freind online
+                           document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                         }
+                         else{
+                           //freind offline
+                           document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                         }
+                       }
+
+
+                    for (var m = 0; m < json.length; m++) {
+                      if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                        var x = (new Date()).getTimezoneOffset() * 60000;
+                        var today= (new Date(Date.now() - x)).toISOString();
+                        $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                        $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+                      }
+                    }
+                    }
+
+
+                  }
+                // get admin messages
+                TOT_NB_MSG=Chat.length;
+                loadadminmsgs();
+                }
+                function loadadminmsgs(){
+                  NB_ADMIN_MSG=0;
+                  var id=C.getId();
+                   var data = '{"operation":"select","table":"ADMINmsgs","id":"'+id+'"}';
+                   $.getJSON("/webapi.php",{client_req:data},showADMINmsg);
+                }
+                function showADMINmsg(json) {
+                  if(json==null){
+                     document.getElementById("adminmsgcontainer").innerHTML="";
+                  }
+                  else{
+                    NB_ADMIN_MSG=json.length;
+                    var finalelement=json[json.length-1];
+                    var x = (new Date()).getTimezoneOffset() * 60000;
+                    var today= (new Date(Date.now() - x)).toISOString();
+                    var lasttime=msToTime((new Date(today)).valueOf() - (new Date(finalelement.date)).valueOf());
+                    var lastmsg=finalelement.texte;
+                    var photo='../img/admin_dafault.png'
+                    var completename="Administrateur";
+                    var statut=finalelement.statut;
+                    if(statut=="1"){
+                        document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+                    }
+                    else{
+                        document.getElementById("adminmsgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div>'+lastmsg+'</div></h5><small class="text-muted">'+lasttime+'</small></div></div></a><br>';
+                    }
+
+                }
+                if(TOT_NB_MSG>0 && NB_ADMIN_MSG>0){
+                  document.getElementById("nbmsg").innerHTML=""+(TOT_NB_MSG+1);
+                }
+                else{
+                    document.getElementById("nbmsg").innerHTML=TOT_NB_MSG;
+                }
+              }
+
+                function msToTime(s){
+                 var ms = s % 1000;
+                 s = (s - ms) / 1000;
+                 var secs = s % 60;
+                 s = (s - secs) / 60;
+                 var mins = s % 60;
+                 var hrs = (s - mins) / 60;
+                 if(hrs==0 && mins==0)
+                     return "à l'instant";
+                 else if(hrs==0)
+                     return 'il y a '+mins+' minutes';
+                 else if(hrs<24)
+                     return 'il y a '+hrs+' heures';
+                 else
+                     return 'il y a '+Math.floor(hrs/24)+' jours';
+               }
+
+
+               function loadnotifs(){
+               var id=C.getId();
+               var data = '{"operation":"select","table":"notifs","id":"'+id+'"}';
+               $.getJSON("/webapi.php",{client_req:data},shownotif);
+               }
+               function shownotif(json) {
+                if(json==null){
+                   document.getElementById("notifcontainer").innerHTML="<center>Aucune notification</center>";
+                }
+                else{
+                  // all goood
+                  document.getElementById("notifcontainer").innerHTML="";
+                  var nb_nonvu=json.length;
+                  var lnn=0;
+                  if(json.length>4){
+                    lnn=4;
+                  }
+                  else{
+                    lnn=json.length;
+                  }
+                for (var i = 0; i < lnn; i++) {
+
+                  var msg="<b>"+json[i].prenom+" "+json[i].nom_famille+"</b> "+json[i].texte;
+                  var x = (new Date()).getTimezoneOffset() * 60000;
+                  var time=msToTime((new Date()-x).valueOf() - (new Date(json[i].date)).valueOf());
+                   var photo='../img/'+json[i].profilephoto+'.png';
+                   if(i<=3){
+                    document.getElementById("notifcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"><div class="media-body"><h5 class="media-heading">'+msg+'</h5><small class="text-muted">'+time+'</small></div></div></a>';
+                    }
+                   }
+
+                   if(nb_nonvu>0){
+                     document.getElementById("nbnotif").innerHTML=""+nb_nonvu;
+                   }
+                }
+               }
+
+
+
+
+
+
+
+                function update(){
+                  var old = $("#old-mdp").val();
+              		var newone = $("#new-mdp").val();
+              		var conf = $("#conf-mdp").val();
+
+
+              		if(old==""||newone==""||conf==""){
+                  openPopup("modal_error","Tous les champs sont obligatoires !");
+              		}
+              		else{
+                    if(newone!=conf){
+                       openPopup("modal_error","Les mot de passes ne son pas identiques !");
+                    }
+                    else{
+                      if(old!=C.getMot_de_passe()){
+                         openPopup("modal_error","Mot de passe incorrecte !");
+                      }
+                      else{
+                         //alert("ok");
+                      var id=C.getId();
+                      var data = '{"operation":"update","table":"clientmdp","id": "'+id+'","password": "'+newone+'"}';
+                     $.getJSON("/webapi.php",{client_req:data},show);
+                      }
+                    }
+
+                  }
+
+                }
+                function show(json) {
+         				 if(json==null){
+         					 openPopup("modal_error","Un problème est survenu, mise à jour annulé !");
+         				 }
+         				 else{
+                   openPopup("modal_sucess","Mot de passe mis à jour avec succées !");
+                   //loader here
+                   setTimeout(() => {
+                         logout();
+                  }, 2000);
+
+                 }
+               }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               function openPopup(id,texte){
+               $('#'+id).addClass('visible');
+               $('#'+id+"_text").html(texte);
+               }
+               function closePopup(id){
+               $('#'+id).removeClass('visible');
+               }
+               // fonction déconnexion du système
+            function logout(){
+              localStorage.removeItem('SPOT_WEB_SESSION');
+              localStorage.removeItem('spot_webcl_Profileid');
+              localStorage.removeItem('spot_webcl_Profilename');
+              localStorage.removeItem('spot_webcl_Profilefirstname');
+              localStorage.removeItem('spot_webcl_Profilelastname');
+              localStorage.removeItem('spot_webcl_Profilefreinds');
+              localStorage.removeItem('spot_webcl_Profileevents');
+              localStorage.removeItem('spot_webcl_Profileregion');
+              localStorage.removeItem('spot_webcl_Profilegender');
+              localStorage.removeItem('spot_webcl_Profilebirthdate');
+              localStorage.removeItem('spot_webcl_Profiletel');
+              localStorage.removeItem('spot_webcl_Profileadr');
+              localStorage.removeItem('spot_webcl_Profileemail');
+              localStorage.removeItem('spot_webcl_Profilecurrentpass');
+              localStorage.removeItem('spot_webcl_Profilephoto');
+              localStorage.removeItem('spot_webcl_Profilecover');
+              localStorage.removeItem('spot_cl_selected_freind_id');
+              localStorage.removeItem('spot_webcl_event_to_invite');
+              localStorage.removeItem('spot_webcl_event_to_invite_titre');
+              localStorage.removeItem('spot_webcl_event_to_invite_type');
+                 getoffline("client_offline",C.getId());
+            }
+            function getoffline(table,id){
+            var offdata = {
+              "operation": "update",
+              "table": table,
+              "id" :id
+             }
+             var stdata=JSON.stringify(offdata);
+               $.getJSON("/webapi.php",{client_req:stdata},showofflineconfirm);
+            }
+            function showofflineconfirm(json) {
+            if(json==null){
+             openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+            }
+            else{
+               document.location.href="/";
+             }
+            }
+
+
+                </script>
+
+            </div>
+
+        <!-- Warper Ends Here (working area) -->
+
+
+        <footer class="container-fluid footer">
+        	<p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+            <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+        </footer>
+
+    </section>
+    <!-- Content Block Ends Here (right box)-->
+
+
+
+    <!-- JQuery v1.9.1 -->
+	<script src="assets/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="assets/js/plugins/underscore/underscore-min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Globalize -->
+    <script src="assets/js/globalize/globalize.min.js"></script>
+
+    <!-- NiceScroll -->
+    <script src="assets/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+	<!-- TypeaHead -->
+    <script src="assets/js/plugins/typehead/typeahead.bundle.js"></script>
+    <script src="assets/js/plugins/typehead/typeahead.bundle-conf.js"></script>
+
+    <!-- InputMask -->
+    <script src="assets/js/plugins/inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- TagsInput -->
+    <script src="assets/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Chosen -->
+    <script src="assets/js/plugins/bootstrap-chosen/chosen.jquery.js"></script>
+
+    <!-- moment -->
+    <script src="assets/js/moment/moment.js"></script>
+
+    <!-- DateTime Picker -->
+    <script src="assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+
+    <!-- Custom JQuery -->
+	<script src="assets/js/app/custom.js" type="text/javascript"></script>
+
+
+</body>
+
+<!-- Mirrored from freakpixels.com/portfolio/brio/forms-element.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Oct 2017 22:13:55 GMT -->
+</html>

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/favicon.png">
+	<title>Admin | Recherche</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="Fahd Abdellaoui">
+
+      <link rel="stylesheet" href="ionicons/css/ionicons.min.css" />
+      <link rel="stylesheet" href="card/css/style.css">
+        <script src="js/jquery-2.2.3.min.js"></script>
+
+
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+
+	<!-- Typeahead Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/typeahead/typeahead.css" />
+
+    <!-- TagsInput Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+
+    <!-- Chosen Select  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-chosen/chosen.css" />
+
+    <!-- DateTime Picker  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css" />
+
+    <!-- Switch Buttons  -->
+    <link rel="stylesheet" href="assets/css/switch-buttons/switch-buttons.css" />
+
+    <!-- Fonts  -->
+    <link href='../../../fonts.googleapis.com/css01fc.css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/css/app/app.v2.css" />
+      <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+    <!--  Classes -->
+    <script src="../models/client.ts"></script>
+    <script src="../models/admin.ts"></script>
+    <script src="../models/message.ts"></script>
+    <script src="../models/evenement.ts"></script>
+
+
+    <!-- file upload settings-->
+
+    <!-- file upload settings-->
+
+
+
+
+</head>
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+
+  <!-- popup-->
+  <div class="modal" id="modal_info" onclick="closePopup(this.id)">
+  <div class="modal__box_special" id="modal_info_text">
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- ********************************************************************Header starts***************************************************************** -->
+
+	<!-- Preloader -->
+
+  	<!-- Preloader -->
+      <div class="loading-container">
+        <div class="loading">
+          <div class="l1">
+            <div></div>
+          </div>
+          <div class="l2">
+            <div></div>
+          </div>
+          <div class="l3">
+            <div></div>
+          </div>
+          <div class="l4">
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Preloader -->
+
+  	<aside class="left-panel">
+
+              <div class="user text-center">
+                <div id="avatar"></div>
+                <h4 class="user-name" id="profilename">Administrateur</h4>
+
+                    <div class="dropdown user-login">
+                    <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-circle status-icon available"></i>&nbsp; En ligne &nbsp;&nbsp;&nbsp; &nbsp;<i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <li role="presentation"><a role="menuitem" href="#" onClick="logout()"><i class="fa fa-circle status-icon signout"></i>&nbsp; Déconnexion</a></li>
+                    </ul>
+                    </div>
+              </div>
+
+
+
+              <nav class="navigation">
+              	<ul class="list-unstyled">
+                  	<li><a href="admin-home.html"><i class="glyphicon glyphicon-stats"></i><span class="nav-label">Tableau de bord</span></a></li>
+  					</li>
+            <li class="has-submenu"><a href="#"><i class="fa fa-toggle-on"></i> <span class="nav-label">Etat Site</span></a>
+                      <ul class="list-unstyled">
+                            <li><a href="admin-site.html">Mettre Hors Ligne</a></li>
+                            <li><a href="#" onclick="siteonline()">Mettre En Ligne</a></li>
+                        </ul>
+                    </li>
+  					<li><a href="admin-requests.html"><i class="fa fa-rotate-left"></i><span class="nav-label">Récupérations</span></a></li>
+  					</li>
+  					<li><a href="admin-messages.html"><i class="fa fa-wechat"></i><span class="nav-label">Messagerie</span></a></li>
+  					</li>
+  					<li><a href="admin-clients.html"><i class="fa fa-users"></i><span class="nav-label">Clients</span></a></li>
+  					</li>
+  					<li><a href="#" onClick="logout()"><i class="fa fa-power-off"></i><span class="nav-label">Déconnexion</span></a></li>
+  					</li>
+
+                  </ul>
+
+              </nav>
+      </aside>
+
+      <section class="content">
+
+          <header class="top-head container-fluid">
+
+
+            <form  class="navbar-left app-search pull-left hidden-xs">
+              <input type="text" id="serachbar" placeholder="Entrez les mots-clés..." class="form-control form-control-circle" onkeypress="handle(event)">
+          </form>
+
+              <nav class=" navbar-default hidden-xs" role="navigation">
+                  <ul class="nav navbar-nav">
+                  <li><a href="admin-settings.html">Paramètres</a></li>
+                </ul>
+              </nav>
+
+              <ul class="nav-toolbar">
+              	<li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-comments-o"></i> <span class="badge bg-warning" id="nbmsg"></span></a>
+                  	<div class="dropdown-menu md arrow pull-right panel panel-default arrow-top-right messages-dropdown">
+                          <div class="panel-heading">
+                        	Messages
+                          </div>
+
+                          <div class="list-group" >
+
+
+                            <div id="msgcontainer">
+                            <!--messages here-->
+                           </div>
+
+                              <a href="admin-messages.html" class="btn btn-info btn-flat btn-block">Voir tous les messages</a>
+
+                          </div>
+
+                      </div>
+                  </li>
+
+              </ul>
+          </header>
+
+
+<!-- ********************************************************************Header Ends***************************************************************** -->
+<style>
+.card {
+    padding-top: 20px;
+    margin: 10px 0 20px 0;
+    background-color: rgba(214, 224, 226, 0.2);
+    border-top-width: 0;
+    border-bottom-width: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card .card-heading {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.card .card-heading.simple {
+    font-size: 20px;
+    font-weight: 300;
+    color: #777;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.card .card-heading.image img {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    vertical-align: top;
+    border: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.card .card-heading.image .card-heading-header {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.card .card-heading.image .card-heading-header h3 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #262626;
+}
+
+.card .card-heading.image .card-heading-header span {
+    font-size: 12px;
+    color: #999999;
+}
+
+.card .card-body {
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.card .card-media {
+    padding: 0 20px;
+    margin: 0 -14px;
+}
+
+.card .card-media img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.card .card-actions {
+    min-height: 30px;
+    padding: 0 20px 20px 20px;
+    margin: 20px 0 0 0;
+}
+
+.card .card-comments {
+    padding: 20px;
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.card .card-comments .comments-collapse-toggle {
+    padding: 0;
+    margin: 0 20px 12px 20px;
+}
+
+.card .card-comments .comments-collapse-toggle a,
+.card .card-comments .comments-collapse-toggle span {
+    padding-right: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-comments .media-heading {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card.people {
+    position: relative;
+    display: inline-block;
+    width: 170px;
+    height: 300px;
+    padding-top: 0;
+    margin-left: 20px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.card.people:first-child {
+    margin-left: 0;
+}
+
+.card.people .card-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 170px;
+    height: 150px;
+    background-color: #ffffff;
+}
+
+.card.people .card-top.green {
+    background-color: #53a93f;
+}
+
+.card.people .card-top.blue {
+    background-color: #427fed;
+}
+
+.card.people .card-info {
+    position: absolute;
+    top: 150px;
+    display: inline-block;
+    width: 100%;
+    height: 101px;
+    overflow: hidden;
+    background: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.people .card-info .title {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #404040;
+}
+
+.card.people .card-info .desc {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.people .card-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    line-height: 29px;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.2);
+    height: 350px;
+}
+
+.card.hovercard .cardheader {
+    background-size: cover;
+    height: 135px;
+    width: 100%;
+}
+
+.card.hovercard .avatar {
+    position: relative;
+    top: -50px;
+    margin-bottom: -50px;
+}
+
+.card.hovercard .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}
+
+.card.hovercard .info {
+    padding: 4px 8px 10px;
+}
+
+.card.hovercard .info .title {
+    margin-bottom: 4px;
+    font-size: 24px;
+    line-height: 1;
+    color: #262626;
+    vertical-align: middle;
+}
+
+.card.hovercard .info .desc {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+
+
+
+.carte{
+  border-radius: 2px;
+  height: auto;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+    background-color: rgba(214, 224, 226, 0.2);
+}
+.cartephoto{
+  height: 250px;
+  width: 100%;
+  border-radius: 2px 2px 0px 0px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.cartecontent{
+  height: 120px;
+  width: 100%;
+  border-radius:0px 0px 5px 5px ;
+  padding: 10px;
+  text-align: left;
+}
+.smallfont{
+    font-size: 12px;
+    color: grey;
+}
+.titlefont{
+    font-size: 14px;
+    color : #000;
+    font-weight: bold;
+}
+
+.cartefooter{
+  height: 30px;
+  width: 100%;
+  border-radius: 0px 0px 5px 5px;
+}
+
+.footerbtnright{
+  padding: 3px;
+  float: right;
+  right: 0;
+  height: 100%;
+  width: 30%;
+  color:  #1dabc5;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+#containerstyle{
+  width:100%;
+  height:auto;
+  min-height: 550px;
+}
+.cartecontent1{
+  height: auto;
+  width: 400px;
+  border-radius:0px 0px 5px 5px ;
+  padding: 10px;
+  text-align: left;
+}
+.smallfont1{
+  font-weight: bold;
+    font-size: 12px;
+    color: grey;
+}
+.titlefont1{
+    font-size: 14px;
+    color : #000;
+    font-weight: bold;
+}
+</style>
+
+
+
+
+<div class="warper container-fluid">
+
+
+
+
+
+<div class="container" id="containerstyle">
+<div style="height:70px;"></div>
+<div class="row">
+<div class="col-lg-4 col-lg-offset-4" id="resbox">
+          <!-- result of search here -->
+          <!-- result of search here -->
+</div>
+<div class="col-lg-4 col-lg-offset-4" id="resbox1">
+          <!-- result of search here -->
+
+          <!-- result of search here -->
+</div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+<!-- ********************************************************************Script Starts***************************************************************** -->
+
+
+          <script>
+
+
+                $(window).load(function(){
+                            try{
+                              var session = localStorage.getItem('SPOT_ADMIN_SESSION');
+                              if(session!="TRUE"){
+                                alert("Session expiré");
+                                document.location.href="/login.html";
+                              }
+                              else{
+                                // initialize profile infos
+                                loadprofileinfos();
+                                quickcheck();
+                                loadmsgs();
+
+                              }
+
+                            }
+                            catch(e){
+                              document.location.href="/login.html";
+                            }
+                             document.getElementById("serachbar").focus();
+                            });
+
+
+
+
+                            setInterval(function(){
+                              document.getElementById("msgcontainer").innerHTML="";
+                                loadmsgs();
+                              }, 10000)
+
+                              function quickcheck(){
+                                      var Skey = localStorage.getItem('spot_admin_serach_keyword');
+                                       localStorage.removeItem('spot_admin_serach_keyword');
+                                      if(Skey!="" && Skey!=null){
+                                        $("#serachbar").val(Skey);
+                                        var data = '{"operation":"select","table":"client_key","keyword":"'+Skey+'"}';
+                                        $.getJSON("/webapi.php",{client_req:data},showres1);
+                                        // wait 1 s
+                                        setTimeout(() => {
+                                          var data = '{"operation":"select","table":"event_key","keyword":"'+Skey+'"}';
+                                          $.getJSON("/webapi.php",{client_req:data},showres2);
+                                           }, 1000);
+
+                                      }
+                              }
+
+
+                            function loadprofileinfos(){
+
+                              var id = localStorage.getItem('spot_admin_id');
+                              var name = localStorage.getItem('spot_admin_name');
+                              var firstname = localStorage.getItem('spot_admin_firstname');
+                              var lastname = localStorage.getItem('spot_admin_lastname');
+                              var email = localStorage.getItem('spot_admin_email');
+                              var currentpass = localStorage.getItem('spot_admin_currentpass');
+                              var photo = localStorage.getItem('spot_admin_photo');
+                              var statut = localStorage.getItem('spot_admin_statut');
+
+
+                               A = new Admin(firstname,lastname,email,currentpass,photo,statut);
+                               A.setId(id);
+                                var prophoto=A.getPhoto();
+                                document.getElementById("avatar").innerHTML='<img src="../img/'+prophoto+'.png" class="img-circle" alt="...">';
+                                document.getElementById("resbox").innerHTML="<center>Aucun résultat trouvé</center>";
+                                  document.getElementById("resbox1").innerHTML="";
+
+
+                            }
+
+                            function loadmsgs(){
+                            var id=A.getId();
+                             var data = '{"operation":"select","table":"msgs","id":"'+id+'"}';
+                             $.getJSON("/webapi.php",{client_req:data},showmsg);
+                            }
+                            function showmsg(json) {
+                              if(json==null){
+                                 document.getElementById("msgcontainer").innerHTML="<center>Boite message vide</center>";
+                              }
+                              else{
+                                // all goood
+                                Chat=[];
+                               for (var i = 0; i < json.length; i++) {
+                                 var Ami={"ami_id":json[i].c_id,
+                                           "ami_prenom":json[i].prenom,
+                                           "ami_nom_famille":json[i].nom_famille,
+                                           "ami_photo":json[i].profilephoto,
+                                           "ami_statut":json[i].statut
+                                         }
+                                         var exist=false;
+                                         for (var j = 0; j < Chat.length; j++) {
+                                           var a=JSON.stringify(Chat[j]);
+                                           var b=JSON.stringify(Ami);
+
+                                           if(a==b)
+                                           {
+                                              exist=true;
+                                           }
+                                         }
+                                         if(exist==false){
+                                           Chat.push(Ami);
+                                         }
+
+                                 }
+                                 var ln=0;
+                                 if(Chat.length>4){
+                                   ln=4;
+                                 }
+                                 else{
+                                   ln=Chat.length;
+                                 }
+                                 for (var k = 0; k < ln; k++) {
+                                   var photo='../img/'+Chat[k].ami_photo+'.png'
+                                   var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+                                   var statut=Chat[k].ami_statut;
+                                   if(k<=3){
+                                     if(statut=="1"){
+                                       //freind online
+                                       document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                     }
+                                     else{
+                                       //freind offline
+                                       document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                     }
+                                   }
+                                for (var m = 0; m < json.length; m++) {
+                                  if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                                    var x = (new Date()).getTimezoneOffset() * 60000;
+                                    var today= (new Date(Date.now() - x)).toISOString();
+                                    $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                                    $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+                                  }
+                                }
+                                }
+                              }
+                            if(Chat.length>0){
+                              document.getElementById("nbmsg").innerHTML=""+Chat.length;
+                            }
+
+                            }
+
+                            function msToTime(s){
+                             var ms = s % 1000;
+                             s = (s - ms) / 1000;
+                             var secs = s % 60;
+                             s = (s - secs) / 60;
+                             var mins = s % 60;
+                             var hrs = (s - mins) / 60;
+                             if(hrs==0 && mins==0)
+                                 return "à l'instant";
+                             else if(hrs==0)
+                                 return 'il y a '+mins+' minutes';
+                             else if(hrs<24)
+                                 return 'il y a '+hrs+' heures';
+                             else
+                                 return 'il y a '+Math.floor(hrs/24)+' jours';
+                           }
+
+
+                           function handle(e){
+                                  if(e.keyCode === 13){
+                                      e.preventDefault(); // Ensure it is only this code that rusn
+                                      if( $("#serachbar").val()==""){
+                                          document.getElementById("resbox").innerHTML="<center>Aucun résultat trouvé</center>";
+                                          document.getElementById("resbox1").innerHTML="";
+                                      }
+                                      else{
+                                        listresultclient();
+                                          listresultevents();
+                                      }
+
+                                  }
+                              }
+
+                           function listresultclient(){
+                             var keyword = $("#serachbar").val();
+                             var data = '{"operation":"select","table":"client_key","keyword":"'+keyword+'"}';
+                             $.getJSON("/webapi.php",{client_req:data},showres1);
+
+                           }
+                           function showres1(json) {
+                            if(json==null){
+                                document.getElementById("resbox").innerHTML="<center>Aucun résultat trouvé</center>";
+                                nodata=1;
+                            }
+                            else{
+                              // all goood
+                              document.getElementById("resbox").innerHTML="";
+                              SEARCHPROFILES=[];
+                              SEARCHPROFILES=json;
+                              for (var i = 0; i < json.length; i++) {
+                                // SECTION DE MAPPING
+                                CS = new Client;
+                                Object.assign(CS, json[i]);
+                                // FIN MAPPING
+                                var photourl='../img/'+CS.getProfilephoto()+'.png';
+                                var coverurl='../img/'+CS.getProfilecover()+'.png';
+                                document.getElementById("resbox").innerHTML+='<center><div class="card hovercard"><img class="cardheader" src="'+coverurl+'"/><div class="avatar"><img alt="" src="'+photourl+'"></div><div class="info"><div class="title"><a target="_blank">'+CS.getPrenom()+' '+CS.getNom_famille()+'</a></div><div class="desc">'+CS.getDate_naissance()+'</div><div class="desc">Amis : '+CS.getNb_amis()+'</div><div class="desc">Evenements : '+CS.getNb_evenement()+'</div></div><div class="bottom"><button type="button" id="p'+CS.getId()+'" class="btn btn-info btn-block"  onClick="seeprofile(this.id)">Voir le profil &nbsp; <i class="fa fa-send"></i></button></div></div></center>';
+
+                              }
+
+
+                            }
+
+                           }
+
+
+                           function listresultevents(){
+                            var keyword = $("#serachbar").val();
+                            var data = '{"operation":"select","table":"event_key","keyword":"'+keyword+'"}';
+                            $.getJSON("/webapi.php",{client_req:data},showres2);
+                           }
+
+                           function showres2(json) {
+                            if(json==null){
+                              if(nodata!=1){
+                                  document.getElementById("resbox1").innerHTML="Aucun résultat trouvé";
+                              }
+                              else{
+                                   document.getElementById("resbox1").innerHTML="";
+                              }
+
+                            }
+                            else{
+                              // all goood
+                              SEARCHEVENTS=[];
+                              SEARCHEVENTS=json;
+                              document.getElementById("resbox1").innerHTML="";
+                              for (var i = 0; i < json.length; i++) {
+                                // SECTION DE MAPPING
+                                Eve = new Evenement;
+                                Object.assign(Eve, json[i]);
+                                // FIN MAPPING
+                                document.getElementById("resbox1").innerHTML+="<center><div class='carte'><div class='cartecontent'><div class='titlefont'>EVENEMENT : "+Eve.getTitre()+"</div><br><div class='smallfont'>Type : "+Eve.getType()+"<br>Abonnements : "+Eve.getNb_abonnees()+"<br>Description :<br>"+Eve.getDescription()+"</div></div><div class='cartefooter'><div id='e"+Eve.getId()+"' class='footerbtnright'onclick='seedetails(this.id)'>Détails &nbsp; <i class='fa fa-send'></div></div></div><center>";
+
+                              }
+
+                            }
+                           }
+
+
+
+
+
+                            function seeprofile(id){
+                              var pureId=id.substring(1,(id.toString().length));
+                                for (var i = 0; i < SEARCHPROFILES.length; i++) {
+                                  if(SEARCHPROFILES[i].id==pureId){
+                                    var TC = new Client;
+                                    Object.assign(TC, SEARCHPROFILES[i]);
+                                    displayprofile(TC);
+                                  }
+                                }
+
+                            }
+                            function seedetails(id){
+                              var pureId=id.substring(1,(id.toString().length));
+                              for (var i = 0; i < SEARCHEVENTS.length; i++) {
+                                if(SEARCHEVENTS[i].id==pureId){
+                                  var TE = new Evenement;
+                                  Object.assign(TE, SEARCHEVENTS[i]);
+                                  displayevent(TE);
+                                 }
+                              }
+                            }
+
+
+                            function displayprofile(Client){
+                              //console.log(Client.getId());
+                              var content="";
+                              var photourl='../img/'+Client.getProfilephoto()+'.png';
+                              var coverurl='../img/'+Client.getProfilecover()+'.png';
+                              var sexe="";
+                              if(Client.getSexe()=="m"){
+                                sexe="Homme";
+                              }
+                              else if(Client.getSexe()=="f"){
+                                sexe="Femme";
+                              }
+                              else{
+                                  sexe="-";
+                              }
+                              content='<div class="card hovercard"><img class="cardheader" src="'+coverurl+'"/><div class="avatar"><img alt="" src="'+photourl+'"></div><div class="info"><div class="title"><a target="_blank">'+Client.getPrenom()+' '+Client.getNom_famille()+'</a></div><b><div class="desc">'+Client.getDate_naissance()+'</div><div class="desc"> Evenements : '+Client.getNb_evenement()+'&nbsp;&nbsp;&nbsp;  Amis : '+Client.getNb_amis()+'<br> Email : '+Client.getEmail()+'  <br>Région : '+Client.getRegion()+'<br>Tel : '+Client.getTel()+'<br> Sexe : '+sexe+'<br></div></b></div></div>';
+                              //console.log(Client);
+                              openPopup("modal_info",content);
+                            }
+                            function displayevent(Even){
+                              console.log(Even);
+                              var x = (new Date()).getTimezoneOffset() * 60000;
+                              var today= (new Date(Date.now() - x)).toISOString();
+                              var time=msToTime((new Date(today)).valueOf() - (new Date(Even.getDate())).valueOf());
+
+                              content="<div class='carte'><div class='cartecontent1'><div class='titlefont1'>EVENEMENT : "+Even.getTitre()+"</div><br><div class='smallfont1'>Type : "+Even.getType()+"<br>Abonnements : "+Even.getNb_abonnees()+"<br>Description :<br>"+Even.getDescription()+"</div></div><div class='cartefooter'><div  class='footerbtnright' >"+time+"</div></div></div>";
+                              openPopup("modal_info",content);
+
+                            }
+
+                                                      // mettre le site en ligne
+                                                      function siteonline(){
+                                                        var data = '{"operation":"select","table":"site"}';
+                                                        $.getJSON("/webapi.php",{client_req:data},showsitestate);
+                                                      }
+                                                      function showsitestate(json) {
+                                                        if(json==null){
+                                                       openPopup("modal_error","Site déja en ligne !");
+                                                        }
+                                                        else{
+                                                          var data = '{"operation":"delete","table":"site"}';
+                                                          $.getJSON("/webapi.php",{client_req:data},showdelsitestate);
+                                                        }
+                                                      }
+                                                      function showdelsitestate(json) {
+                                                        if(json==null){
+                                                           openPopup("modal_error","Un problème est survenu !");
+                                                        }
+                                                        else{
+                                                           openPopup("modal_sucess","Votre site est en ligne !");
+                                                        }
+                                                      }
+                                                       // mettre le site en ligne
+
+
+
+
+
+
+
+                           function openPopup(id,texte){
+                           $('#'+id).addClass('visible');
+                           $('#'+id+"_text").html(texte);
+                           }
+                           function closePopup(id){
+                           $('#'+id).removeClass('visible');
+                           }
+                           // fonction déconnexion du système
+                         function logout(){
+
+                          localStorage.removeItem('SPOT_ADMIN_SESSION');
+                          localStorage.removeItem('spot_admin_id');
+                          localStorage.removeItem('spot_admin_name');
+                          localStorage.removeItem('spot_admin_firstname');
+                          localStorage.removeItem('spot_admin_lastname');
+                          localStorage.removeItem('spot_admin_email');
+                          localStorage.removeItem('spot_admin_currentpass');
+                          localStorage.removeItem('spot_admin_photo');
+                          localStorage.removeItem('spot_admin_statut');
+                          localStorage.removeItem('spot_selected_freind_id');
+                          getoffline("admin_offline",A.getId());
+
+                         }
+                         function getoffline(table,id){
+                         var offdata = {
+                           "operation": "update",
+                           "table": table,
+                           "id" :id
+                          }
+                          var stdata=JSON.stringify(offdata);
+                            $.getJSON("/webapi.php",{client_req:stdata},showofflineconfirm);
+                         }
+                         function showofflineconfirm(json) {
+                         if(json==null){
+                          openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+                         }
+                         else{
+                            document.location.href="/";
+                          }
+                         }
+
+
+
+                            </script>
+<!-- ********************************************************************Script Ends***************************************************************** -->
+
+
+        <!-- Warper Ends Here (working area) -->
+
+
+        <footer class="container-fluid footer">
+        	<p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+            <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+        </footer>
+
+    </section>
+    <!-- Content Block Ends Here (right box)-->
+
+
+
+
+    <script src="assets/js/plugins/underscore/underscore-min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Globalize -->
+    <script src="assets/js/globalize/globalize.min.js"></script>
+
+    <!-- NiceScroll -->
+    <script src="assets/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+    <!-- InputMask -->
+    <script src="assets/js/plugins/inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- TagsInput -->
+    <script src="assets/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Custom JQuery -->
+	<script src="assets/js/app/custom.js" type="text/javascript"></script>
+
+
+</body>
+
+<!-- Mirrored from freakpixels.com/portfolio/brio/forms-element.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Oct 2017 22:13:55 GMT -->
+</html>

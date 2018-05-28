@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/favicon.png">
+	<title>Admin | Acceuil</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="Fahd Abdellaoui">
+
+      <link rel="stylesheet" href="ionicons/css/ionicons.min.css" />
+      <link rel="stylesheet" href="card/css/style.css">
+        <script src="js/jquery-2.2.3.min.js"></script>
+
+
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css" />
+
+	<!-- Typeahead Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/typeahead/typeahead.css" />
+
+    <!-- TagsInput Styling  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+
+    <!-- Chosen Select  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-chosen/chosen.css" />
+
+    <!-- DateTime Picker  -->
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css" />
+
+    <!-- Switch Buttons  -->
+    <link rel="stylesheet" href="assets/css/switch-buttons/switch-buttons.css" />
+
+    <!-- Fonts  -->
+    <link href='../../../fonts.googleapis.com/css01fc.css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/css/app/app.v2.css" />
+      <link href="/css/popup.css" rel="stylesheet" type="text/css" />
+    <!--  Classes -->
+    <script src="../models/client.ts"></script>
+    <script src="../models/admin.ts"></script>
+    <script src="../models/message.ts"></script>
+
+
+    <!-- file upload settings-->
+
+    <!-- file upload settings-->
+
+
+
+
+</head>
+<body>
+  <!-- popup-->
+  <div class="modal" id="modal_error" onclick="closePopup(this.id)">
+  <div class="modal__box_error">
+    <center>
+    <p id="modal_error_text"></p><br>
+    <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- popup-->
+  <div class="modal" id="modal_sucess" onclick="closePopup(this.id)">
+  <div class="modal__box_sucess">
+  <center>
+  <p id="modal_sucess_text"></p><br>
+  <button class="popupbtn">Bien j'ai compris</button>
+  </center>
+  </div>
+  </div>
+  <!-- popup-->
+  <!-- ********************************************************************Header starts***************************************************************** -->
+
+	<!-- Preloader -->
+
+  	<!-- Preloader -->
+      <div class="loading-container">
+        <div class="loading">
+          <div class="l1">
+            <div></div>
+          </div>
+          <div class="l2">
+            <div></div>
+          </div>
+          <div class="l3">
+            <div></div>
+          </div>
+          <div class="l4">
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Preloader -->
+
+  	<aside class="left-panel">
+
+              <div class="user text-center">
+                <div id="avatar"></div>
+                <h4 class="user-name" id="profilename">Administrateur</h4>
+
+                    <div class="dropdown user-login">
+                    <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-circle status-icon available"></i>&nbsp; En ligne &nbsp;&nbsp;&nbsp; &nbsp;<i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <li role="presentation"><a role="menuitem" href="#" onClick="logout()"><i class="fa fa-circle status-icon signout"></i>&nbsp; Déconnexion</a></li>
+                    </ul>
+                    </div>
+              </div>
+
+
+
+              <nav class="navigation">
+              	<ul class="list-unstyled">
+                  	<li><a href="admin-home.html"><i class="glyphicon glyphicon-stats"></i><span class="nav-label">Tableau de bord</span></a></li>
+  					</li>
+            <li class="has-submenu"><a href="#"><i class="fa fa-toggle-on"></i> <span class="nav-label">Etat Site</span></a>
+                    	<ul class="list-unstyled">
+                        	  <li><a href="admin-site.html">Mettre Hors Ligne</a></li>
+                            <li><a href="#" onclick="siteonline()">Mettre En Ligne</a></li>
+                        </ul>
+                    </li>
+  					<li><a href="admin-requests.html"><i class="fa fa-rotate-left"></i><span class="nav-label">Récupérations</span></a></li>
+  					</li>
+  					<li><a href="admin-messages.html"><i class="fa fa-wechat"></i><span class="nav-label">Messagerie</span></a></li>
+  					</li>
+  					<li><a href="admin-clients.html"><i class="fa fa-users"></i><span class="nav-label">Clients</span></a></li>
+  					</li>
+  					<li><a href="#" onClick="logout()"><i class="fa fa-power-off"></i><span class="nav-label">Déconnexion</span></a></li>
+  					</li>
+
+                  </ul>
+
+              </nav>
+
+      </aside>
+
+      <section class="content">
+
+          <header class="top-head container-fluid">
+
+
+              <form role="search" class="navbar-left app-search pull-left hidden-xs">
+                <input type="text" id="Skeyword" placeholder="Entrez les mots-clés..." class="form-control form-control-circle" onkeypress="handle(event)">
+           	</form>
+
+              <nav class=" navbar-default hidden-xs" role="navigation">
+                  <ul class="nav navbar-nav">
+                  <li><a href="admin-settings.html">Paramètres</a></li>
+                </ul>
+              </nav>
+
+              <ul class="nav-toolbar">
+              	<li class="dropdown"><a href="#" data-toggle="dropdown"><i class="fa fa-comments-o"></i> <span class="badge bg-warning" id="nbmsg"></span></a>
+                  	<div class="dropdown-menu md arrow pull-right panel panel-default arrow-top-right messages-dropdown">
+                          <div class="panel-heading">
+                        	Messages
+                          </div>
+
+                          <div class="list-group" >
+
+
+                            <div id="msgcontainer">
+                            <!--messages here-->
+                           </div>
+
+                              <a href="admin-messages.html" class="btn btn-info btn-flat btn-block">Voir tous les messages</a>
+
+                          </div>
+
+                      </div>
+                  </li>
+
+              </ul>
+          </header>
+
+
+<!-- ********************************************************************Header Ends***************************************************************** -->
+<style>
+.invisible{
+  display: none;
+}
+.boxi{
+  position: relative;
+  height: 800px;
+  min-height: 800px;
+  width: 100%;
+  min-width: 800px;
+  overflow: hidden;
+  border: 0;
+}
+
+</style>
+
+
+
+
+        <div class="warper container-fluid">
+
+
+
+
+
+        <div class="container" style="width:100%;height:auto;">
+
+
+<!-- work here -->
+<div class="row">
+
+             <div class="col-md-6">
+                 <div class="panel panel-default">
+                       <div class="panel-heading">Nombre de connexions par semaine</div>
+                       <div class="panel-body">
+                         <div id="nb-logins" style="height:250px;"></div>
+                       </div>
+                   </div>
+               </div>
+
+  <div class="col-md-6">
+     <div class="panel panel-default">
+           <div class="panel-heading">Données Générales</div>
+           <div class="panel-body">
+
+             <table class="table no-margn">
+                 <thead>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <td>Nombre des clients :</td>
+                     <td id="nbclients">
+                      0000
+                     </td>
+                   </tr>
+                   <tr>
+                     <tr>
+                       <td>Total evenements crées:</td>
+                       <td id="nbevents">
+                        0000
+                       </td>
+                     </tr>
+                     <tr>
+                       <tr>
+                         <td>Total messages échangées :</td>
+                         <td id="nbmsgs">
+                          0000
+                         </td>
+                       </tr>
+                       <tr>
+                         <tr>
+                           <td>Total lieux crées :</td>
+                           <td id="nbplaces">
+                            0000
+                           </td>
+                         </tr>
+                         <tr>
+                 </tbody>
+               </table>
+
+           </div>
+       </div>
+   </div>
+
+
+
+
+           </div>
+
+
+
+           <div class="row">
+
+
+
+             <div class="col-md-6">
+                <div class="panel panel-default">
+                       <div class="panel-heading">Connexions selon les platformes</div>
+                       <div class="panel-body">
+                        <div id="pie-platforms" style="height:250px;"></div>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-6">
+                <div class="panel panel-default">
+                       <div class="panel-heading">Utilisateurs seleon le sexe</div>
+                       <div class="panel-body">
+                        <div id="sexe-chart" style="height:250px;"></div>
+                       </div>
+                   </div>
+               </div>
+
+
+
+            </div>
+
+
+             <div class="row">
+
+
+
+             <div class="col-md-12">
+                 <div class="panel panel-default">
+                       <div class="panel-heading">Utilisateurs selon la région</div>
+                       <div class="panel-body">
+                         <div id="nb-users-per-region" style="height:250px;"></div>
+                       </div>
+                   </div>
+               </div>
+
+
+             </div>
+
+              <div class="row">
+
+                <div class="col-md-12">
+                  <div class="panel panel-default">
+                        <div class="panel-heading">Evenement par mois</div>
+                        <div class="panel-body">
+                          <div id="area-chart" style="height:250px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                 </div>
+
+<!-- work here -->
+
+
+    </div>
+
+            </div>
+
+<!-- ********************************************************************Script Starts***************************************************************** -->
+
+
+          <script>
+
+
+                $(window).load(function(){
+                            try{
+                              var session = localStorage.getItem('SPOT_ADMIN_SESSION');
+                              if(session!="TRUE"){
+                                alert("Session expiré");
+                                document.location.href="/login.html";
+                              }
+                              else{
+                                // initialize profile infos
+                                loadprofileinfos();
+                                loadmsgs();
+                                loadhistory();
+                                loadclients();
+                                loadevents();
+                                loadnbmsgs();
+                                loadnbplaces();
+                              }
+
+                            }
+                            catch(e){
+                              document.location.href="/login.html";
+                            }
+
+                            });
+
+
+
+                            function handle(e){
+
+                                   if(e.keyCode === 13){
+                                       e.preventDefault(); // Ensure it is only this code that rusn
+                                       tosearch();
+                                   }
+                            }
+                          function tosearch(){
+                              var keyword=$('#Skeyword').val();
+                              localStorage.setItem('spot_admin_serach_keyword',keyword);
+                              document.location.href="/profile/admin-search.html";
+                          }
+
+
+
+                           setInterval(function(){
+                             document.getElementById("msgcontainer").innerHTML="";
+                               loadmsgs();
+                             }, 10000)
+
+
+
+                            function loadprofileinfos(){
+
+                              var id = localStorage.getItem('spot_admin_id');
+                              var name = localStorage.getItem('spot_admin_name');
+                              var firstname = localStorage.getItem('spot_admin_firstname');
+                              var lastname = localStorage.getItem('spot_admin_lastname');
+                              var email = localStorage.getItem('spot_admin_email');
+                              var currentpass = localStorage.getItem('spot_admin_currentpass');
+                              var photo = localStorage.getItem('spot_admin_photo');
+                              var statut = localStorage.getItem('spot_admin_statut');
+
+
+                               A = new Admin(firstname,lastname,email,currentpass,photo,statut);
+                               A.setId(id);
+                                var prophoto=A.getPhoto();
+                                document.getElementById("avatar").innerHTML='<img src="../img/'+prophoto+'.png" class="img-circle" alt="...">';
+
+
+
+                            }
+
+
+
+                                                        function loadmsgs(){
+                                                        var id=A.getId();
+                                                   			 var data = '{"operation":"select","table":"msgs","id":"'+id+'"}';
+                                                   			 $.getJSON("/webapi.php",{client_req:data},showmsg);
+                                                        }
+                                                        function showmsg(json) {
+                                                          if(json==null){
+                                                             document.getElementById("msgcontainer").innerHTML="<center>Boite message vide</center>";
+                                                          }
+                                                          else{
+                                                            // all goood
+                                                            Chat=[];
+                                                           for (var i = 0; i < json.length; i++) {
+                                                             var Ami={"ami_id":json[i].c_id,
+                                                                       "ami_prenom":json[i].prenom,
+                                                                       "ami_nom_famille":json[i].nom_famille,
+                                                                       "ami_photo":json[i].profilephoto,
+                                                                       "ami_statut":json[i].statut
+                                                                     }
+                                                                     var exist=false;
+                                                                     for (var j = 0; j < Chat.length; j++) {
+                                                                       var a=JSON.stringify(Chat[j]);
+                                                                       var b=JSON.stringify(Ami);
+
+                                                                       if(a==b)
+                                                                       {
+                                                                          exist=true;
+                                                                       }
+                                                                     }
+                                                                     if(exist==false){
+                                                                       Chat.push(Ami);
+                                                                     }
+
+                                                             }
+                                                             var ln=0;
+                                                             if(Chat.length>4){
+                                                               ln=4;
+                                                             }
+                                                             else{
+                                                               ln=Chat.length;
+                                                             }
+                                                             for (var k = 0; k < ln; k++) {
+                                                               var photo='../img/'+Chat[k].ami_photo+'.png'
+                                                               var completename=Chat[k].ami_prenom+' '+Chat[k].ami_nom_famille;
+                                                               var statut=Chat[k].ami_statut;
+                                                               if(k<=3){
+                                                                 if(statut=="1"){
+                                                                   //freind online
+                                                                   document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status online pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                                                 }
+                                                                 else{
+                                                                   //freind offline
+                                                                   document.getElementById("msgcontainer").innerHTML+='<a href="#" class="list-group-item"><div class="media"><div class="user-status offline pull-left"><img class="media-object img-circle pull-left" src="'+photo+'" alt="user#1" width="40"></div><div class="media-body"><h5 class="media-heading"><b>'+completename+'</b><br><div id="lastmsg'+Chat[k].ami_id+'"></div></h5><small class="text-muted" id="Gtime'+Chat[k].ami_id+'"></small></div></div></a>';
+                                                                 }
+                                                               }
+                                                            for (var m = 0; m < json.length; m++) {
+                                                              if(Chat[k].ami_id==json[m].emetteur || Chat[k].ami_id==json[m].recepteur){
+                                                                var x = (new Date()).getTimezoneOffset() * 60000;
+                                                                var today= (new Date(Date.now() - x)).toISOString();
+                                                                $('#Gtime'+Chat[k].ami_id).html(msToTime((new Date(today)).valueOf() - (new Date(json[m].date)).valueOf()));
+                                                                $('#lastmsg'+Chat[k].ami_id).html(json[m].texte);
+                                                              }
+                                                            }
+                                                            }
+                                                          }
+                                                        if(Chat.length>0){
+                                                          document.getElementById("nbmsg").innerHTML=""+Chat.length;
+                                                        }
+
+                                                        }
+
+                                                        function msToTime(s){
+                                                         var ms = s % 1000;
+                                                         s = (s - ms) / 1000;
+                                                         var secs = s % 60;
+                                                         s = (s - secs) / 60;
+                                                         var mins = s % 60;
+                                                         var hrs = (s - mins) / 60;
+                                                         if(hrs==0 && mins==0)
+                                                             return "à l'instant";
+                                                         else if(hrs==0)
+                                                             return 'il y a '+mins+' minutes';
+                                                         else if(hrs<24)
+                                                             return 'il y a '+hrs+' heures';
+                                                         else
+                                                             return 'il y a '+Math.floor(hrs/24)+' jours';
+                                                       }
+
+
+
+
+
+
+                           // mettre le site en ligne
+                           function siteonline(){
+                             var data = '{"operation":"select","table":"site"}';
+                             $.getJSON("/webapi.php",{client_req:data},showsitestate);
+                           }
+                           function showsitestate(json) {
+                             if(json==null){
+                            openPopup("modal_error","Site déja en ligne !");
+                             }
+                             else{
+                               var data = '{"operation":"delete","table":"site"}';
+                               $.getJSON("/webapi.php",{client_req:data},showdelsitestate);
+                             }
+                           }
+                           function showdelsitestate(json) {
+                             if(json==null){
+                                openPopup("modal_error","Un problème est survenu !");
+                             }
+                             else{
+                                openPopup("modal_sucess","Votre site est en ligne !");
+                             }
+                           }
+                            // mettre le site en ligne
+
+
+
+
+                                             function loadhistory(){
+                                                     var data = '{"operation":"select","table":"history"}';
+                                                     $.getJSON("/webapi.php",{client_req:data},showhistory);
+                                                   }
+                                                   function showhistory(json) {
+                                                     if(json==null){
+                                                      console.log("aucun historique trouvé");
+                                                     }
+                                                     else{
+                                                         loadchart1(json);
+                                                         loadchart2(json);
+                                                      }
+                                                     }
+
+                                                     function loadclients(){
+                                                             var data = '{"operation":"select","table":"clients"}';
+                                                             $.getJSON("/webapi.php",{client_req:data},showclients);
+                                                           }
+                                                           function showclients(json) {
+                                                             if(json==null){
+                                                              //alert("aucun client trouvé");
+                                                              $('#nbclients').html("0000");
+                                                             }
+                                                             else{
+                                                                 loadchart3(json);
+                                                                 loadchart5(json);
+                                                                 $('#nbclients').html(json.length);
+                                                              }
+                                                             }
+                                          function loadevents(){
+                                              var data = '{"operation":"select","table":"events"}';
+                                              $.getJSON("/webapi.php",{client_req:data},showevents);
+                                              }
+                                          function showevents(json) {
+                                            if(json==null){
+                                            //  alert("aucun evenement trouvé");
+                                               $('#nbevents').html("0000");
+                                            }
+                                            else{
+                                              loadchart4(json);
+                                               $('#nbevents').html(json.length);
+                                                }
+                                           }
+
+
+                                           function loadnbmsgs(){
+                                                   var data = '{"operation":"select","table":"totmsgs"}';
+                                                   $.getJSON("/webapi.php",{client_req:data},shownbmsgs);
+                                                 }
+                                                 function shownbmsgs(json) {
+                                                   if(json==null){
+                                                     $('#nbmsgs').html("0000");
+                                                   }
+                                                   else{
+                                                       $('#nbmsgs').html(json.length);
+                                                    }
+                                                   }
+                                                   function loadnbplaces(){
+                                                           var data = '{"operation":"select","table":"places"}';
+                                                           $.getJSON("/webapi.php",{client_req:data},shownbpls);
+                                                         }
+                                                         function shownbpls(json) {
+                                                           if(json==null){
+                                                             $('#nbplaces').html("0000");
+                                                           }
+                                                           else{
+                                                               $('#nbplaces').html(json.length);
+                                                            }
+                                                           }
+
+
+
+
+                function loadchart1(json){
+                  var mon=0;
+                  var tue=0;
+                  var wed=0;
+                  var thu=0;
+                  var fri=0;
+                  var sat=0;
+                  var sun=0;
+                  var x = (new Date()).getTimezoneOffset() * 60000;
+                  var  today= new Date();
+                  var n = today.getDay();
+                  var begin=null;
+                  var end=null;
+                  var daytoday;
+
+
+                  switch (n) {
+
+                     case 1:
+                     {daytoday="mon"; begin=new Date(new Date().setHours(0,0,0,0)); end=addtodate(new Date(),6);}
+                     break;
+                     case 2:
+                     {daytoday="tue"; begin=addtodate(new Date(Date.now()-x),-1); end=addtodate(new Date(Date.now()-x),7);}
+                     break;
+                     case 3:
+                     {daytoday="wed"; begin=addtodate(new Date(Date.now()-x),-2); end=addtodate(new Date(Date.now()-x),7);}
+                     break;
+                     case 4:
+                     {daytoday="thu"; begin=addtodate(new Date(Date.now()-x),-3); end=addtodate(new Date(Date.now()-x),7);}
+                     break;
+                     case 5:
+                     {daytoday="fri"; begin=addtodate(new Date(Date.now()-x),-4); end=addtodate(new Date(Date.now()-x),7);}
+                     break;
+                     case 6:
+                     {daytoday="sat"; begin=addtodate(new Date(Date.now()-x),-5); end=addtodate(new Date(Date.now()-x),7);}
+                     break;
+                     case 0:
+                     {daytoday="sun"; begin=addtodate(new Date(),-6); end=new Date();}
+                     break;
+
+                   }
+                    console.log(begin+" "+end);
+                     //console.log(new Date().getDay());
+
+                     for (var i = 0; i < json.length; i++) {
+                       //console.log(new Date());
+                       if((new Date(json[i].date)>=begin) && (new Date(json[i].date)<=end)){
+                         //console.log(new Date(json[i].date).getDay());
+                         switch (new Date(json[i].date).getDay()) {
+                            case 1:
+                            mon++;
+                            break;
+                            case 2:
+                            tue++;
+                            break;
+                            case 3:
+                            wed++;
+                            break;
+                            case 4:
+                            thu++;
+                            break;
+                            case 5:
+                            fri++;
+                            break;
+                            case 6:
+                            sat++;
+                            break;
+                            case 0:
+                            sun++;
+                            break;
+                          }
+
+                       }
+
+                     }
+                     console.log(mon+" "+tue+" "+wed+" "+thu+" "+fri+" "+sat+" "+sun);
+
+                  $("#nb-logins").dxChart({
+                        dataSource: [
+                            {day: "Mon", oranges: mon},
+                            {day: "Tue", oranges: tue},
+                            {day: "Wed", oranges: wed},
+                            {day: "Thu", oranges: thu},
+                            {day: "Fri", oranges: fri},
+                            {day: "Sat", oranges: sat},
+                            {day: "Sun", oranges: sun} ],
+                    	valueAxis:{
+                    		grid:{
+                    			color: '#9D9EA5',
+                    			width: 0.1
+                    			}
+                    	},
+                    	legend: {
+                    		visible: false,
+                    	},
+                        series: {
+                            argumentField: "day",
+                            valueField: "oranges",
+                            name: "Nombres de connexions",
+                    		visible: false,
+                            type: "bar",
+                            color: '#a49bc4'
+                        }
+                    });
+
+                }
+                function addtodate(date,days){
+                  var x = (new Date()).getTimezoneOffset() * 60000;
+                  var d= new Date((date.setTime( date.getTime() + days * 86400000 )) - x);
+                  return d;
+                }
+
+
+function loadchart5(json){
+
+  var Ariana=0;
+  var Beja=0;
+  var BA=0;
+  var Bizerte=0;
+  var Gabes=0;
+  var Gafsa=0;
+  var Jendouba=0;
+  var Kairouan=0;
+  var Kasserine=0;
+  var Kebili=0;
+  var Manouba=0;
+  var Kef=0;
+  var Mahdia=0;
+  var Medenine=0;
+  var Monastir=0;
+  var Nabeul=0;
+  var Sfax=0;
+  var SB=0;
+  var Siliana=0;
+  var Sousse=0;
+  var Tataouine=0;
+  var Tozeur=0;
+  var Tunis=0;
+  var Zaghouan=0;
+
+  for (var i = 0; i < json.length; i++) {
+     var reg=json[i].region;
+    if ((reg.indexOf("ariana") != -1)||(reg.indexOf("Ariana") != -1)||(reg.indexOf("ARIANA") != -1)) {
+    Ariana++;
+     }
+    if ((reg.indexOf("béja") != -1)||(reg.indexOf("Béja") != -1)||(reg.indexOf("BEJA") != -1)) {
+    Beja++;
+    }
+    if ((reg.indexOf("ben arous") != -1)||(reg.indexOf("Ben Arous") != -1)||(reg.indexOf("BEN AROUS") != -1)) {
+    BA++;
+    }
+    if ((reg.indexOf("bizerte") != -1)||(reg.indexOf("Bizerte") != -1)||(reg.indexOf("BIZERTE") != -1)) {
+    Bizerte++;
+    }
+    if ((reg.indexOf("gabes") != -1)||(reg.indexOf("Gabes") != -1)||(reg.indexOf("GABES") != -1)) {
+    Gabes++;
+    }
+    if ((reg.indexOf("gafsa") != -1)||(reg.indexOf("Gafsa") != -1)||(reg.indexOf("GAFSA") != -1)) {
+    Gafsa++;
+    }
+    if ((reg.indexOf("jendouba") != -1)||(reg.indexOf("Jendouba") != -1)||(reg.indexOf("JENDOUBA") != -1)) {
+    Jendouba++;
+    }
+    if ((reg.indexOf("kairouan") != -1)||(reg.indexOf("Kairouan") != -1)||(reg.indexOf("KAIROUAN") != -1)) {
+    Kairouan++;
+    }
+    if ((reg.indexOf("kasserine") != -1)||(reg.indexOf("Kasserine") != -1)||(reg.indexOf("KASSERINE") != -1)) {
+    Kasserine++;
+    }
+    if ((reg.indexOf("kebili") != -1)||(reg.indexOf("Kebili") != -1)||(reg.indexOf("KEBILI") != -1)) {
+    Kebili++;
+    }
+    if ((reg.indexOf("la manouba") != -1)||(reg.indexOf("La Manouba") != -1)||(reg.indexOf("LA MANOUBA") != -1)||(reg.indexOf("MANOUBA") != -1)||(reg.indexOf("manouba") != -1)||(reg.indexOf("Manouba") != -1)) {
+    Manouba++;
+    }
+    if ((reg.indexOf("le kef") != -1)||(reg.indexOf("Le Kef") != -1)||(reg.indexOf("LE KEF") != -1)||(reg.indexOf("KEF") != -1)||(reg.indexOf("kef") != -1)||(reg.indexOf("Kef") != -1)) {
+    Kef++;
+    }
+    if ((reg.indexOf("mahdia") != -1)||(reg.indexOf("Mahdia") != -1)||(reg.indexOf("MAHDIA") != -1)) {
+    Mahdia++;
+    }
+    if ((reg.indexOf("médenine") != -1)||(reg.indexOf("Médenine") != -1)||(reg.indexOf("MEDENINE") != -1)) {
+    Medenine++;
+    }
+    if ((reg.indexOf("monastir") != -1)||(reg.indexOf("Monastir") != -1)||(reg.indexOf("MONASTIR") != -1)) {
+    Monastir++;
+    }
+    if ((reg.indexOf("nabeul") != -1)||(reg.indexOf("Nabeul") != -1)||(reg.indexOf("NABEUL") != -1)) {
+    Nabeul++;
+    }
+    if ((reg.indexOf("sfax") != -1)||(reg.indexOf("Sfax") != -1)||(reg.indexOf("SFAX") != -1)) {
+    Sfax++;
+    }
+    if ((reg.indexOf("sidi bouzid") != -1)||(reg.indexOf("Sidi Bouzid") != -1)||(reg.indexOf("SIDI BOUZID") != -1)) {
+    SB++;
+    }
+    if ((reg.indexOf("Siliana") != -1)||(reg.indexOf("Siliana") != -1)||(reg.indexOf("SILIANA") != -1)) {
+    Siliana++;
+    }
+    if ((reg.indexOf("sousse") != -1)||(reg.indexOf("Sousse") != -1)||(reg.indexOf("SOUSSE") != -1)) {
+    Sousse++;
+    }
+    if ((reg.indexOf("tataouine") != -1)||(reg.indexOf("Tataouine") != -1)||(reg.indexOf("TATAOUINE") != -1)) {
+    Tataouine++;
+    }
+    if ((reg.indexOf("tozeur") != -1)||(reg.indexOf("Tozeur") != -1)||(reg.indexOf("TOZEUR") != -1)) {
+    Tozeur++;
+    }
+    if ((reg.indexOf("tunis ") != -1)||(reg.indexOf("Tunis ") != -1)||(reg.indexOf("TUNIS ") != -1)) {
+    Tunis++;
+    }
+    if ((reg.indexOf("zaghouan") != -1)||(reg.indexOf("Zaghouan") != -1)||(reg.indexOf("ZAGHOUAN") != -1)) {
+    Zaghouan++;
+    }
+
+  }
+
+
+$("#nb-users-per-region").dxChart({
+    dataSource: [
+				  { state: "Régions Tunisiennes",
+           ArianaV: Ariana,
+           BejaV: Beja,
+           BaV: BA,
+           BizerteV: Bizerte,
+           GabesV: Gabes,
+           GafsaV: Gafsa,
+           JendoubaV: Jendouba,
+           KairouanV: Kairouan,
+           KasserineV: Kasserine,
+           KebiliV: Kebili,
+           ManoubaV: Manouba,
+           KefV: Kef,
+           MahdiaV: Mahdia,
+           MedenineV: Medenine,
+           MonastirV: Monastir,
+           NabeulV: Nabeul,
+           SfaxV: Sfax,
+           SbV: SB,
+           SilianaV: Siliana,
+           SousseV: Sousse,
+           TataouineV: Tataouine,
+           TozeurV: Tozeur,
+           TunisV: Tunis,
+           ZaghouanV: Zaghouan,
+
+         }
+				],
+    equalBarWidth: {
+        width: 24
+    },
+    commonSeriesSettings: {
+        argumentField: "state",
+        type: "bar"
+    },
+    series: [
+        { valueField: "ArianaV", name: "Ariana ("+Ariana+")", color: '#C0C0C0' },
+        { valueField: "BejaV", name: "Béja ("+Beja+")", color: '#808080' },
+        { valueField: "BaV", name: "Ben Arous ("+BA+")", color: '#000000' },
+        { valueField: "BizerteV", name: "Bizerte ("+Bizerte+")", color: '#FF0000' },
+        { valueField: "GabesV", name: "Gabes ("+Gabes+")", color: '#800000' },
+        { valueField: "GafsaV", name: "Gafsa ("+Gafsa+")", color: '#FFFF00' },
+        { valueField: "JendoubaV", name: "Jendouba ("+Jendouba+")", color: '#808000' },
+        { valueField: "KairouanV", name: "Kairouan ("+Kairouan+")", color: '#00FF00' },
+        { valueField: "KasserineV", name: "Kasserine ("+Kasserine+")", color: '#008000' },
+        { valueField: "KebiliV", name: "Kebili ("+Kebili+")", color: '#00FFFF' },
+        { valueField: "ManoubaV", name: "La Manouba ("+Manouba+")", color: '#008080' },
+        { valueField: "KefV", name: "Le Kef ("+Kef+")", color: '#000080' },
+        { valueField: "MahdiaV", name: "Mahdia ("+Mahdia+")", color: '#FF00FF' },
+        { valueField: "MedenineV", name: "Médenine ("+Medenine+")", color: '#800080' },
+        { valueField: "MonastirV", name: "Monastir ("+Monastir+")", color: '#641E16' },
+        { valueField: "NabeulV", name: "Nabeul ("+Nabeul+")", color: '#512E5F' },
+        { valueField: "SfaxV", name: "Sfax ("+Sfax+")", color: '#154360' },
+        { valueField: "SbV", name: "Sidi Bouzid ("+SB+")", color: '#0E6251' },
+        { valueField: "SilianaV", name: "Siliana ("+Siliana+")", color: '#F5B041' },
+        { valueField: "SousseV", name: "Sousse ("+Sousse+")", color: '#B7950B' },
+        { valueField: "TataouineV", name: "Tataouine ("+Tataouine+")", color: '#D35400' },
+        { valueField: "TozeurV", name: "Tozeur ("+Tozeur+")", color: '#85C1E9' },
+        { valueField: "TunisV", name: "Tunis ("+Tunis+")", color: '#FF5733' },
+        { valueField: "ZaghouanV", name: "Zaghouan ("+Zaghouan+")", color: '#F1948A' }
+    ],
+    legend: {
+        visible: true
+    },
+	valueAxis:{
+		grid:{
+			color: '#9D9EA5',
+			width: 0.1
+			}
+	},
+});
+
+}
+
+
+
+   function loadchart2(json){
+
+     var Win=0;
+     var Mac=0;
+     var Ios=0;
+     var Android=0;
+     var Linux=0;
+    for (var i = 0; i < json.length; i++) {
+      if(json[i].device=="Windows"){
+        Win++;
+      }
+      if(json[i].device=="Mac OS"){
+        Mac++;
+      }
+      if(json[i].device=="iOS"){
+        Ios++;
+      }
+      if(json[i].device=="Android"){
+        Android++;
+      }
+      if(json[i].device=="Linux"){
+        Linux++;
+      }
+    }
+
+     $("#pie-platforms").dxPieChart({
+         dataSource: [
+     				  { system: "Windows", users: Win },
+     				  { system: "Mac OS", users: Mac },
+     				  { system: "iOS", users: Ios },
+     				  { system: "Android", users: Android },
+     				  { system: "Linux", users: Linux }
+     				],
+         legend: {
+     		visible: true
+         },
+     	palette: ["#4fcdfc", "#00b19d", "#2ECC71","#ff6264", "#fbd005"],
+         series: [{
+             argumentField: "system",
+             valueField: "users",
+             label: {
+                 visible: true,
+                 font: {
+                     size: 12
+                 },
+                 connector: {
+                     visible: true,
+                     width: 0.5
+                 },
+                 position: "columns",
+                 customizeText: function(arg) {
+                     return arg.valueText + " ( " + arg.percentText + ")";
+                 }
+             }
+         }]
+     });
+
+   }
+
+function loadchart3(json){
+  var m=0;
+  var f=0;
+ for (var i = 0; i < json.length; i++) {
+   if(json[i].sexe=="m"){
+     m++;
+   }
+   if(json[i].sexe=="f"){
+     f++;
+   }
+ }
+
+  $("#sexe-chart").dxPieChart({
+      dataSource: [
+  				{sexe: "Hommes", val: m},
+  				{sexe: "Femmes", val: f},
+  			],
+  	legend: {
+  		visible: true
+  	},
+  	palette: ["#00b19d", "#ff6264"],
+  	series: [{
+  		type: "doughnut",
+  		argumentField: "sexe",
+  		label: {
+  			visible: true,
+  			connector: {
+  				visible: true
+  			}
+  		}
+  	}]
+  });
+}
+
+
+
+function loadchart4(json){
+var jan=0;
+var fev=0;
+var mar=0;
+var avr=0;
+var mai=0;
+var jui=0;
+var juil=0;
+var aou=0;
+var sep=0;
+var oct=0;
+var nov=0;
+var dec=0;
+ for (var i = 0; i < json.length; i++) {
+  var date=json[i].date;
+  var d= new Date(date);
+  switch (d.getMonth()) {
+     case 0:
+     jan++;
+     break;
+     case 1:
+     fev++;
+     break;
+     case 2:
+     mar++;
+     break;
+     case 3:
+     avr++;
+     break;
+     case 4:
+     mai++;
+     break;
+     case 5:
+     jui++;
+     break;
+     case 6:
+     juil++;
+     break;
+     case 7:
+     aou++;
+     break;
+     case 8:
+     sep++;
+     break;
+     case 9:
+     oct++;
+     break;
+     case 10:
+     nov++;
+     break;
+     case 11:
+     dec++;
+     break;
+   }
+
+ }
+$("#area-chart").dxChart({
+
+    dataSource: [
+        { country: "Janvier", y014: jan },
+        { country: "Février", y014: fev },
+        { country: "Mars", y014: mar },
+        { country: "Avril", y014: avr },
+        { country: "Mai", y014: mai },
+        { country: "Juin", y014: jui },
+        { country: "Juillet", y014: juil },
+        { country: "Aout", y014: aou },
+        { country: "Septembre", y014: sep },
+        { country: "Octobre", y014: oct },
+        { country: "Novembre", y014: nov },
+        { country: "Décembre", y014: dec }
+	],
+    commonSeriesSettings: {
+        type: "area",
+        argumentField: "country"
+    },
+    series: [
+        { valueField: "y014", name: "Evenements", color: "#6C3483" }
+    ],
+    argumentAxis:{
+        valueMarginsEnabled: false
+    },
+	legend: {
+        visible: false
+    },
+	valueAxis:{
+		grid:{
+			color: '#9D9EA5',
+			width: 0.3
+			}
+	},
+});
+
+}
+
+
+
+
+
+
+
+
+
+
+
+                           function openPopup(id,texte){
+                           $('#'+id).addClass('visible');
+                           $('#'+id+"_text").html(texte);
+                           }
+                           function closePopup(id){
+                           $('#'+id).removeClass('visible');
+                           }
+                           // fonction déconnexion du système
+                         function logout(){
+
+                          localStorage.removeItem('SPOT_ADMIN_SESSION');
+                          localStorage.removeItem('spot_admin_id');
+                          localStorage.removeItem('spot_admin_name');
+                          localStorage.removeItem('spot_admin_firstname');
+                          localStorage.removeItem('spot_admin_lastname');
+                          localStorage.removeItem('spot_admin_email');
+                          localStorage.removeItem('spot_admin_currentpass');
+                          localStorage.removeItem('spot_admin_photo');
+                          localStorage.removeItem('spot_admin_statut');
+                          localStorage.removeItem('spot_selected_freind_id');
+                          getoffline("admin_offline",A.getId());
+
+                         }
+                         function getoffline(table,id){
+                         var offdata = {
+                           "operation": "update",
+                           "table": table,
+                           "id" :id
+                          }
+                          var stdata=JSON.stringify(offdata);
+                            $.getJSON("/webapi.php",{client_req:stdata},showofflineconfirm);
+                         }
+                         function showofflineconfirm(json) {
+                         if(json==null){
+                          openPopup("modal_error","Problème de connexion, svp reconnecter vous !");
+                         }
+                         else{
+                            document.location.href="/";
+                          }
+                         }
+
+
+
+                            </script>
+<!-- ********************************************************************Script Ends***************************************************************** -->
+
+
+        <!-- Warper Ends Here (working area) -->
+
+
+        <footer class="container-fluid footer">
+        	<p>Copyright &copy; 2018. All Rights Reserved | A theme by <a href="https://www.linkedin.com/in/abdellaoui-fahed-74ba1ab8">Fahd Abdellaoui</a></p>
+            <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+        </footer>
+
+    </section>
+    <!-- Content Block Ends Here (right box)-->
+
+
+
+
+    <script src="assets/js/plugins/underscore/underscore-min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Globalize -->
+    <script src="assets/js/globalize/globalize.min.js"></script>
+
+    <!-- NiceScroll -->
+    <script src="assets/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+    <!-- InputMask -->
+    <script src="assets/js/plugins/inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- TagsInput -->
+    <script src="assets/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Custom JQuery -->
+	<script src="assets/js/app/custom.js" type="text/javascript"></script>
+     <!-- Chart JS -->
+    <script src="assets/js/plugins/DevExpressChartJS/dx.chartjs.js"></script>
+
+
+
+</body>
+
+<!-- Mirrored from freakpixels.com/portfolio/brio/forms-element.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Oct 2017 22:13:55 GMT -->
+</html>
